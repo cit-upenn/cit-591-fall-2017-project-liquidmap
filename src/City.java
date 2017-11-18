@@ -57,8 +57,8 @@ public class City {
 	public double getPointDist(Point pA, Point pB) {
 		double[] xyA = pointToXY(pA);
 		double[] xyB = pointToXY(pB);
-		double dX = (xyA[0] - xyA[0]);
-		double dY = (xyB[1] - xyB[1]);
+		double dX = (xyA[0] - xyB[0]);
+		double dY = (xyA[1] - xyB[1]);
 		return Math.sqrt(dX * dX + dY * dY);
 	}
 
