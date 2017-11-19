@@ -48,7 +48,7 @@ public class Trip {
 	 * Will find the lat-lon location on a trip at a given time and returns it
 	 * all as a Point object.
 	 *
-	 * If the time is less the starting time of the trip, it returns the first
+	 * If the time is less than the starting time of the trip, it returns the first
 	 * Point of the trip. If the time is greater than the ending time of the
 	 * trip, it returns the final Point of the trip. Otherwise it will return an
 	 * interpolated value along the trip path.
