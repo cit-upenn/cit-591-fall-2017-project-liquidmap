@@ -15,6 +15,16 @@ public class GHInterface {
 	GraphHopper hopper;
 	City city;
 
+	/**
+	 * Initializes the GraphHopper server using the map specified in the City
+	 * object.<br>
+	 * <br>
+	 *
+	 * The first time this is done on the local computer, it will initialize the
+	 * map into the GHHopperWD working directory.
+	 *
+	 * @param city
+	 */
 	public GHInterface(City city) {
 		this.city = city;
 		hopper = new GraphHopper().forDesktop();
@@ -24,6 +34,23 @@ public class GHInterface {
 		hopper.importOrLoad();
 	}
 
+	/**
+	 * Uses the GHInterface object to compute a trip between Point p1 and Point
+	 * p2.<br>
+	 * <br>
+	 *
+	 * While the Point objects support time, this is not used in the
+	 * calculation. The returned trip will start at 0(s) and progress so that
+	 * the last point (ie the destination) will be at the concluding time of the
+	 * trip. All points in between are sequential, monotonic in time, and
+	 * reflect the local velocities.
+	 *
+	 * @param p1
+	 *            The starting point
+	 * @param p2
+	 *            The destination point
+	 * @return A trip.
+	 */
 	public Trip getTrip(Point p1, Point p2) {
 
 		GHRequest req = new GHRequest(p1.getLat(), p1.getLon(), p2.getLat(),
@@ -39,6 +66,41 @@ public class GHInterface {
 		return buildTripFromInst(il);
 	}
 
+	/**
+	 * Converts an InstructionList into an ArrayList of Points.<br>
+	 * <br>
+	 *
+	 * The GraphHopper PathWrapper contains a lot of information, including all
+	 * lat-long pairs on the route. However the time data is not reported at
+	 * this granularity.<br>
+	 * <br>
+	 *
+	 * In order to find the time of each spatial point, we must mine the
+	 * InstructionList for the information. The InstructionList provides a total
+	 * time for each step of the journey and some number of spatial points that
+	 * describe that step. The last step is actually the first point of the next
+	 * step.<br>
+	 * <br>
+	 *
+	 * We can then imagine each step in the InstructionList consisting of a
+	 * series of microsteps as reported by that Instructions points. We make two
+	 * assumptions: (1) the velocity is constant across all microsteps in a step
+	 * and (2) the linear distances between the points inform how much time
+	 * should occur on each microstep. We can then compute the time for each
+	 * microstep. The time for each point will be the accumulation of these
+	 * times. <br>
+	 * <br>
+	 *
+	 * @param instList
+	 *            InstructionList object to be processed.
+	 * @return A Trip containing points with lat, long, and time.
+	 */
+
+	// TODO this method is massive. It internally shares a lot of data though so
+	// I don't think it can be easily broken into steps without creating lots of
+	// awkward objects that are used just once. One solution is to
+	// create a library of mathematical list operations that encapsulate the
+	// microroutines found here.
 	private Trip buildTripFromInst(InstructionList instList) {
 		boolean DEBUG = true;
 		if (DEBUG) {
