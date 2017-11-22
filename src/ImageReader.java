@@ -25,7 +25,10 @@ public class ImageReader {
 		this.filePath = filePath;
 		readImageFile();
 	}
-	
+	/**
+	 * Reads the image file and puts it into a 
+	 * BufferedImage object.
+	 */
 	private void readImageFile() {
 		try {
 			File inputFile = new File(filePath);
@@ -34,7 +37,6 @@ public class ImageReader {
 			e.printStackTrace();
 		}
 	}
-
 	/**
 	 * @return the img
 	 */
