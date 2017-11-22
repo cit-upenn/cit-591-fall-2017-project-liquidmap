@@ -6,8 +6,14 @@
  * to its 'coordinates' in the image, where the top left 
  * of the image corresponds to an (x,y) of (0,0).  
  * 
- * It will also have an RGB value corresponding to 
- * the image's color at that location.
+ * It will also have a red value corresponding to 
+ * the image's color at that location in the red channel.
+ * Can vary from 0 - 255.
+ * 
+ * Using red was chosen arbitrarily.  All maps uploaded
+ * to this project for use by GH will be in greyscale, so
+ * we are merely using the red channel to track the 
+ * white-to-black gradient.
  * 
  * @author sgb
  *
