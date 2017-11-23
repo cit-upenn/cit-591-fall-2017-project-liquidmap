@@ -19,6 +19,7 @@
  *
  */
 public class Pixel {
+	
 	private int redValue;
 	private int pixelX;
 	private int pixelY;
@@ -47,6 +48,27 @@ public class Pixel {
 	 */
 	public int getPixelY() {
 		return pixelY;
+	}
+	
+	/**
+	 * @param redValue the redValue to set
+	 */
+	public void setRedValue(int redValue) {
+		this.redValue = redValue;
+	}
+
+	/**
+	 * @param pixelX the pixelX to set
+	 */
+	public void setPixelX(int pixelX) {
+		this.pixelX = pixelX;
+	}
+
+	/**
+	 * @param pixelY the pixelY to set
+	 */
+	public void setPixelY(int pixelY) {
+		this.pixelY = pixelY;
 	}
 
 }
