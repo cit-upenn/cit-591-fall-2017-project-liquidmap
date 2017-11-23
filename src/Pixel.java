@@ -11,7 +11,7 @@
  * Can vary from 0 - 255.
  * 
  * Using red was chosen arbitrarily.  All maps uploaded
- * to this project for use by GH will be in greyscale, so
+ * to this project will be in greyscale, so
  * we are merely using the red channel to track the 
  * white-to-black gradient.
  * 

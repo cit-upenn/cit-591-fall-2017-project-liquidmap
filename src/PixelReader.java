@@ -29,7 +29,9 @@ public class PixelReader {
 	public BufferedImage getImg() {
 		return img;
 	}
-
+	/**
+	 * @return the Pixel ArrayList
+	 */
 	public ArrayList<Pixel> getPixels() {
 		return pixels;
 	}
