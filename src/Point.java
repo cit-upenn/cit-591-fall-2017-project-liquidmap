@@ -101,11 +101,6 @@ public class Point implements Comparable<Point> {
 		this.time *= scaleFactor;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	// Because why not make it print pretty?
 	public String toString() {
@@ -125,17 +120,26 @@ public class Point implements Comparable<Point> {
 	 *
 	 * Have equality defined on Points makes jUnit testing much easier.
 	 *
-	 * TODO Equality is poorly defined on doubles.
 	 *
 	 * @param p2
 	 *            The Point to compare to.
 	 * @return True if they are equal, false otherwise.
 	 */
 	public boolean equals(Point p2) {
-		boolean latEqual = lat == p2.getLat();
-		boolean lonEqual = lon == p2.getLon();
-		boolean timeEqual = time == p2.getTime();
-		return (latEqual && lonEqual && timeEqual);
+		double closeDistance = 3; // close in distance in meters
+		double closeTime = 1E-3; // close in time in seconds
+		double EARTH_RAD = 6371000; // meters
+		double meanLat = (this.getLat() + p2.getLat()) / 2;
+		double sf = Math.sin(meanLat * Math.PI / 180.);
+		double mPerDegLat = 2 * Math.PI * EARTH_RAD / 360;
+		double mPerDegLon = mPerDegLat * sf;
+		double dy = (lat - p2.getLat()) * mPerDegLat;
+		double dx = (lon - p2.getLon()) * mPerDegLon;
+		double dt = Math.abs(time - p2.getTime());
+		double dist = Math.sqrt(dy * dy + dx * dx);
+		boolean isCloseInSpace = dist < closeDistance;
+		boolean isCloseInTime = dt < closeTime;
+		return (isCloseInTime && isCloseInSpace);
 	}
 
 }
