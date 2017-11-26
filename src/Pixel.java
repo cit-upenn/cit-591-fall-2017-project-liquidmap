@@ -11,7 +11,7 @@
  * Can vary from 0 - 255.
  * 
  * Using red was chosen arbitrarily.  All maps uploaded
- * to this project for use by GH will be in greyscale, so
+ * to this project will be in greyscale, so
  * we are merely using the red channel to track the 
  * white-to-black gradient.
  * 
@@ -19,6 +19,7 @@
  *
  */
 public class Pixel {
+	
 	private int redValue;
 	private int pixelX;
 	private int pixelY;
@@ -47,6 +48,27 @@ public class Pixel {
 	 */
 	public int getPixelY() {
 		return pixelY;
+	}
+	
+	/**
+	 * @param redValue the redValue to set
+	 */
+	public void setRedValue(int redValue) {
+		this.redValue = redValue;
+	}
+
+	/**
+	 * @param pixelX the pixelX to set
+	 */
+	public void setPixelX(int pixelX) {
+		this.pixelX = pixelX;
+	}
+
+	/**
+	 * @param pixelY the pixelY to set
+	 */
+	public void setPixelY(int pixelY) {
+		this.pixelY = pixelY;
 	}
 
 }
