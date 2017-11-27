@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 public class RasterDataSource {
 	private ArrayList<Pixel> pixels;
+	private ArrayList<Pixel> centered;
 	private ImageReader imageReader;
 	private BufferedImage img;
+	private double latConversionFactor;
+	private double lngConversionFactor;
+	
 	/**
 	 * The constructor creates an ArrayList of type Pixel
 	 * in order to create a representation of the image along
@@ -49,18 +53,48 @@ public class RasterDataSource {
 	 * @return a centered ArrayList of type Pixel
 	 */
 	public ArrayList<Pixel> centerPixelArray(ArrayList<Pixel> arrayToCenter, 
-			int pixelXAtCenter, int pixelYAtCenter) {
+			int pixelXCenter, int pixelYCenter) {
 		
 		ArrayList<Pixel> centeredPixelArray = arrayToCenter;
 		
 		for (int i = 0; i < arrayToCenter.size(); i++) {
 			centeredPixelArray.get(i).setPixelX(arrayToCenter.get(i).getPixelX() 
-					- Math.abs(pixelXAtCenter));
+					- Math.abs(pixelXCenter));
 			centeredPixelArray.get(i).setPixelY(arrayToCenter.get(i).getPixelY() 
-					+ Math.abs(pixelYAtCenter));
+					+ Math.abs(pixelYCenter));
 		}
 		
 		return centeredPixelArray;
+	}
+	/**
+	 * This method calculates two conversion factors: one for latitude
+	 * and one for longitude, based on two points on the map.
+	 * 
+	 * It requires as arguments the city center pixelXY, another
+	 * location's pixelXY (must be different in both the X and Y direction)
+	 * as well as the city center lat/long and another location's lat/long.
+	 * 
+	 * @param pixelXCenter pixel X-coord at city center
+	 * @param pixelYCenter pixel Y-coord at city center
+	 * @param latCenter latitude at city center
+	 * @param lngCenter longitude at city center
+	 * @param pixelXArb pixel X-coord at another location
+	 * @param pixelYArb pixel Y-coord at another location
+	 * @param latArb latitude at another location
+	 * @param lngArb longitude at another location
+	 */
+	public void calculateMapScale(int pixelXCenter, int pixelYCenter,
+			double latCenter, double lngCenter, int pixelXArb, int pixelYArb, 
+			double latArb, double lngArb) {
+		
+		double latDiff = Math.abs(latArb - latCenter);
+		double lngDiff = Math.abs(lngArb - lngCenter);
+		
+		int pixelXDiff = Math.abs(pixelXArb - pixelXCenter);
+		int pixelYDiff = Math.abs(pixelYArb - pixelYCenter);
+		
+		latConversionFactor = latDiff / pixelXDiff;
+		lngConversionFactor = lngDiff / pixelYDiff;
 	}
 	/**
 	 * @return the img
@@ -73,5 +107,23 @@ public class RasterDataSource {
 	 */
 	public ArrayList<Pixel> getPixels() {
 		return pixels;
+	}
+	/**
+	 * @return the centered Pixel ArrayList
+	 */
+	public ArrayList<Pixel> getCenteredPixels() {
+		return centered;
+	}
+	/**
+	 * @return the latConversionFactor
+	 */
+	public double getLatConversionFactor() {
+		return latConversionFactor;
+	}
+	/**
+	 * @return the lngConversionFactor
+	 */
+	public double getLngConversionFactor() {
+		return lngConversionFactor;
 	}
 }
