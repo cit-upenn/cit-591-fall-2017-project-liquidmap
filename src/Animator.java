@@ -128,16 +128,16 @@ public class Animator {
 		
 		for (int i = 0; i < listTrips.size(); i++) {
 			ArrayList<Point> listPoints = listTrips.get(i).getPoints();
-			strbOut.append(	"\t$(\"#dot" + i + "\").delay(" + intStartDelay + ")");
+			strbOut.append("\t$(\"#dot" + i + "\").delay(" + intStartDelay + ")");
 			
 			for (int j = 1; j < listPoints.size(); j++) {
 				double dblLat = listPoints.get(j).getLat();
 				double dblLon = listPoints.get(j).getLon();
 				double dblDuration = listPoints.get(j).getTime() - listPoints.get(j - 1).getTime();
-				strbOut.append(".velocity({ x: \"" + dblLat + "\", y: \"" + dblLon + "\" }, {duration: " + dblDuration + ", easing: \"ease\"})");
+				strbOut.append(".velocity({ x: \"" + dblLat + "\", y: \"" + dblLon + "\" }, {duration: " + dblDuration + "})");
 			}
 			
-			strbOut.append(	"\r\n");
+			strbOut.append(";\r\n");
 		}
 		
 		strbOut.append("\r\n</script>\n\n");
