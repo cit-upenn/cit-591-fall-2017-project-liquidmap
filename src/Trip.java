@@ -90,6 +90,23 @@ public class Trip {
 		return sb.toString();
 	}
 
+	public Point getPoint(Double index) {
+		if (index % 1 == 0.) {
+			return this.getPoints().get(index.intValue());
+		} else {
+			int lowIndex = new Double(Math.floor(index)).intValue();
+			int highIndex = new Double(Math.ceil(index)).intValue();
+			double frac = index - lowIndex;
+			double ofrac = 1 - frac;
+			Point pL = this.getPoints().get(lowIndex);
+			Point pH = this.getPoints().get(highIndex);
+			double lat = pL.getLat() * ofrac + pH.getLat() * frac;
+			double lon = pL.getLon() * ofrac + pH.getLon() * frac;
+			double time = pL.getTime() * ofrac + pH.getTime() * frac;
+			return new Point(lat, lon, time);
+		}
+	}
+
 	/**
 	 * Will find the lat-lon location on a trip at a given time and returns it
 	 * all as a Point object.
@@ -147,6 +164,89 @@ public class Trip {
 				return new Point(newLat, newLon, time);
 			}
 		}
+
+	}
+
+	/**
+	 * Returns the fractional index at a given time of the trip point array. For
+	 * instance, if the time was midway between the time of the second and third
+	 * point, it would return 1.5.
+	 *
+	 * Technique to find the time utilizes binary search.
+	 *
+	 * @param time
+	 * @return
+	 */
+	public double atTimeIndex(double time) {
+		if (time <= this.minTime()) {
+			// before you leave on the trip, you are stationary at the beginning
+			// location.
+			return 0.;
+		} else if (time >= this.maxTime()) {
+			// after you arrive, you are assumed to be at the end forever.
+			return points.size() - 1.;
+		} else {
+			// define a dummy point with the request time to serve as the
+			// comparison object.
+			Point searchPoint = new Point(Double.NaN, Double.NaN, time);
+			int insPoint = Collections.binarySearch(points, searchPoint, null);
+			// Quoting JavaDocs: the index of the search key, if it is contained
+			// in the list; otherwise, (-(insertion point) - 1). The insertion
+			// point is defined as the point at which the key would be inserted
+			// into the list: the index of the first element greater than the
+			// key, or list.size() if all elements in the list are less than the
+			// specified key. Note that this guarantees that the return value
+			// will be >= 0 if and only if the key is found.
+			if (insPoint >= 0) {
+				// if you found a point with the request time, return it.
+				return insPoint;
+			} else {
+				int upperIndex = -(insPoint + 1);
+				int lowerIndex = upperIndex - 1;
+				double upperTime = points.get(upperIndex).getTime();
+				double lowerTime = points.get(lowerIndex).getTime();
+				double frac = (time - lowerTime) / (upperTime - lowerTime);
+				return lowerIndex + frac;
+			}
+		}
+
+	}
+
+	/**
+	 * Returns the fractional index at a given time of the trip point array. For
+	 * instance, if the time was midway between the time of the second and third
+	 * point, it would return 1.5.
+	 *
+	 * Technique to find the time utilizes binary search.
+	 *
+	 * @param time
+	 * @return
+	 */
+	public Trip getSubTrip(double timeStart, double timeEnd) {
+		Double indexStart = this.atTimeIndex(timeStart);
+		Double indexEnd = this.atTimeIndex(timeEnd);
+
+		Trip newTrip = new Trip();
+
+		double startFrac = indexStart % 1;
+		double endFrac = indexEnd % 1;
+
+		Integer indexStartLow = (int) Math.floor(indexStart);
+		Integer indexEndHigh = (int) Math.ceil(indexEnd);
+		Integer indexStartHigh = indexStartLow + 1;
+		Integer indexEndLow = indexEndHigh - 1;
+
+		ArrayList<Double> indices = new ArrayList<>();
+		indices.add(indexStart);
+		for (int i = indexStartHigh; i <= indexEndLow; i++) {
+			indices.add(Double.valueOf(i));
+		}
+		indices.add(indexEnd);
+
+		for (Double index : indices) {
+			newTrip.addPoint(this.getPoint(index));
+		}
+		return newTrip;
 
 	}
 }
