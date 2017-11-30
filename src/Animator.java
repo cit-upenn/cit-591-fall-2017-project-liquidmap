@@ -7,18 +7,15 @@ import java.util.ArrayList;
  */
 public class Animator {
 	Writer writer;
-	int intDotWidth;
-	int intDotHeight;
+	int intStrokeWidth;
+	int intStrokeLength;
 	int intStartDelay;
 	
 	/**
-	 * Constructor. Initializes the Animator with a Writer object and with default values.
+	 * Constructor. Initializes the Animator with a Writer object.
 	 */
 	public Animator () {
 		writer = new Writer();
-		intDotWidth = 1;
-		intDotHeight = 1;
-		intStartDelay = 1000;
 	}
 	
 	/**
@@ -28,9 +25,9 @@ public class Animator {
 	 * @param intDotHeight The height of each dot in pixels.
 	 * @param intStartDelay The amount of time (in milliseconds) to wait before starting the animation.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, int intDotWidth, int intDotHeight, int intStartDelay) {
-		this.intDotWidth = intDotWidth;
-		this.intDotHeight = intDotHeight;
+	public void animateTrips (ArrayList<Trip> listTrips, int intStrokeWidth, int intStrokeLength, int intStartDelay) {
+		this.intStrokeWidth = intStrokeWidth;
+		this.intStrokeLength = intStrokeLength;
 		this.intStartDelay = intStartDelay;
 		writer.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) + generateScriptBlock(listTrips), "animation.html");
 	}
@@ -58,14 +55,26 @@ public class Animator {
 						"\t\t<svg>\r\n");
 		
 		for (int i = 0; i < listTrips.size(); i++) {
-			Point pointStart = listTrips.get(i).getPoints().get(0);
-			strbOut.append("\t\t\t<rect id=\"dot" + i + "\" width=\"" + intDotWidth + "\" height=\"" +	intDotHeight + "\" x=\"" + pointStart.getLat() + "\" y=\"" + pointStart.getLon() + "\" />\r\n");
+			ArrayList<Point> listPoints = listTrips.get(i).getPoints();
+			int intX = roundToInt(listPoints.get(0).getLat());
+			int intY = roundToInt(listPoints.get(0).getLon());
+			
+			strbOut.append("\t\t\t<path id=\"path" + i + "\" d=\"M" + intX + "," + intY);
+			
+			for (int j = 1; j < listPoints.size(); j++) {
+				intX = roundToInt(listPoints.get(j).getLat());
+				intY = roundToInt(listPoints.get(j).getLon());
+				strbOut.append(" L" + intX + "," + intY);
+			}
+			
+			strbOut.append("\" />\r\n");
 		}
 
 		strbOut.append(	"\t\t</svg>\r\n" + 
 						"\r\n" + 
 						"\t\t<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n" + 
 						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.min.js'></script>\r\n" + 
+						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/segment-js/1.0.8/segment.js'></script>\r\n" + 
 						"\t</body>\r\n" + 
 						"</html>\r\n\r\n");
 		
@@ -88,7 +97,7 @@ public class Animator {
 						"\t\tfont-weight: 200;\r\n" + 
 						"\t\tletter-spacing: 1px;\r\n" + 
 						"\t\tmargin: 25px auto 0 auto;\r\n" + 
-						"\t\tbackground: #000000;\r\n" + 
+						"\t\tbackground: #111111;\r\n" + 
 						"\t\tcolor: rgb(25, 25, 25);\r\n" + 
 						"\t}\r\n" + 
 						"\r\n" + 
@@ -107,9 +116,10 @@ public class Animator {
 						"\t\theight: 100%;\r\n" + 
 						"\t}\r\n" + 
 						"\r\n" + 
-						"\trect {\r\n" + 
-						"\t\ttransform-origin: 0% 0%;\r\n" + 
-						"\t\tfill: #FFFFFF;\r\n" + 
+						"\tpath {\r\n" + 
+						"\t\tstroke: #FFFFFF;\r\n" + 
+						"\t\tstroke-width: " + intStrokeWidth + ";\r\n" + 
+						"\t\tfill-opacity: 0;" +
 						"\t}\r\n" + 
 						"</style>\r\n\r\n");
 		
@@ -126,22 +136,79 @@ public class Animator {
 		
 		strbOut.append("<script>\r\n");
 		
+		for (int i = 0; i < listTrips.size(); i++) {	
+			strbOut.append("\tvar path" + i + " = document.getElementById(\"path" + i + "\"), segment" + i + " = new Segment(path" + i + ");\r\n");
+		}
+		
+		strbOut.append("\r\n");
+		
+		for (int i = 0; i < listTrips.size(); i++) {	
+			strbOut.append("\tsegment" + i + ".draw(\"0%\", \"0%\", 0);\r\n");
+		}
+		
+		strbOut.append("\r\n");
+		
 		for (int i = 0; i < listTrips.size(); i++) {
 			ArrayList<Point> listPoints = listTrips.get(i).getPoints();
-			strbOut.append("\t$(\"#dot" + i + "\").delay(" + intStartDelay + ")");
-			
+			double dblTripDistance = computeTripDistance(listPoints, 0, listPoints.size() - 1);
+						
 			for (int j = 1; j < listPoints.size(); j++) {
-				double dblLat = listPoints.get(j).getLat();
-				double dblLon = listPoints.get(j).getLon();
-				double dblDuration = listPoints.get(j).getTime() - listPoints.get(j - 1).getTime();
-				strbOut.append(".velocity({ x: \"" + dblLat + "\", y: \"" + dblLon + "\" }, {duration: " + dblDuration + "})");
+				double dblDistanceToPointFromStart = computeTripDistance(listPoints, 0, j);
+				int intPositionFront = computePercentage(dblDistanceToPointFromStart / dblTripDistance);
+				int intPositionBack = computePercentage((dblDistanceToPointFromStart - intStrokeLength) / dblTripDistance);
+				double dblLegTime = computeTripTime(listPoints, j - 1, j);
+				
+				strbOut.append("\tsegment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + dblLegTime + ");\r\n");
 			}
 			
-			strbOut.append(";\r\n");
+			strbOut.append("\r\n");
 		}
 		
 		strbOut.append("\r\n</script>\n\n");
 		
 		return strbOut.toString();
+	}
+	
+	private double computeTripTime (ArrayList<Point> listPoints, int intPointStart, int intPointEnd) {
+		double dblTime = listPoints.get(intPointEnd).getTime() - listPoints.get(intPointStart).getTime();
+		return dblTime;
+	}
+	
+	private double computeTripDistance (ArrayList<Point> listPoints, int intPointStart, int intPointEnd) {
+		double dblDistance = 0;
+		
+		for (int i = intPointStart; i < intPointEnd; i++) {
+			dblDistance += computeLegDistance(listPoints.get(i), listPoints.get(i + 1));
+		}
+		
+		return dblDistance;
+	}
+	
+	private double computeLegDistance (Point pointStart, Point pointEnd) {
+		double dblDistance = 0;
+		double dblDistanceX = Math.abs(pointStart.getLat() - pointEnd.getLat());
+		double dblDistanceY = Math.abs(pointStart.getLon() - pointEnd.getLon());
+		
+		dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));
+		
+		return dblDistance;
+	}
+	
+	private int computePercentage (double dblNum) {
+		dblNum *= 100;
+		int intNum = roundToInt(dblNum);
+		
+		if (intNum < 0) {
+			intNum = 0;
+		} else if (intNum > 100) {
+			intNum = 100;
+		}
+		
+		return intNum;
+	}
+	
+	private int roundToInt (double dblNum) {
+		dblNum = Math.round(dblNum);
+		return (int)dblNum;
 	}
 }
