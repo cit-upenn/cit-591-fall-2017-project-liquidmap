@@ -91,4 +91,11 @@ public class Pixel {
 		this.pixelY = pixelY;
 	}
 
+	@Override
+	public String toString() {
+		String str = "(X: " + this.pixelX + "  Y: " + this.pixelY + "  v: "
+				+ this.redValue + ")";
+		return str;
+	}
+
 }
