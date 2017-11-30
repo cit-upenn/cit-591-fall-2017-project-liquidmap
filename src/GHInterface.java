@@ -156,7 +156,7 @@ public class GHInterface {
 		for (int i = 1; i < trip.getPoints().size(); i++) {
 			Point pA = trip.getPoints().get(i - 1);
 			Point pB = trip.getPoints().get(i);
-			double dist = city.getPointDist(pA, pB);
+			double dist = pA.distanceTo(pB);
 			dists.add(dist);
 		}
 		if (DEBUG) {
