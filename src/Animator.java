@@ -159,6 +159,11 @@ public class Animator {
 				int intLegTime = roundToInt(computeTripTime(listPoints, j - 1, j));
 				int intDelayTime = roundToInt(computeTripTime(listPoints, 0, j - 1)) * 1000;
 				
+				if (j == listPoints.size() - 1) {
+					intPositionFront = 100;
+					intPositionBack = 100;
+				}
+				
 				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + intDelayTime + ");\r\n");
 			}
 			
@@ -170,11 +175,25 @@ public class Animator {
 		return strbOut.toString();
 	}
 	
+	/**
+	 * Computes the time it takes to travel along a path between two Points in an ArrayList of Points.
+	 * @param listPoints The ArrayList of Points.
+	 * @param intPointStart The start point of the path.
+	 * @param intPointEnd The end point of the path.
+	 * @return The time it takes to travel along the path between the two Points.
+	 */
 	private double computeTripTime (ArrayList<Point> listPoints, int intPointStart, int intPointEnd) {
 		double dblTime = listPoints.get(intPointEnd).getTime() - listPoints.get(intPointStart).getTime();
 		return dblTime;
 	}
 	
+	/**
+	 * Computes the distance along a path between two Points in an ArrayList of Points.
+	 * @param listPoints The ArrayList of Points.
+	 * @param intPointStart The start point of the path.
+	 * @param intPointEnd The end point of the path.
+	 * @return The distance along the path between the two Points.
+	 */
 	private double computeTripDistance (ArrayList<Point> listPoints, int intPointStart, int intPointEnd) {
 		double dblDistance = 0;
 		
@@ -185,6 +204,12 @@ public class Animator {
 		return dblDistance;
 	}
 	
+	/**
+	 * Computes the distance between two adjacent Points.
+	 * @param pointStart The start point.
+	 * @param pointEnd The end point.
+	 * @return The distance between two adjacent Points.
+	 */
 	private double computeLegDistance (Point pointStart, Point pointEnd) {
 		double dblDistance = 0;
 		double dblDistanceX = Math.abs(pointStart.getLat() - pointEnd.getLat());
@@ -195,6 +220,12 @@ public class Animator {
 		return dblDistance;
 	}
 	
+	/**
+	 * Takes a ratio (0-1) and converts it to a percentage expressed as an integer (0-100);
+	 * Clamps the percentage between 0 and 100 inclusive.
+	 * @param dblNum The ratio (0-1) to convert.
+	 * @return The ratio expressed as an integer percentage (0-100)
+	 */
 	private int computePercentage (double dblNum) {
 		dblNum *= 100;
 		int intNum = roundToInt(dblNum);
@@ -203,11 +234,23 @@ public class Animator {
 		return intNum;
 	}
 	
+	/**
+	 * Rounds a double to the nearest integer.
+	 * @param dblNum The double to convert.
+	 * @return The double rounded to the nearest integer.
+	 */
 	private int roundToInt (double dblNum) {
 		dblNum = Math.round(dblNum);
 		return (int)dblNum;
 	}
 	
+	/**
+	 * Clamps an integer between two provided values.
+	 * @param intNum The integer to clamp.
+	 * @param intMin The minimum value to clamp to.
+	 * @param intMax The maximum value to clamp to.
+	 * @return The integer clamped between the provided values.
+	 */
 	private int clampInt (int intNum, int intMin, int intMax) {
 		if (intNum < intMin) {
 			intNum = intMin;
