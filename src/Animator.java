@@ -155,16 +155,17 @@ public class Animator {
 			for (int j = 1; j < listPoints.size(); j++) {
 				double dblDistanceToPointFromStart = computeTripDistance(listPoints, 0, j);
 				int intPositionFront = computePercentage(dblDistanceToPointFromStart / dblTripDistance);
-				int intPositionBack = computePercentage((dblDistanceToPointFromStart - intStrokeLength) / dblTripDistance);
-				double dblLegTime = computeTripTime(listPoints, j - 1, j);
+				int intPositionBack = clampInt(computePercentage((dblDistanceToPointFromStart - intStrokeLength) / dblTripDistance), 0, Integer.MAX_VALUE);
+				int intLegTime = roundToInt(computeTripTime(listPoints, j - 1, j));
+				int intDelayTime = roundToInt(computeTripTime(listPoints, 0, j - 1)) * 1000;
 				
-				strbOut.append("\tsegment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + dblLegTime + ");\r\n");
+				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + intDelayTime + ");\r\n");
 			}
 			
 			strbOut.append("\r\n");
 		}
 		
-		strbOut.append("\r\n</script>\n\n");
+		strbOut.append("</script>\n\n");
 		
 		return strbOut.toString();
 	}
@@ -197,12 +198,7 @@ public class Animator {
 	private int computePercentage (double dblNum) {
 		dblNum *= 100;
 		int intNum = roundToInt(dblNum);
-		
-		if (intNum < 0) {
-			intNum = 0;
-		} else if (intNum > 100) {
-			intNum = 100;
-		}
+		clampInt(intNum, 0, 100);
 		
 		return intNum;
 	}
@@ -210,5 +206,15 @@ public class Animator {
 	private int roundToInt (double dblNum) {
 		dblNum = Math.round(dblNum);
 		return (int)dblNum;
+	}
+	
+	private int clampInt (int intNum, int intMin, int intMax) {
+		if (intNum < intMin) {
+			intNum = intMin;
+		} else if (intNum > intMax) {
+			intNum = intMax;
+		}
+		
+		return intNum;
 	}
 }
