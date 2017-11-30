@@ -81,4 +81,10 @@ public class RasterDataSource implements DataSource {
 		return chosenPixel;
 	}
 
+	@Override
+	public Point getRandPoint() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
