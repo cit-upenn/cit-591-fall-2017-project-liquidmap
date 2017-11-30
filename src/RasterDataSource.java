@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class RasterDataSource {
 	private ArrayList<Pixel> pixels;
@@ -25,6 +26,7 @@ public class RasterDataSource {
 		pixels = new ArrayList<>();
 		
 		//create Pixel ArrayList
+		//TODO Add weights to each pixel
 		
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
@@ -46,7 +48,32 @@ public class RasterDataSource {
 	public ArrayList<Pixel> getPixels() {
 		return pixels;
 	}
+	
 	/**
-	 * @return the centered Pixel ArrayList
+	 * @return a random Pixel
 	 */
+	public Pixel getRandPixel() {
+		ArrayList<Pixel> pixelDeck = new ArrayList<>();
+		for (Pixel dot : pixels) {
+			pixelDeck.add(dot);
+		}
+		
+		Random rand = new Random();
+		Pixel chosenPixel = null;
+		
+		for (int i = 0; i < pixelDeck.size(); i++) {
+			
+			double randPixelWeight = pixelDeck.get(i).getColorWeight();
+			double constraint = rand.nextFloat();
+			
+			if (randPixelWeight > constraint) {
+				chosenPixel = pixelDeck.get(i);
+				break;
+			} else {
+				pixelDeck.remove(i);
+			}
+		}
+		return chosenPixel;
+	}
+
 }

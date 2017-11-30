@@ -18,6 +18,7 @@
 public class Pixel {
 
 	private int redValue;
+	private double colorWeight;
 	private int pixelX;
 	private int pixelY;
 
@@ -36,6 +37,20 @@ public class Pixel {
 	 */
 	public int getRedValue() {
 		return redValue;
+	}
+	
+	/**
+	 * @param colorWeight the colorWeight to set
+	 */
+	public void setColorWeight(double colorWeight) {
+		this.colorWeight = colorWeight;
+	}
+
+	/**
+	 * @return the colorWeight
+	 */
+	public double getColorWeight() {
+		return colorWeight;
 	}
 
 	/**
