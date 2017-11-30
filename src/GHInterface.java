@@ -102,7 +102,7 @@ public class GHInterface {
 	// create a library of mathematical list operations that encapsulate the
 	// microroutines found here.
 	private Trip buildTripFromInst(InstructionList instList) {
-		boolean DEBUG = true;
+		boolean DEBUG = false;
 		if (DEBUG) {
 			System.out.println("   ==== building trip ====");
 		}
