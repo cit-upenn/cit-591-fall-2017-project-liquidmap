@@ -5,10 +5,8 @@ import java.util.Random;
  * Tests the methods of the Animator class by generating a random list of Trips.
  * This class will not be in the final build.
  * @author Matt Surka
- *
  */
 public class AnimatorTester {
-	
 	/**
 	 * Tests the methods of the Animator class by generating a random list of Trips.
 	 * This method will not be in the final build.
@@ -30,7 +28,7 @@ public class AnimatorTester {
 		double dblMaxLon = 590;
 		
 		for (int i = 0; i < intNumberOfTrips; i++) {
-			Trip trip = new Trip();
+			Trip trip = new Trip(Trip.typeSpace.SCREEN);
 			int intNumberOfPoints = intMinPointsPerTrip + random.nextInt(intMaxPointsPerTrip - intMinPointsPerTrip) + 1;
 			double dblTime = 0;
 			

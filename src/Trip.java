@@ -1,18 +1,21 @@
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Represents a traveled path on the globe (i.e., on Earth).
  * Contains an ArrayList of Points, each with a latitude, a longitude, and a time value.
- * @author brian
+ * @author Brian Edwards, Matt Surka
  */
 public class Trip {
+	public enum typeSpace { WORLD, SCREEN }
+	private typeSpace enumTypeSpace;
 	private ArrayList<Point> points;
 
 	/**
 	 * Constructor. Initializes the Trip with an empty set of Points.
+	 * 
 	 */
-	public Trip() {
+	public Trip(typeSpace enumTypeSpace) {
+		this.enumTypeSpace = enumTypeSpace;
 		points = new ArrayList<>();
 	}
 
@@ -67,6 +70,34 @@ public class Trip {
 		for (Point point : points) {
 			point.setTime(point.getTime() * scaleFactor);
 		}
+	}
+	
+	/**
+	 * Computes the time to travel along a path between two Points in the Trip.
+	 * @param intPointStart The index of the start point.
+	 * @param intPointEnd The index of the end point.
+	 * @return The time to travel along the path between the two Points.
+	 */
+	public double computeTripTime (int intPointStart, int intPointEnd) {
+		double dblTime = points.get(intPointEnd).getTime() - points.get(intPointStart).getTime();
+		return dblTime;
+	}
+	
+	/**
+	 * Computes the distance along a path between two Points in the Trip.
+	 * @param listPoints The ArrayList of Points.
+	 * @param intPointStart The start point of the path.
+	 * @param intPointEnd The end point of the path.
+	 * @return The distance along the path between the two Points.
+	 */
+	public double computeTripDistance (int intPointStart, int intPointEnd) {
+		double dblDistance = 0;
+		
+		for (int i = intPointStart; i < intPointEnd; i++) {
+			dblDistance += points.get(i).distanceTo(points.get(i + 1), enumTypeSpace);
+		}
+		
+		return dblDistance;
 	}
 
 	/**

@@ -1,8 +1,9 @@
 /**
  * Represents a position in latitude-longitude-time space.
- * Latitude and longitude are measured in degrees.
+ * Latitude and longitude are measured in degrees/pixels.
+ * Method parameters specify how latitude/longitude should be interpreted (i.e., as degrees or pixels).
  * Time is measured in seconds.
- * @author brian
+ * @author Brian Edwards, Matt Surka
  */
 public class Point {
 	private double lat;
@@ -11,8 +12,8 @@ public class Point {
 
 	/**
 	 * Constructor. Sets the latitude, longitude, and time of the Point.
-	 * @param lat The latitude in degrees.
-	 * @param lon The longitude in degrees.
+	 * @param lat The latitude in degrees/pixels.
+	 * @param lon The longitude in degrees/pixels.
 	 * @param time The time in seconds.
 	 */
 	public Point(double lat, double lon, double time) {
@@ -23,8 +24,8 @@ public class Point {
 
 	/**
 	 * Constructor. Sets the latitude and longitude of the Point.
-	 * @param lat The latitude in degrees.
-	 * @param lon The longitude in degrees.
+	 * @param lat The latitude in degrees/pixels.
+	 * @param lon The longitude in degrees/pixels.
 	 */
 	public Point(double lat, double lon) {
 		this(lat, lon, 0.);
@@ -40,7 +41,7 @@ public class Point {
 
 	/**
 	 * Gets the latitude of the Point.
-	 * @return The latitude of the Point in degrees.
+	 * @return The latitude of the Point in degrees/pixels.
 	 */
 	public double getLat() {
 		return lat;
@@ -48,7 +49,7 @@ public class Point {
 
 	/**
 	 * Gets the longitude of the Point.
-	 * @return The longitude of the Point in degrees.
+	 * @return The longitude of the Point in degrees/pixels.
 	 */
 	public double getLon() {
 		return lon;
@@ -76,34 +77,59 @@ public class Point {
 	 * Determines if this Point is equal to a provided Point.
 	 * Equality is defined as having all attributes equal or very close.
 	 * Having equality defined on Points makes jUnit testing much easier.
-	 * @param pointOther The Point to compare to.     
+	 * @param pointOther The Point to compare to.
+	 * @param enumTypeSpace The type of space traversed by the Trip (i.e., world space or screen space).    
 	 * @return True if the Points are equal, false otherwise.
 	 */
-	public boolean equals(Point pointOther) {
-		double closeDistance = 3; // close in distance in meters
-		double closeTime = 1E-3; // close in time in seconds
-		double dist = this.distanceTo(pointOther);
-		double dt = Math.abs(time - pointOther.getTime());
-		boolean isCloseInSpace = dist < closeDistance;
-		boolean isCloseInTime = dt < closeTime;
-		return (isCloseInTime && isCloseInSpace);
+	public boolean equals(Point pointOther, Trip.typeSpace enumTypeSpace) {
+		double closeDistance = 0;
+		double closeTime = 0;
+		
+		switch (enumTypeSpace) {
+		case WORLD:
+			closeDistance = 3;
+			closeTime = 1E-3;
+			break;
+		case SCREEN:
+			closeDistance = 0;
+			closeTime = 0;
+			break;
+		}
+
+		double dblDistance = this.distanceTo(pointOther, enumTypeSpace);
+		double dblTimeDifference = Math.abs(time - pointOther.getTime());
+		boolean isCloseInSpace = dblDistance < closeDistance;
+		boolean isCloseInTime = dblTimeDifference < closeTime;
+		return isCloseInTime && isCloseInSpace;
 	}
 
-	//TO DO: Is the distance returned in meters, degrees, or some other unit?
 	/**
 	 * Computes the distance between this Point and a provided Point.
 	 * @param pointOther The Point to compare to.
+	 * @param enumTypeSpace The type of space traversed by the Trip (i.e., world space or screen space).
 	 * @return The distance between the Points.
 	 */
-	public double distanceTo(Point pointOther) {
-		double EARTH_RAD = 6371000; // meters
-		double meanLat = (this.getLat() + pointOther.getLat()) / 2;
-		double sf = Math.sin(meanLat * Math.PI / 180.);
-		double mPerDegLat = 2 * Math.PI * EARTH_RAD / 360;
-		double mPerDegLon = mPerDegLat * sf;
-		double dy = (lat - pointOther.getLat()) * mPerDegLat;
-		double dx = (lon - pointOther.getLon()) * mPerDegLon;
-		double dist = Math.sqrt(dy * dy + dx * dx);
-		return dist;
+	public double distanceTo(Point pointOther, Trip.typeSpace enumTypeSpace) {
+		double dblDistance = -1;
+		
+		switch (enumTypeSpace) {
+		case WORLD:
+			double EARTH_RAD = 6371000; // meters
+			double meanLat = (this.getLat() + pointOther.getLat()) / 2;
+			double sf = Math.sin(meanLat * Math.PI / 180.);
+			double mPerDegLat = 2 * Math.PI * EARTH_RAD / 360;
+			double mPerDegLon = mPerDegLat * sf;
+			double dy = (lat - pointOther.getLat()) * mPerDegLat;
+			double dx = (lon - pointOther.getLon()) * mPerDegLon;
+			dblDistance = Math.sqrt(dy * dy + dx * dx);
+			break;
+		case SCREEN:
+			double dblDistanceX = Math.abs(this.getLat() - pointOther.getLat());
+			double dblDistanceY = Math.abs(this.getLon() - pointOther.getLon());
+			dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));
+			break;
+		}
+		
+		return dblDistance;
 	}
 }

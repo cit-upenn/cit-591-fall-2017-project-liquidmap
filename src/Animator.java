@@ -3,7 +3,6 @@ import java.util.ArrayList;
 /**
  * Converts an ArrayList of Trips into a .html file that animates a dot for each Trip.
  * @author Matt Surka
- *
  */
 public class Animator {
 	Writer writer;
@@ -56,14 +55,14 @@ public class Animator {
 		
 		for (int i = 0; i < listTrips.size(); i++) {
 			ArrayList<Point> listPoints = listTrips.get(i).getPoints();
-			int intX = roundToInt(listPoints.get(0).getLat());
-			int intY = roundToInt(listPoints.get(0).getLon());
+			int intX = Mathf.roundToInt(listPoints.get(0).getLat());
+			int intY = Mathf.roundToInt(listPoints.get(0).getLon());
 			
 			strbOut.append("\t\t\t<path id=\"path" + i + "\" d=\"M" + intX + "," + intY);
 			
 			for (int j = 1; j < listPoints.size(); j++) {
-				intX = roundToInt(listPoints.get(j).getLat());
-				intY = roundToInt(listPoints.get(j).getLon());
+				intX = Mathf.roundToInt(listPoints.get(j).getLat());
+				intY = Mathf.roundToInt(listPoints.get(j).getLon());
 				strbOut.append(" L" + intX + "," + intY);
 			}
 			
@@ -136,30 +135,30 @@ public class Animator {
 		
 		strbOut.append("<script>\r\n");
 		
-		for (int i = 0; i < listTrips.size(); i++) {	
+		for (int i = 0; i < listTrips.size(); i++) {
 			strbOut.append("\tvar path" + i + " = document.getElementById(\"path" + i + "\"), segment" + i + " = new Segment(path" + i + ");\r\n");
 		}
 		
 		strbOut.append("\r\n");
 		
-		for (int i = 0; i < listTrips.size(); i++) {	
+		for (int i = 0; i < listTrips.size(); i++) {
 			strbOut.append("\tsegment" + i + ".draw(\"0%\", \"0%\", 0);\r\n");
 		}
 		
 		strbOut.append("\r\n");
 		
 		for (int i = 0; i < listTrips.size(); i++) {
-			ArrayList<Point> listPoints = listTrips.get(i).getPoints();
-			double dblTripDistance = computeTripDistance(listPoints, 0, listPoints.size() - 1);
+			Trip trip = listTrips.get(i);
+			double dblTripDistance = trip.computeTripDistance(0, trip.getPoints().size() - 1);
 						
-			for (int j = 1; j < listPoints.size(); j++) {
-				double dblDistanceToPointFromStart = computeTripDistance(listPoints, 0, j);
-				int intPositionFront = computePercentage(dblDistanceToPointFromStart / dblTripDistance);
-				int intPositionBack = clampInt(computePercentage((dblDistanceToPointFromStart - intStrokeLength) / dblTripDistance), 0, Integer.MAX_VALUE);
-				int intLegTime = roundToInt(computeTripTime(listPoints, j - 1, j));
-				int intDelayTime = roundToInt(computeTripTime(listPoints, 0, j - 1)) * 1000;
+			for (int j = 1; j < trip.getPoints().size(); j++) {
+				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);
+				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
+				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intStrokeLength) / dblTripDistance), 0, Integer.MAX_VALUE);
+				int intLegTime = Mathf.roundToInt(trip.computeTripTime(j - 1, j));
+				int intDelayTime = Mathf.roundToInt(trip.computeTripTime(0, j - 1)) * 1000;
 				
-				if (j == listPoints.size() - 1) {
+				if (j == trip.getPoints().size() - 1) {
 					intPositionFront = 100;
 					intPositionBack = 100;
 				}
@@ -173,91 +172,5 @@ public class Animator {
 		strbOut.append("</script>\n\n");
 		
 		return strbOut.toString();
-	}
-	
-	/**
-	 * Computes the time it takes to travel along a path between two Points in an ArrayList of Points.
-	 * @param listPoints The ArrayList of Points.
-	 * @param intPointStart The start point of the path.
-	 * @param intPointEnd The end point of the path.
-	 * @return The time it takes to travel along the path between the two Points.
-	 */
-	private double computeTripTime (ArrayList<Point> listPoints, int intPointStart, int intPointEnd) {
-		double dblTime = listPoints.get(intPointEnd).getTime() - listPoints.get(intPointStart).getTime();
-		return dblTime;
-	}
-	
-	/**
-	 * Computes the distance along a path between two Points in an ArrayList of Points.
-	 * @param listPoints The ArrayList of Points.
-	 * @param intPointStart The start point of the path.
-	 * @param intPointEnd The end point of the path.
-	 * @return The distance along the path between the two Points.
-	 */
-	private double computeTripDistance (ArrayList<Point> listPoints, int intPointStart, int intPointEnd) {
-		double dblDistance = 0;
-		
-		for (int i = intPointStart; i < intPointEnd; i++) {
-			dblDistance += computeLegDistance(listPoints.get(i), listPoints.get(i + 1));
-		}
-		
-		return dblDistance;
-	}
-	
-	/**
-	 * Computes the distance between two adjacent Points.
-	 * @param pointStart The start point.
-	 * @param pointEnd The end point.
-	 * @return The distance between two adjacent Points.
-	 */
-	private double computeLegDistance (Point pointStart, Point pointEnd) {
-		double dblDistance = 0;
-		double dblDistanceX = Math.abs(pointStart.getLat() - pointEnd.getLat());
-		double dblDistanceY = Math.abs(pointStart.getLon() - pointEnd.getLon());
-		
-		dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));
-		
-		return dblDistance;
-	}
-	
-	/**
-	 * Takes a ratio (0-1) and converts it to a percentage expressed as an integer (0-100);
-	 * Clamps the percentage between 0 and 100 inclusive.
-	 * @param dblNum The ratio (0-1) to convert.
-	 * @return The ratio expressed as an integer percentage (0-100)
-	 */
-	private int computePercentage (double dblNum) {
-		dblNum *= 100;
-		int intNum = roundToInt(dblNum);
-		clampInt(intNum, 0, 100);
-		
-		return intNum;
-	}
-	
-	/**
-	 * Rounds a double to the nearest integer.
-	 * @param dblNum The double to convert.
-	 * @return The double rounded to the nearest integer.
-	 */
-	private int roundToInt (double dblNum) {
-		dblNum = Math.round(dblNum);
-		return (int)dblNum;
-	}
-	
-	/**
-	 * Clamps an integer between two provided values.
-	 * @param intNum The integer to clamp.
-	 * @param intMin The minimum value to clamp to.
-	 * @param intMax The maximum value to clamp to.
-	 * @return The integer clamped between the provided values.
-	 */
-	private int clampInt (int intNum, int intMin, int intMax) {
-		if (intNum < intMin) {
-			intNum = intMin;
-		} else if (intNum > intMax) {
-			intNum = intMax;
-		}
-		
-		return intNum;
 	}
 }
