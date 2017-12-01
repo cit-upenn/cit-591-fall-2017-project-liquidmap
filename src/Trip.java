@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Represents a traveled path on the globe (i.e., on Earth).
+ * Represents a traveled path on the globe (i.e., on Earth). 
  * Contains an ArrayList of Points, each with a latitude, a longitude, and a time value.
  * Points are interpreted according to the Trip's typeSpace (i.e., degrees for world space, pixels for screen space).
  * @author Brian Edwards, Matt Surka
