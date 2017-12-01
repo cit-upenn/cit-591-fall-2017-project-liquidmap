@@ -43,7 +43,7 @@ public class RasterDataSourceTest {
 				fiftyCount++;
 			} else if (dot.getRedValue() <= 100 && dot.getRedValue() > 50) {
 				hundCount++;
-			} else if (dot.getRedValue() <= 200 && dot.getRedValue() > 100) {
+			} else if (dot.getRedValue() <= 150 && dot.getRedValue() > 100) {
 				hundFiftyCount++;
 			} else {
 				rest++;

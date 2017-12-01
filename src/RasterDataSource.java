@@ -44,7 +44,7 @@ public class RasterDataSource implements DataSource {
 				int redValue = new Color(img.getRGB(x, y)).getRed();
 				float weight = 0.0f;
 				if (redValue != 255) {
-					weight =  (float) ((float) 1 / (Math.pow(redValue, 1.1)));
+					weight =  (float) ((float) 1 / (Math.pow(redValue + 1, 1.1)));
 				} else {
 					weight = 0;
 				}
@@ -85,9 +85,10 @@ public class RasterDataSource implements DataSource {
 			int randIndex = rand.nextInt(pixels.size());
 			double randPixelWeight = pixels.get(randIndex).getColorWeight();
 			
-			float constraint = (float) ((float) 
-					1 / (rand.nextInt(lightest - darkest) + darkest + 1));
-			
+			int denominator = rand.nextInt(lightest - darkest) 
+					+ darkest + 1;
+			float constraint = (float) ((float) 1 / denominator);
+
 			if (randPixelWeight >= constraint) {
 				chosenPixel = pixels.get(randIndex);
 				break;
