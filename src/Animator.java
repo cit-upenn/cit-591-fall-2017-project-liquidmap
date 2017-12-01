@@ -2,12 +2,16 @@ import java.util.ArrayList;
 
 /**
  * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
+ * Stores the animation settings, including canvas size, canvas color, line width, etc.
  * @author Matt Surka
  */
 public class Animator {
 	Writer writer;
-	int intStrokeWidth;
-	int intStrokeLength;
+	int intCanvasSize;
+	String strCanvasColor;
+	int intLineWidth;
+	int intLineLength;
+	String strLineColor;
 	double dblTimeBetweenSpawns;
 	
 	/**
@@ -17,19 +21,24 @@ public class Animator {
 		writer = new Writer();
 	}
 	
-	
 	//TO DO: ensure intStrokeLength behaves properly
 	
 	/**
 	 * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
 	 * @param listTrips The ArrayList of Trips.
-	 * @param intStrokeWidth The width of each line in pixels.
-	 * @param intStrokeLength The height of each line in pixels.
+	 * @param intCanvasSize The size of one edge of the animation canvas (a square) in pixels.
+	 * @param strCanvasColor The color of the animation canvas expressed as a string: "#000000".
+	 * @param intLineWidth The width of each line in pixels.
+	 * @param intLineLength The height of each line in pixels.
+	 * @param strLineColor The color of the lines expressed as a string: "#000000".
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, int intStrokeWidth, int intStrokeLength, double dblTimeBetweenSpawns) {
-		this.intStrokeWidth = intStrokeWidth;
-		this.intStrokeLength = intStrokeLength;
+	public void animateTrips (ArrayList<Trip> listTrips, int intCanvasSize, String strCanvasColor, int intLineWidth, int intLineLength, String strLineColor, double dblTimeBetweenSpawns) {
+		this.intCanvasSize = intCanvasSize;
+		this.strCanvasColor = strCanvasColor;
+		this.intLineWidth = intLineWidth;
+		this.intLineLength = intLineLength;
+		this.strLineColor = strLineColor;
 		this.dblTimeBetweenSpawns = dblTimeBetweenSpawns;
 		
 		for (int i = 0; i < listTrips.size(); i++) {
@@ -99,12 +108,12 @@ public class Animator {
 		strbOut.append(	"<style>\r\n" + 
 						"\tbody {\r\n" + 
 						"\t\tfont-family: \"Helvetica Neue\", Helvetica;\r\n" + 
-						"\t\twidth: 600px;\r\n" + 
-						"\t\theight: 600px;\r\n" + 
+						"\t\twidth: " + intCanvasSize + "px;\r\n" + 
+						"\t\theight: " + intCanvasSize + "px;\r\n" + 
 						"\t\tfont-weight: 200;\r\n" + 
 						"\t\tletter-spacing: 1px;\r\n" + 
 						"\t\tmargin: 25px auto 0 auto;\r\n" + 
-						"\t\tbackground: #111111;\r\n" + 
+						"\t\tbackground: " + strCanvasColor + ";\r\n" + 
 						"\t\tcolor: rgb(25, 25, 25);\r\n" + 
 						"\t}\r\n" + 
 						"\r\n" + 
@@ -124,8 +133,8 @@ public class Animator {
 						"\t}\r\n" + 
 						"\r\n" + 
 						"\tpath {\r\n" + 
-						"\t\tstroke: #FFFFFF;\r\n" + 
-						"\t\tstroke-width: " + intStrokeWidth + ";\r\n" + 
+						"\t\tstroke: " + strLineColor + ";\r\n" + 
+						"\t\tstroke-width: " + intLineWidth + ";\r\n" + 
 						"\t\tfill-opacity: 0;" +
 						"\t}\r\n" + 
 						"</style>\r\n\r\n");
@@ -162,7 +171,7 @@ public class Animator {
 			for (int j = 1; j < trip.getPoints().size(); j++) {
 				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);
 				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
-				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intStrokeLength) / dblTripDistance), 0, Integer.MAX_VALUE);
+				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance), 0, Integer.MAX_VALUE);
 				int intLegTime = Mathf.roundToInt(trip.computeTripTime(j - 1, j));
 				double dblDelayTime = trip.getPoints().get(j - 1).getTime() * 1000;
 				

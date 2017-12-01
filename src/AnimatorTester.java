@@ -22,10 +22,12 @@ public class AnimatorTester {
 		int intMaxPointsPerTrip = 6;
 		double dblMinDurationOfTripLeg = 1;
 		double dblMaxDurationOfTripLeg = 10;
-		double dblMinLat = 10;
-		double dblMaxLat = 590;
-		double dblMinLon = 10;
-		double dblMaxLon = 590;
+		int intCanvasSize = 600;
+		int intSpawnPadding = 10;
+		double dblMinLat = intSpawnPadding;
+		double dblMaxLat = intCanvasSize - intSpawnPadding;
+		double dblMinLon = intSpawnPadding;
+		double dblMaxLon = intCanvasSize - intSpawnPadding;
 		
 		for (int i = 0; i < intNumberOfTrips; i++) {
 			Trip trip = new Trip(Trip.typeSpace.SCREEN);
@@ -44,7 +46,7 @@ public class AnimatorTester {
 			listTrips.add(trip);
 		}
 		
-		animator.animateTrips(listTrips, 1, 200, 0.02);
+		animator.animateTrips(listTrips, intCanvasSize, "#000000", 1, 200, "#FFFFFF", 0.02);
 	}
 
 }
