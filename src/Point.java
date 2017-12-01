@@ -128,6 +128,14 @@ public class Point implements Comparable<Point> {
 	public boolean equals(Point p2) {
 		double closeDistance = 3; // close in distance in meters
 		double closeTime = 1E-3; // close in time in seconds
+		double dist = this.distanceTo(p2);
+		double dt = Math.abs(time - p2.getTime());
+		boolean isCloseInSpace = dist < closeDistance;
+		boolean isCloseInTime = dt < closeTime;
+		return (isCloseInTime && isCloseInSpace);
+	}
+
+	public double distanceTo(Point p2) {
 		double EARTH_RAD = 6371000; // meters
 		double meanLat = (this.getLat() + p2.getLat()) / 2;
 		double sf = Math.sin(meanLat * Math.PI / 180.);
@@ -135,11 +143,8 @@ public class Point implements Comparable<Point> {
 		double mPerDegLon = mPerDegLat * sf;
 		double dy = (lat - p2.getLat()) * mPerDegLat;
 		double dx = (lon - p2.getLon()) * mPerDegLon;
-		double dt = Math.abs(time - p2.getTime());
 		double dist = Math.sqrt(dy * dy + dx * dx);
-		boolean isCloseInSpace = dist < closeDistance;
-		boolean isCloseInTime = dt < closeTime;
-		return (isCloseInTime && isCloseInSpace);
+		return dist;
 	}
 
 }

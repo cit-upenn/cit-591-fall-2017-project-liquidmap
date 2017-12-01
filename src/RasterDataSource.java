@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class RasterDataSource {
+public class RasterDataSource implements DataSource {
 	private ArrayList<Pixel> pixels;
 	private ImageReader imageReader;
 	private BufferedImage img;
@@ -12,6 +12,11 @@ public class RasterDataSource {
 	private int lightest;
 	private int darkest;
 	
+	public RasterDataSource(String fileName, Point pt1, Pixel px1, Point pt2,
+			Pixel px2) {
+		// TODO Brilliant code in here...
+	}
+
 	/**
 	 * The constructor creates an ArrayList of type Pixel
 	 * in order to create a representation of the image along
@@ -90,6 +95,12 @@ public class RasterDataSource {
 			count++;
 		}
 		return chosenPixel;
+	}
+
+	@Override
+	public Point getRandPoint() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

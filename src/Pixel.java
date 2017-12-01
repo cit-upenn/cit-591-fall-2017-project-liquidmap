@@ -104,5 +104,11 @@ public class Pixel implements Comparable<Pixel> {
 			return 1;
 		}
 	}
+		
+	public String toString() {
+		String str = "(X: " + this.pixelX + "  Y: " + this.pixelY + "  v: "
+				+ this.redValue + ")";
+		return str;
+	}
 
 }

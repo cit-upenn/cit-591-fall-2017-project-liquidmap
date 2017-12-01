@@ -13,7 +13,6 @@ import com.graphhopper.util.PointList;
 public class GHInterface {
 
 	GraphHopper hopper;
-	City city;
 
 	/**
 	 * Initializes the GraphHopper server using the map specified in the City
@@ -25,10 +24,9 @@ public class GHInterface {
 	 *
 	 * @param city
 	 */
-	public GHInterface(City city) {
-		this.city = city;
+	public GHInterface(String cityMapFile) {
 		hopper = new GraphHopper().forDesktop();
-		hopper.setOSMFile(city.getMapFileName());
+		hopper.setOSMFile(cityMapFile);
 		hopper.setGraphHopperLocation("graphhopperWD\\");
 		hopper.setEncodingManager(new EncodingManager("car"));
 		hopper.importOrLoad();
@@ -158,7 +156,7 @@ public class GHInterface {
 		for (int i = 1; i < trip.getPoints().size(); i++) {
 			Point pA = trip.getPoints().get(i - 1);
 			Point pB = trip.getPoints().get(i);
-			double dist = city.getPointDist(pA, pB);
+			double dist = pA.distanceTo(pB);
 			dists.add(dist);
 		}
 		if (DEBUG) {

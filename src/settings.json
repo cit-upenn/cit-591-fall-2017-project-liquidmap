@@ -1,0 +1,70 @@
+{
+    "cityMapFile": "philadelphia.osm.pbf",
+    "rasterDataDescs": [
+        {
+            "name": "pop2012",
+            "mapFileName": "mapPhillyPopDensity2012.png",
+            "point1": {
+                "lat": 1313,
+                "lon": 12313
+            },
+            "pixel1": {
+                "pixelX": 123,
+                "pixelY": 123
+            },
+            "point2": {
+                "lat": 1313,
+                "lon": 12313
+            },
+            "pixel2": {
+                "pixelX": 123,
+                "pixelY": 123
+            }
+        },
+        {
+            "name": "pop2017",
+            "mapFileName": "mapPhillyPopDensity2017.png",
+            "point1": {
+                "lat": 1313,
+                "lon": 12313
+            },
+            "pixel1": {
+                "pixelX": 123,
+                "pixelY": 123
+            },
+            "point2": {
+                "lat": 1313,
+                "lon": 12313
+            },
+            "pixel2": {
+                "pixelX": 123,
+                "pixelY": 123
+            }
+        }
+    ],
+    "vectorDataDescs": [
+        {
+            "name": "home",
+            "vecFileName": "homeLatLon.txt"
+        }
+    ],
+    "routingVars": {
+        "routeBeg": "home",
+        "routeEnd": "pop2017",
+        "routeCount": 1000,
+        "routeMaxTime": 800,
+        "timeStartVariance": 100,
+        "speedVariance": 0.20
+    },
+    "outputVars": {
+        "imageWidth": 500,
+        "pointUpperLeft": {
+            "lat": 111231,
+            "lon": 123432
+        },
+        "pointLowerRight": {
+            "lat": 111231,
+            "lon": 123432
+        }
+    }
+}
