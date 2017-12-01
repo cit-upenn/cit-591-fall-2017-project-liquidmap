@@ -41,7 +41,7 @@ public class Point {
 
 	/**
 	 * Gets the latitude of the Point.
-	 * @return The latitude of the Point in degrees/pixels.
+	 * @return The latitude in degrees/pixels.
 	 */
 	public double getLat() {
 		return lat;
@@ -49,7 +49,7 @@ public class Point {
 
 	/**
 	 * Gets the longitude of the Point.
-	 * @return The longitude of the Point in degrees/pixels.
+	 * @return The longitude in degrees/pixels.
 	 */
 	public double getLon() {
 		return lon;
@@ -79,7 +79,7 @@ public class Point {
 	 * Having equality defined on Points makes jUnit testing much easier.
 	 * @param pointOther The Point to compare to.
 	 * @param enumTypeSpace The type of space traversed by the Trip (i.e., world space or screen space).    
-	 * @return True if the Points are equal, false otherwise.
+	 * @return True if the Points are equal; false otherwise.
 	 */
 	public boolean equals(Point pointOther, Trip.typeSpace enumTypeSpace) {
 		double closeDistance = 0;
@@ -107,10 +107,12 @@ public class Point {
 	 * Computes the distance between this Point and a provided Point.
 	 * @param pointOther The Point to compare to.
 	 * @param enumTypeSpace The type of space traversed by the Trip (i.e., world space or screen space).
-	 * @return The distance between the Points.
+	 * @return The distance between the Points in degrees/pixels.
 	 */
 	public double distanceTo(Point pointOther, Trip.typeSpace enumTypeSpace) {
 		double dblDistance = -1;
+		double dblDistanceX = -1;
+		double dblDistanceY = -1;
 		
 		switch (enumTypeSpace) {
 		case WORLD:
@@ -119,17 +121,16 @@ public class Point {
 			double sf = Math.sin(meanLat * Math.PI / 180.);
 			double mPerDegLat = 2 * Math.PI * EARTH_RAD / 360;
 			double mPerDegLon = mPerDegLat * sf;
-			double dy = (lat - pointOther.getLat()) * mPerDegLat;
-			double dx = (lon - pointOther.getLon()) * mPerDegLon;
-			dblDistance = Math.sqrt(dy * dy + dx * dx);
+			dblDistanceX = (this.getLat() - pointOther.getLat()) * mPerDegLat;
+			dblDistanceY = (this.getLon() - pointOther.getLon()) * mPerDegLon;
 			break;
 		case SCREEN:
-			double dblDistanceX = Math.abs(this.getLat() - pointOther.getLat());
-			double dblDistanceY = Math.abs(this.getLon() - pointOther.getLon());
-			dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));
+			dblDistanceX = this.getLat() - pointOther.getLat();
+			dblDistanceY = this.getLon() - pointOther.getLon();
 			break;
 		}
 		
+		dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));
 		return dblDistance;
 	}
 }

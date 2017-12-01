@@ -3,6 +3,7 @@ import java.util.ArrayList;
 /**
  * Represents a traveled path on the globe (i.e., on Earth).
  * Contains an ArrayList of Points, each with a latitude, a longitude, and a time value.
+ * Points are interpreted according to the Trip's typeSpace (i.e., degrees for world space, pixels for screen space).
  * @author Brian Edwards, Matt Surka
  */
 public class Trip {
@@ -11,8 +12,9 @@ public class Trip {
 	private ArrayList<Point> points;
 
 	/**
-	 * Constructor. Initializes the Trip with an empty set of Points.
-	 * 
+	 * Constructor.
+	 * Sets the Trip's typeSpace.
+	 * Initializes the Trip with an empty set of Points.
 	 */
 	public Trip(typeSpace enumTypeSpace) {
 		this.enumTypeSpace = enumTypeSpace;
@@ -85,6 +87,7 @@ public class Trip {
 	
 	/**
 	 * Computes the distance along a path between two Points in the Trip.
+	 * Distance is calculated based on the Trip's typeSpace (i.e., degrees for world space, pixels for screen space).
 	 * @param listPoints The ArrayList of Points.
 	 * @param intPointStart The start point of the path.
 	 * @param intPointEnd The end point of the path.
