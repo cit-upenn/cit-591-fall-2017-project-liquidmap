@@ -1,12 +1,16 @@
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class RasterDataSource {
 	private ArrayList<Pixel> pixels;
 	private ImageReader imageReader;
 	private BufferedImage img;
+	private int totalPixels;
+	private int lightest;
+	private int darkest;
 	
 	/**
 	 * The constructor creates an ArrayList of type Pixel
@@ -24,17 +28,28 @@ public class RasterDataSource {
 		imageReader = new ImageReader(fileName);
 		img = imageReader.getImg();
 		pixels = new ArrayList<>();
+		totalPixels = img.getWidth() * img.getHeight();
 		
 		//create Pixel ArrayList
 		//TODO Add weights to each pixel
 		
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
+			
 				int redValue = new Color(img.getRGB(x, y)).getRed();
-				Pixel pixel = new Pixel(x, y, redValue) ;
+				float weight = 0.0f;
+				if (redValue != 255) {
+					weight =  (float) ((float) 1 / (Math.pow(redValue, 1.1)));
+				} else {
+					weight = 0;
+				}
+				Pixel pixel = new Pixel(x, y, redValue, weight) ;
 				pixels.add(pixel);
 			}
 		}
+		Collections.sort(pixels);
+		lightest = pixels.get(pixels.size() - 1).getRedValue();
+		darkest = pixels.get(0).getRedValue();
 	}
 	/**
 	 * @return the img
@@ -50,28 +65,29 @@ public class RasterDataSource {
 	}
 	
 	/**
-	 * @return a random Pixel
+	 * @return a random Pixel, with a higher likelihood of being
+	 * chosen going to the darker pixels.
 	 */
 	public Pixel getRandPixel() {
-		ArrayList<Pixel> pixelDeck = new ArrayList<>();
-		for (Pixel dot : pixels) {
-			pixelDeck.add(dot);
-		}
+		ArrayList<Pixel> pixels = getPixels();
 		
 		Random rand = new Random();
 		Pixel chosenPixel = null;
+		int count = 0;
 		
-		for (int i = 0; i < pixelDeck.size(); i++) {
+		while (count < 100000) {
 			
-			double randPixelWeight = pixelDeck.get(i).getColorWeight();
-			double constraint = rand.nextFloat();
+			int randIndex = rand.nextInt(pixels.size());
+			double randPixelWeight = pixels.get(randIndex).getColorWeight();
 			
-			if (randPixelWeight > constraint) {
-				chosenPixel = pixelDeck.get(i);
+			float constraint = (float) ((float) 
+					1 / (rand.nextInt(lightest - darkest) + darkest + 1));
+			
+			if (randPixelWeight >= constraint) {
+				chosenPixel = pixels.get(randIndex);
 				break;
-			} else {
-				pixelDeck.remove(i);
 			}
+			count++;
 		}
 		return chosenPixel;
 	}

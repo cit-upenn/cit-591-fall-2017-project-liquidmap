@@ -15,21 +15,22 @@
  * @author sgb
  *
  */
-public class Pixel {
+public class Pixel implements Comparable<Pixel> {
 
 	private int redValue;
-	private double colorWeight;
+	private float colorWeight;
 	private int pixelX;
 	private int pixelY;
 
-	public Pixel(int pixelX, int pixelY, int redValue) {
+	public Pixel(int pixelX, int pixelY, int redValue, float colorWeight) {
 		this.pixelX = pixelX;
 		this.pixelY = pixelY;
 		this.redValue = redValue;
+		this.colorWeight = colorWeight;
 	}
 
 	public Pixel(int pixelX, int pixelY) {
-		this(pixelX, pixelY, 0);
+		this(pixelX, pixelY, 0, 0);
 	}
 
 	/**
@@ -42,7 +43,7 @@ public class Pixel {
 	/**
 	 * @param colorWeight the colorWeight to set
 	 */
-	public void setColorWeight(double colorWeight) {
+	public void setColorWeight(float colorWeight) {
 		this.colorWeight = colorWeight;
 	}
 
@@ -89,6 +90,19 @@ public class Pixel {
 	 */
 	public void setPixelY(int pixelY) {
 		this.pixelY = pixelY;
+	}
+
+	@Override
+	public int compareTo(Pixel o) {
+		int own = redValue;
+		int other = o.redValue;
+		if (own < other) {
+			return -1;
+		} else if (own == other) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }
