@@ -1,32 +1,20 @@
 /**
- * A position in Lat-Lon-Time space.<br>
- * <br>
- *
- * Where latitude and longitude are measured in degrees and time is measured in
- * seconds.
- *
- * @author brian
- *
+ * Represents a position in latitude-longitude-time space.
+ * Latitude and longitude are measured in degrees/pixels.
+ * Method parameters specify how latitude/longitude should be interpreted (i.e., as degrees or pixels).
+ * Time is measured in seconds.
+ * @author Brian Edwards, Matt Surka
  */
-public class Point implements Comparable<Point> {
-	// This implements Comparable (ie defines Point.compareTo()) so that Trip
-	// can utilize Collections.binarySearch() in finding interpolated points in
-	// time.
-
+public class Point {
 	private double lat;
 	private double lon;
 	private double time;
 
 	/**
-	 * Constructor utilizing three arguments, namely latitude, longitude, and
-	 * time.
-	 *
-	 * @param lat
-	 *            The latitude in degrees
-	 * @param lon
-	 *            The longitude in degrees
-	 * @param time
-	 *            The time in seconds
+	 * Constructor. Sets the latitude, longitude, and time of the Point.
+	 * @param lat The latitude in degrees/pixels.
+	 * @param lon The longitude in degrees/pixels.
+	 * @param time The time in seconds.
 	 */
 	public Point(double lat, double lon, double time) {
 		this.lat = lat;
@@ -35,116 +23,113 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
-	 * Constructor utilizing two arguments, namely latitude and longitude.
-	 *
-	 * The point's time is set to 0(s) as a default.
-	 *
-	 * @param lat
-	 *            The latitude in degrees
-	 * @param lon
-	 *            The longitude in degrees
+	 * Constructor. Sets the latitude and longitude of the Point.
+	 * @param lat The latitude in degrees/pixels.
+	 * @param lon The longitude in degrees/pixels.
 	 */
 	public Point(double lat, double lon) {
 		this(lat, lon, 0.);
 	}
 
-	// Returns an Array of doubles.
-	//
-	// public double[] getLLT() {
-	// double[] triple = new double[3];
-	// triple[0] = lat;
-	// triple[1] = lon;
-	// triple[2] = time;
-	// return triple;
-	// }
-
-	// Getters and Setters
+	/**
+	 * Sets the time of the Point.
+	 * @param time The time in seconds.
+	 */
 	public void setTime(double time) {
 		this.time = time;
 	}
 
+	/**
+	 * Gets the latitude of the Point.
+	 * @return The latitude of the Point in degrees/pixels.
+	 */
 	public double getLat() {
 		return lat;
 	}
 
+	/**
+	 * Gets the longitude of the Point.
+	 * @return The longitude of the Point in degrees/pixels.
+	 */
 	public double getLon() {
 		return lon;
 	}
 
+	/**
+	 * Gets the time of the Point.
+	 * @return The time of the Point in seconds.
+	 */
 	public double getTime() {
 		return time;
 	}
 
 	/**
-	 * Shifts the point in time.
-	 *
-	 * @param timeOffset
+	 * Overrides toString().
+	 * Returns a description of the Point as a String.
+	 * @return A description of the Point as a String.
 	 */
-	public void offsetTime(double timeOffset) {
-		this.time += timeOffset;
-	}
-
-	/**
-	 * Scales the point in time relative to t=0(s).<br>
-	 * <br>
-	 *
-	 * If the original time was 10(s) and the scaleFactor is 0.5, the new time
-	 * will be 5(s).
-	 *
-	 * @param scaleFactor
-	 *            The scaling factor
-	 */
-
-	// TODO is this method necessary or can we just roll its functionality into
-	// the Trip Class
-	public void scaleTime(double scaleFactor) {
-		this.time *= scaleFactor;
-	}
-
 	@Override
-	// Because why not make it print pretty?
 	public String toString() {
 		return String.format("(lat: %f  lon: %f  time: %f)", lat, lon, time);
 	}
 
-	@Override
-	// Needed for binary search
-	public int compareTo(Point otherPoint) {
-		return Double.compare(this.getTime(), otherPoint.getTime());
+	/**
+	 * Determines if this Point is equal to a provided Point.
+	 * Equality is defined as having all attributes equal or very close.
+	 * Having equality defined on Points makes jUnit testing much easier.
+	 * @param pointOther The Point to compare to.
+	 * @param enumTypeSpace The type of space traversed by the Trip (i.e., world space or screen space).    
+	 * @return True if the Points are equal, false otherwise.
+	 */
+	public boolean equals(Point pointOther, Trip.typeSpace enumTypeSpace) {
+		double closeDistance = 0;
+		double closeTime = 0;
+		
+		switch (enumTypeSpace) {
+		case WORLD:
+			closeDistance = 3;
+			closeTime = 1E-3;
+			break;
+		case SCREEN:
+			closeDistance = 0;
+			closeTime = 0;
+			break;
+		}
+
+		double dblDistance = this.distanceTo(pointOther, enumTypeSpace);
+		double dblTimeDifference = Math.abs(time - pointOther.getTime());
+		boolean isCloseInSpace = dblDistance < closeDistance;
+		boolean isCloseInTime = dblTimeDifference < closeTime;
+		return isCloseInTime && isCloseInSpace;
 	}
 
 	/**
-	 * Determines if two points are equal. Equality is defined by having all
-	 * attributes equal.<br>
-	 * <br>
-	 *
-	 * Have equality defined on Points makes jUnit testing much easier.
-	 *
-	 *
-	 * @param p2
-	 *            The Point to compare to.
-	 * @return True if they are equal, false otherwise.
+	 * Computes the distance between this Point and a provided Point.
+	 * @param pointOther The Point to compare to.
+	 * @param enumTypeSpace The type of space traversed by the Trip (i.e., world space or screen space).
+	 * @return The distance between the Points.
 	 */
-	public boolean equals(Point p2) {
-		double closeDistance = 3; // close in distance in meters
-		double closeTime = 1E-3; // close in time in seconds
-		double dist = this.distanceTo(p2);
-		double dt = Math.abs(time - p2.getTime());
-		boolean isCloseInSpace = dist < closeDistance;
-		boolean isCloseInTime = dt < closeTime;
-		return (isCloseInTime && isCloseInSpace);
+	public double distanceTo(Point pointOther, Trip.typeSpace enumTypeSpace) {
+		double dblDistance = -1;
+		
+		switch (enumTypeSpace) {
+		case WORLD:
+			double EARTH_RAD = 6371000; // meters
+			double meanLat = (this.getLat() + pointOther.getLat()) / 2;
+			double sf = Math.sin(meanLat * Math.PI / 180.);
+			double mPerDegLat = 2 * Math.PI * EARTH_RAD / 360;
+			double mPerDegLon = mPerDegLat * sf;
+			double dy = (lat - pointOther.getLat()) * mPerDegLat;
+			double dx = (lon - pointOther.getLon()) * mPerDegLon;
+			dblDistance = Math.sqrt(dy * dy + dx * dx);
+			break;
+		case SCREEN:
+			double dblDistanceX = Math.abs(this.getLat() - pointOther.getLat());
+			double dblDistanceY = Math.abs(this.getLon() - pointOther.getLon());
+			dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));
+			break;
+		}
+		
+		return dblDistance;
 	}
-
-	public double distanceTo(Point p2) {
-		double EARTH_RAD = 6371000; // meters
-		double meanLat = (this.getLat() + p2.getLat()) / 2;
-		double sf = Math.sin(meanLat * Math.PI / 180.);
-		double mPerDegLat = 2 * Math.PI * EARTH_RAD / 360;
-		double mPerDegLon = mPerDegLat * sf;
-		double dy = (lat - p2.getLat()) * mPerDegLat;
-		double dx = (lon - p2.getLon()) * mPerDegLon;
-		double dist = Math.sqrt(dy * dy + dx * dx);
-		return dist;
-	}
-
 }

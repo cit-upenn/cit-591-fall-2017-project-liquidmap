@@ -58,10 +58,6 @@ public class PointTest {
 		Point p1 = new Point(1., 2., 3.);
 		p1.setTime(10.);
 		Assert.assertTrue(Math.abs(p1.getTime() - 10.) < 1E-6);
-		p1.offsetTime(5.);
-		Assert.assertTrue(Math.abs(p1.getTime() - 15.) < 1E-6);
-		p1.scaleTime(2.);
-		Assert.assertTrue(Math.abs(p1.getTime() - 30.) < 1E-6);
 	}
 
 	@Test
@@ -70,16 +66,4 @@ public class PointTest {
 		Assert.assertEquals(p1.toString(),
 				"(lat: 1.000000  lon: 2.000000  time: 3.000000)");
 	}
-
-	@Test
-	public void testPointCompare() {
-		Point p1 = new Point(1., 2., 3.);
-		Point p2 = new Point(1., 2., 3.);
-		Assert.assertEquals(p1.compareTo(p2), 0);
-		p2.setTime(2.);
-		Assert.assertEquals(p1.compareTo(p2), 1);
-		p2.setTime(4.);
-		Assert.assertEquals(p1.compareTo(p2), -1);
-	}
-
 }
