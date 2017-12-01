@@ -12,6 +12,7 @@ public class Animator {
 	int intLineWidth;
 	int intLineLength;
 	String strLineColor;
+	String strTextColor;
 	double dblTimeBetweenSpawns;
 	
 	/**
@@ -27,18 +28,20 @@ public class Animator {
 	 * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
 	 * @param listTrips The ArrayList of Trips.
 	 * @param intCanvasSize The size of one edge of the animation canvas (a square) in pixels.
-	 * @param strCanvasColor The color of the animation canvas expressed as a string: "#000000".
+	 * @param strCanvasColor The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param intLineWidth The width of each line in pixels.
 	 * @param intLineLength The height of each line in pixels.
-	 * @param strLineColor The color of the lines expressed as a string: "#000000".
+	 * @param strLineColor The color of the lines expressed as a hex triplet: (e.g., "#000000").
+	 * @param strTextColor The color of text on the canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, int intCanvasSize, String strCanvasColor, int intLineWidth, int intLineLength, String strLineColor, double dblTimeBetweenSpawns) {
+	public void animateTrips (ArrayList<Trip> listTrips, int intCanvasSize, String strCanvasColor, int intLineWidth, int intLineLength, String strLineColor, String strTextColor, double dblTimeBetweenSpawns) {
 		this.intCanvasSize = intCanvasSize;
 		this.strCanvasColor = strCanvasColor;
 		this.intLineWidth = intLineWidth;
 		this.intLineLength = intLineLength;
 		this.strLineColor = strLineColor;
+		this.strTextColor = strTextColor;
 		this.dblTimeBetweenSpawns = dblTimeBetweenSpawns;
 		
 		for (int i = 0; i < listTrips.size(); i++) {
@@ -70,6 +73,7 @@ public class Animator {
 						"\r\n" + 
 						"\t\t<svg>\r\n");
 		
+		// initialize a <path> element for each Trip
 		for (int i = 0; i < listTrips.size(); i++) {
 			ArrayList<Point> listPoints = listTrips.get(i).getPoints();
 			int intX = Mathf.roundToInt(listPoints.get(0).getLat());
@@ -114,11 +118,10 @@ public class Animator {
 						"\t\tletter-spacing: 1px;\r\n" + 
 						"\t\tmargin: 25px auto 0 auto;\r\n" + 
 						"\t\tbackground: " + strCanvasColor + ";\r\n" + 
-						"\t\tcolor: rgb(25, 25, 25);\r\n" + 
 						"\t}\r\n" + 
 						"\r\n" + 
 						"\tp {\r\n" + 
-						"\t\tcolor: #FFFFFF;\r\n" + 
+						"\t\tcolor: " + strTextColor + ";\r\n" + 
 						"\t\tfont-size: 0.85rem;\r\n" + 
 						"\t\ttext-align: center;\r\n" + 
 						"\t\tmargin: 0 auto;\r\n" + 
@@ -152,18 +155,21 @@ public class Animator {
 		
 		strbOut.append("<script>\r\n");
 		
+		// initialize a Segment object for each <path> element
 		for (int i = 0; i < listTrips.size(); i++) {
 			strbOut.append("\tvar path" + i + " = document.getElementById(\"path" + i + "\"), segment" + i + " = new Segment(path" + i + ");\r\n");
 		}
 		
 		strbOut.append("\r\n");
 		
+		// start each Segment at 0%, meaning that no part of it is drawn
 		for (int i = 0; i < listTrips.size(); i++) {
 			strbOut.append("\tsegment" + i + ".draw(\"0%\", \"0%\", 0);\r\n");
 		}
 		
 		strbOut.append("\r\n");
 		
+		// animate the Segment for each leg of the Trip, using a time delay to move it across one leg at a time
 		for (int i = 0; i < listTrips.size(); i++) {
 			Trip trip = listTrips.get(i);
 			double dblTripDistance = trip.computeTripDistance(0, trip.getPoints().size() - 1);
@@ -173,14 +179,14 @@ public class Animator {
 				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
 				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance), 0, Integer.MAX_VALUE);
 				int intLegTime = Mathf.roundToInt(trip.computeTripTime(j - 1, j));
-				double dblDelayTime = trip.getPoints().get(j - 1).getTime() * 1000;
+				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime() * 1000);
 				
 				if (j == trip.getPoints().size() - 1) {
 					intPositionFront = 100;
 					intPositionBack = 100;
 				}
 				
-				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + dblDelayTime + ");\r\n");
+				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + intDelayTime + ");\r\n");
 			}
 			
 			strbOut.append("\r\n");

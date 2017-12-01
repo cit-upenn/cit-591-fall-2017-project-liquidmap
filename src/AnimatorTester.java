@@ -46,7 +46,7 @@ public class AnimatorTester {
 			listTrips.add(trip);
 		}
 		
-		animator.animateTrips(listTrips, intCanvasSize, "#000000", 1, 200, "#FFFFFF", 0.02);
+		animator.animateTrips(listTrips, intCanvasSize, "#000000", 1, 200, "#FFFFFF", "#FFFFFF", 0.05);
 	}
 
 }
