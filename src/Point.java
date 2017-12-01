@@ -1,5 +1,5 @@
 /**
- * Represents a position in latitude-longitude-time space. 
+ * Represents a position in latitude-longitude-time space.
  * Latitude and longitude are measured in degrees/pixels.
  * Method parameters specify how latitude/longitude should be interpreted (i.e., as degrees or pixels).
  * Time is measured in seconds.
