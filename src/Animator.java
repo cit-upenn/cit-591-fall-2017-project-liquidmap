@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
 /**
- * Converts an ArrayList of Trips into a .html file that animates a dot for each Trip.
+ * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
  * @author Matt Surka
  */
 public class Animator {
 	Writer writer;
 	int intStrokeWidth;
 	int intStrokeLength;
-	int intStartDelay;
+	double dblTimeBetweenSpawns;
 	
 	/**
 	 * Constructor. Initializes the Animator with a Writer object.
@@ -17,17 +17,25 @@ public class Animator {
 		writer = new Writer();
 	}
 	
+	
+	//TO DO: ensure intStrokeLength behaves properly
+	
 	/**
-	 * Converts an ArrayList of Trips into a .html file that animates a dot for each Trip.
+	 * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
 	 * @param listTrips The ArrayList of Trips.
-	 * @param intDotWidth The width of each dot in pixels.
-	 * @param intDotHeight The height of each dot in pixels.
-	 * @param intStartDelay The amount of time (in milliseconds) to wait before starting the animation.
+	 * @param intStrokeWidth The width of each line in pixels.
+	 * @param intStrokeLength The height of each line in pixels.
+	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, int intStrokeWidth, int intStrokeLength, int intStartDelay) {
+	public void animateTrips (ArrayList<Trip> listTrips, int intStrokeWidth, int intStrokeLength, double dblTimeBetweenSpawns) {
 		this.intStrokeWidth = intStrokeWidth;
 		this.intStrokeLength = intStrokeLength;
-		this.intStartDelay = intStartDelay;
+		this.dblTimeBetweenSpawns = dblTimeBetweenSpawns;
+		
+		for (int i = 0; i < listTrips.size(); i++) {
+			listTrips.get(i).offsetTime(dblTimeBetweenSpawns * i);
+		}
+		
 		writer.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) + generateScriptBlock(listTrips), "animation.html");
 	}
 	
@@ -150,20 +158,20 @@ public class Animator {
 		for (int i = 0; i < listTrips.size(); i++) {
 			Trip trip = listTrips.get(i);
 			double dblTripDistance = trip.computeTripDistance(0, trip.getPoints().size() - 1);
-						
+				
 			for (int j = 1; j < trip.getPoints().size(); j++) {
 				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);
 				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
 				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intStrokeLength) / dblTripDistance), 0, Integer.MAX_VALUE);
 				int intLegTime = Mathf.roundToInt(trip.computeTripTime(j - 1, j));
-				int intDelayTime = Mathf.roundToInt(trip.computeTripTime(0, j - 1)) * 1000;
+				double dblDelayTime = trip.getPoints().get(j - 1).getTime() * 1000;
 				
 				if (j == trip.getPoints().size() - 1) {
 					intPositionFront = 100;
 					intPositionBack = 100;
 				}
 				
-				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + intDelayTime + ");\r\n");
+				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + dblDelayTime + ");\r\n");
 			}
 			
 			strbOut.append("\r\n");
