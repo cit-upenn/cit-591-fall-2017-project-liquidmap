@@ -147,4 +147,20 @@ public class Converter {
 		tripConverted.setEnumTypeSpace(enumTypeSpaceTo);
 		return tripConverted;
 	}
+	
+	/**
+	 * Converts an ArrayList of Trips in one space (i.e., world or screen) to a corresponding ArrayList of Trips in the other space.
+	 * @param listTrips The ArrayList of Trips to convert.
+	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
+	 * @return The converted ArrayList of Trips.
+	 */
+	public ArrayList<Trip> getListTripsFromListTrips(ArrayList<Trip> listTrips, Trip.typeSpace enumTypeSpaceTo) {
+		ArrayList<Trip> listTripsConverted = new ArrayList<>();
+		
+		for (Trip trip : listTrips) {
+			listTripsConverted.add(getTripFromTrip(trip, enumTypeSpaceTo));
+		}
+		
+		return listTripsConverted;
+	}
 }
