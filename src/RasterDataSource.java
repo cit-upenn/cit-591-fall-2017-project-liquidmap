@@ -5,31 +5,29 @@ import java.util.Collections;
 import java.util.Random;
 /**
  * This class creates an ArrayList of type Pixel
- * in order to create a representation of the image along
- * with each pixel's Red Channel RGB value.  
+ * in order to represent the image that is fed to it. 
  * 
  * This is done using ImageReader. A probability weight 
  * is also added to each Pixel object based on its
- * redValue so that darker pixels (redValues closer to 0)
- * are more likely to be chosen from the getRandPoint() 
- * method.
+ * red-channel RGB value (0-255) so that darker pixels, 
+ * (redValues closer to 0), will be more likely to be chosen 
+ * from the getRandPoint() method.
  * 
  * The weight is calculated as follows: 
  * 
  * colorWeight = 1 / ((redValue + 1) ^ 1.1)
  * 
- * When choosing a random Pixel adjusted for the probability
- * weights, the getRandPixel() method first randomly selects any Pixel
- * regardless of color, and then applies a constraint.  If the weight is 
- * a larger number than the constraint, then it is chosen.  If not, the
- * method tries again.
+ * When choosing a random Pixel, the getRandPixel() method first 
+ * randomly selects any Pixel regardless of color and then calculates 
+ * a constraint.  If the Pixel's weight is a larger number than the 
+ * constraint, then it is returned.  If not, the method tries again.
  * 
  * The constraint is calculated as follows:
  * 
  * constraint = 1 / randInt,
  * 
  * where the randInt is defined as any integer between the 
- * lightest color pixel and the darkest color pixel chosen with 
+ * lightest and darkest color-valued pixels in the image.
  * 
  * 
  * A PixelPointConv object is created in order to allow
@@ -88,9 +86,11 @@ public class RasterDataSource implements DataSource {
 			for (int y = 0; y < img.getHeight(); y++) {
 			
 				int redValue = new Color(img.getRGB(x, y)).getRed();
-				float weight = 0.0f;
+				double weight = 0.0d;
+				//Make pure white (255), often used in boundaries between
+				//census tracts or counties, have a 0% chance 
 				if (redValue != 255) {
-					weight =  (float) 
+					weight =  (double) 
 							(1 / (Math.pow(redValue + 1, 1.1)));
 				} else {
 					weight = 0;
@@ -126,9 +126,9 @@ public class RasterDataSource implements DataSource {
 			for (int y = 0; y < img.getHeight(); y++) {
 			
 				int redValue = new Color(img.getRGB(x, y)).getRed();
-				float weight = 0.0f;
+				double weight = 0.0d;
 				if (redValue != 255) {
-					weight =  (float) 
+					weight =  (double) 
 							(1 / (Math.pow(redValue + 1, 1.1)));
 				} else {
 					weight = 0;
@@ -164,7 +164,7 @@ public class RasterDataSource implements DataSource {
 			
 			int denominator = rand.nextInt(lightest - darkest) 
 					+ darkest + 1;
-			float constraint = (float) (1 / denominator);
+			double constraint = (double) (1 / denominator);
 
 			if (randPixelWeight >= constraint) {
 				chosenPixel = pixels.get(randIndex);
