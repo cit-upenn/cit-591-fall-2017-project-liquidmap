@@ -18,11 +18,11 @@
 public class Pixel implements Comparable<Pixel> {
 
 	private int redValue;
-	private float colorWeight;
+	private double colorWeight;
 	private int pixelX;
 	private int pixelY;
 
-	public Pixel(int pixelX, int pixelY, int redValue, float colorWeight) {
+	public Pixel(int pixelX, int pixelY, int redValue, double colorWeight) {
 		this.pixelX = pixelX;
 		this.pixelY = pixelY;
 		this.redValue = redValue;
@@ -43,7 +43,7 @@ public class Pixel implements Comparable<Pixel> {
 	/**
 	 * @param colorWeight the colorWeight to set
 	 */
-	public void setColorWeight(float colorWeight) {
+	public void setColorWeight(double colorWeight) {
 		this.colorWeight = colorWeight;
 	}
 
