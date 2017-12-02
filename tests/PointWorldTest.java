@@ -1,7 +1,7 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-public class PointTest {
+public class PointWorldTest {
 
 	@Test
 	public void testPointEquals() {
@@ -63,7 +63,6 @@ public class PointTest {
 	@Test
 	public void testPointString() {
 		Point p1 = new PointWorld(1., 2., 3.);
-		Assert.assertEquals(p1.toString(),
-				"(lat (deg): 1.000000  lon (deg): 2.000000  time (s): 3.000000)");
+		Assert.assertEquals(p1.toString(), "(lat (deg): 1.000000  lon (deg): 2.000000  time (s): 3.000000)");
 	}
 }

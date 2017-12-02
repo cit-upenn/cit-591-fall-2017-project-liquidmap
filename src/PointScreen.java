@@ -86,8 +86,8 @@ public class PointScreen implements Point {
 		double dblDistance = this.distanceTo(pointOther);
 		double dblTimeDifference = Math.abs(getTime() - pointOther.getTime());
 		
-		boolean isCloseInSpace = dblDistance < closeDistance;
-		boolean isCloseInTime = dblTimeDifference < closeTime;
+		boolean isCloseInSpace = dblDistance <= closeDistance;
+		boolean isCloseInTime = dblTimeDifference <= closeTime;
 		return isCloseInTime && isCloseInSpace;
 	}
 
