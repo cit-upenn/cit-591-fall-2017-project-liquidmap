@@ -1,4 +1,6 @@
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
@@ -6,19 +8,22 @@ import java.util.ArrayList;
  * @author Matt Surka
  */
 public class Animator {
+	Random random;
 	Writer writer;
 	int intCanvasSize;
 	String strCanvasColor;
 	int intLineWidth;
 	int intLineLength;
-	String strLineColor;
+	String strLineColorA;
+	String strLineColorB;
 	String strTextColor;
 	double dblTimeBetweenSpawns;
 	
 	/**
-	 * Constructor. Initializes the Animator with a Writer object.
+	 * Constructor. Initializes the Animator with a Random object and a Writer object.
 	 */
 	public Animator () {
+		random = new Random();
 		writer = new Writer();
 	}
 	
@@ -31,16 +36,18 @@ public class Animator {
 	 * @param strCanvasColor The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param intLineWidth The width of each line in pixels.
 	 * @param intLineLength The height of each line in pixels.
-	 * @param strLineColor The color of the lines expressed as a hex triplet: (e.g., "#000000").
+	 * @param strLineColorA The first color boundary of the lines expressed as a hex triplet: (e.g., "#000000").
+	 * @param strLineColorA The second color boundary of the lines expressed as a hex triplet: (e.g., "#000000").
 	 * @param strTextColor The color of text on the canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, int intCanvasSize, String strCanvasColor, int intLineWidth, int intLineLength, String strLineColor, String strTextColor, double dblTimeBetweenSpawns) {
+	public void animateTrips (ArrayList<Trip> listTrips, int intCanvasSize, String strCanvasColor, int intLineWidth, int intLineLength, String strLineColorA, String strLineColorB, String strTextColor, double dblTimeBetweenSpawns) {
 		this.intCanvasSize = intCanvasSize;
 		this.strCanvasColor = strCanvasColor;
 		this.intLineWidth = intLineWidth;
 		this.intLineLength = intLineLength;
-		this.strLineColor = strLineColor;
+		this.strLineColorA = strLineColorA;
+		this.strLineColorB = strLineColorB;
 		this.strTextColor = strTextColor;
 		this.dblTimeBetweenSpawns = dblTimeBetweenSpawns;
 		
@@ -79,7 +86,13 @@ public class Animator {
 			int intX = Mathf.roundToInt(listPoints.get(0).getLat());
 			int intY = Mathf.roundToInt(listPoints.get(0).getLon());
 			
-			strbOut.append("\t\t\t<path id=\"path" + i + "\" d=\"M" + intX + "," + intY);
+			strbOut.append("\t\t\t<path id=\"path" + i + "\" ");
+			
+			if (!strLineColorA.equals(strLineColorB)) {
+				strbOut.append("stroke=\"" + generateRandomColor(strLineColorA, strLineColorB) + "\" ");
+			}
+			
+			strbOut.append("d=\"M" + intX + "," + intY);
 			
 			for (int j = 1; j < listPoints.size(); j++) {
 				intX = Mathf.roundToInt(listPoints.get(j).getLat());
@@ -135,9 +148,13 @@ public class Animator {
 						"\t\theight: 100%;\r\n" + 
 						"\t}\r\n" + 
 						"\r\n" + 
-						"\tpath {\r\n" + 
-						"\t\tstroke: " + strLineColor + ";\r\n" + 
-						"\t\tstroke-width: " + intLineWidth + ";\r\n" + 
+						"\tpath {\r\n");
+		
+		if (strLineColorA.equals(strLineColorB)) {
+			strbOut.append("\t\tstroke: " + strLineColorA + ";\r\n");
+		}
+		
+		strbOut.append(	"\t\tstroke-width: " + intLineWidth + ";\r\n" + 
 						"\t\tfill-opacity: 0;" +
 						"\t}\r\n" + 
 						"</style>\r\n\r\n");
@@ -195,5 +212,32 @@ public class Animator {
 		strbOut.append("</script>\n\n");
 		
 		return strbOut.toString();
+	}
+	
+	/**
+	 * Generates a random color between two colors, which act as boundaries.
+	 * Interpolates between each of the RGB values of the color boundaries individually.
+	 * @param strColorA The first color boundary.
+	 * @param strColorB The second color boundary.
+	 * @return A random color with RGB values between those of the color boundaries.
+	 */
+	private String generateRandomColor (String strColorA, String strColorB) {
+		float[] fltComponentsClrA = new float[4];
+		float[] fltComponentsClrB = new float[4];	
+		float[] fltComponentsClrRandom = new float[4];
+		
+		Color.decode(strColorA).getColorComponents(fltComponentsClrA);
+		Color.decode(strColorB).getColorComponents(fltComponentsClrB);
+		
+		for (int i = 0; i < fltComponentsClrRandom.length; i++) {
+			float fltMin = Float.min(fltComponentsClrA[i], fltComponentsClrB[i]);
+			float fltMax = Float.max(fltComponentsClrA[i], fltComponentsClrB[i]);
+			float fltRandom = random.nextFloat() * (fltMax - fltMin) + fltMin;
+			fltComponentsClrRandom[i] = fltRandom;
+		}
+		
+		Color clrRandom = new Color(fltComponentsClrRandom[0], fltComponentsClrRandom[1], fltComponentsClrRandom[2], fltComponentsClrRandom[3]);
+		String strColorRandom = String.format("#%02X%02X%02X", clrRandom.getRed(), clrRandom.getGreen(), clrRandom.getBlue());
+		return strColorRandom;
 	}
 }
