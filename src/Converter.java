@@ -82,19 +82,29 @@ public class Converter {
 	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
 	 * @return A pair of doubles (as a double[]) with converted latitude at index [0] and converted longitude at index [1].
 	 */
-	public double[] convert(double dblLat, double dblLon, Trip.typeSpace enumTypeSpaceTo) {
+	public double[] convertPositionWorldToScreen(double dblLat, double dblLon) {
 		double dblLatConverted = 0;
 		double dblLonConverted = 0;
 		
-		switch (enumTypeSpaceTo) {
-		case WORLD:
-			dblLonConverted = degLonXPixConvFactor * dblLat + lonAt0X;
-			dblLatConverted = degLatYPixConvFactor * dblLon + latAt0Y;
-		case SCREEN:
-			dblLatConverted = (dblLon - lonAt0X) / degLonXPixConvFactor;
-			dblLonConverted = (dblLat - latAt0Y) / degLatYPixConvFactor;
-			break;
-		}
+		dblLatConverted = (dblLon - lonAt0X) / degLonXPixConvFactor;
+		dblLonConverted = (dblLat - latAt0Y) / degLatYPixConvFactor;
+		
+		return new double[] {dblLatConverted, dblLonConverted};
+	}
+	
+	/**
+	 * Converts a position in one space (i.e., world or screen) to its corresponding position in the other space.
+	 * @param dblLat The latitude in degrees/pixels.
+	 * @param dblLon The longitude in degrees/pixels.
+	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
+	 * @return A pair of doubles (as a double[]) with converted latitude at index [0] and converted longitude at index [1].
+	 */
+	public double[] convertPositionScreenToWorld(double dblLat, double dblLon) {
+		double dblLatConverted = 0;
+		double dblLonConverted = 0;
+		
+		dblLonConverted = degLonXPixConvFactor * dblLat + lonAt0X;
+		dblLatConverted = degLatYPixConvFactor * dblLon + latAt0Y;
 		
 		return new double[] {dblLatConverted, dblLonConverted};
 	}
@@ -104,8 +114,8 @@ public class Converter {
 	 * @param point The Point to convert.
 	 * @return The Pixel that corresponds to the location of the Point.
 	 */
-	public Pixel getPixelFromPoint(Point point) {
-		double[] arrDblLatLon = convert(point.getLat(), point.getLon(), Trip.typeSpace.SCREEN);
+	public Pixel getPixelFromPointWorld(PointWorld pointWorld) {
+		double[] arrDblLatLon = convertPositionWorldToScreen(pointWorld.getLat(), pointWorld.getLon());
 		return new Pixel(Mathf.roundToInt(arrDblLatLon[0]), Mathf.roundToInt(arrDblLatLon[1]));
 	}
 
@@ -114,20 +124,26 @@ public class Converter {
 	 * @param pixel The Pixel to convert.
 	 * @return The Point that corresponds to the location of the Pixel.
 	 */
-	public Point getPointFromPixel(Pixel pixel) {
-		double[] arrDblLatLon = convert(pixel.getPixelX(), pixel.getPixelY(), Trip.typeSpace.WORLD);
-		return new Point(arrDblLatLon[0], arrDblLatLon[1]);
+	public PointWorld getPointFromPixel(Pixel pixel) {
+		double[] arrDblLatLon = convertPositionScreenToWorld(pixel.getPixelX(), pixel.getPixelY());
+		return new PointWorld(arrDblLatLon[0], arrDblLatLon[1]);
 	}
 	
 	/**
 	 * Converts a Point in one space (i.e., world or screen) to a corresponding Point in the other space.
 	 * @param point The Point to convert.
-	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
 	 * @return The converted Point.
 	 */
-	public Point getPointFromPoint(Point point, Trip.typeSpace enumTypeSpaceTo) {
-		double[] arrDblLatLon = convert(point.getLat(), point.getLon(), enumTypeSpaceTo);
-		return new Point(arrDblLatLon[0], arrDblLatLon[1]);
+	public Point getConvertedPoint(Point point) {		
+		if (point.getClass() == PointWorld.class) {				// convert from world space to screen space
+			double[] arrDblLatLon = convertPositionWorldToScreen(point.getLat(), point.getLon());
+			return new PointScreen(arrDblLatLon[0], arrDblLatLon[1]);
+		} else if (point.getClass() == PointScreen.class) {		// convert from screen space to world space
+			double[] arrDblLatLon = convertPositionScreenToWorld(point.getLat(), point.getLon());
+			return new PointWorld(arrDblLatLon[0], arrDblLatLon[1]);
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -136,29 +152,27 @@ public class Converter {
 	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
 	 * @return The converted Trip.
 	 */
-	public Trip getTripFromTrip(Trip trip, Trip.typeSpace enumTypeSpaceTo) {
+	public Trip getConvertedTrip(Trip trip) {
 		Trip tripConverted = trip.clone();
 		ArrayList<Point> listPoints = tripConverted.getPoints();
 		
 		for (int i = 0; i < listPoints.size(); i++) {
-			listPoints.set(i, getPointFromPoint(listPoints.get(i), enumTypeSpaceTo));
+			listPoints.set(i, getConvertedPoint(listPoints.get(i)));
 		}
 		
-		tripConverted.setEnumTypeSpace(enumTypeSpaceTo);
 		return tripConverted;
 	}
 	
 	/**
 	 * Converts an ArrayList of Trips in one space (i.e., world or screen) to a corresponding ArrayList of Trips in the other space.
 	 * @param listTrips The ArrayList of Trips to convert.
-	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
 	 * @return The converted ArrayList of Trips.
 	 */
-	public ArrayList<Trip> getListTripsFromListTrips(ArrayList<Trip> listTrips, Trip.typeSpace enumTypeSpaceTo) {
+	public ArrayList<Trip> getConvertedListTrips(ArrayList<Trip> listTrips) {
 		ArrayList<Trip> listTripsConverted = new ArrayList<>();
 		
 		for (Trip trip : listTrips) {
-			listTripsConverted.add(getTripFromTrip(trip, enumTypeSpaceTo));
+			listTripsConverted.add(getConvertedTrip(trip));
 		}
 		
 		return listTripsConverted;
