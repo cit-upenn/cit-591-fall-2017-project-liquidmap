@@ -16,7 +16,7 @@ public class AnimatorTest {
 	public void testAnimateTrips() {
 		Random random = new Random();
 		Animator animator = new Animator();
-		ArrayList<Trip> listTrips = new ArrayList<Trip>();
+		ArrayList<Trip> listTrips = new ArrayList<>();
 		
 		int intNumberOfTrips = 1000;
 		int intMinPointsPerTrip = 3;
@@ -39,7 +39,7 @@ public class AnimatorTest {
 				double dblLat = Math.round(random.nextDouble() * (dblMaxLat - dblMinLat) + dblMinLat);
 				double dblLon = Math.round(random.nextDouble() * (dblMaxLon - dblMinLon) + dblMinLon);
 				
-				trip.addPoint(new PointWorld(dblLat, dblLon, dblTime));
+				trip.addPoint(new PointScreen(dblLat, dblLon, dblTime));
 				
 				dblTime += Math.round(random.nextDouble() * (dblMaxDurationOfTripLeg - dblMinDurationOfTripLeg) + (dblMinDurationOfTripLeg));
 			}
