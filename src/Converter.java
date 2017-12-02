@@ -3,9 +3,12 @@ import java.util.ArrayList;
 /**
  * Converts between world space (degrees) and screen space (pixels).
  * Can be initialized in two different ways (i.e., with two different constructors):
+ * 
  * 1. With two locations, the positions of which are known in both degrees and pixels.
  * 2. With the upper-left and lower-left corners of a bounding box in degrees, plus an image width.
+ * 
  * Once the converter is initialized, it can make conversions repeatedly without re-initialization.
+ * 
  * @author Brian Edwards, Matt Surka
  */
 public class Converter {
@@ -15,7 +18,7 @@ public class Converter {
 	private double latAt0Y; // deg
 	
 	/**
-	 * Creates a PixelPointConv object using two reference Pixel-Point pairs.
+	 * Creates a Converter object using two reference Pixel-Point pairs.
 	 *
 	 * In other words, the conversion is based on two points on a raster image
 	 * where you can identify the pixel position and the latitude/longitude. This is
@@ -42,7 +45,7 @@ public class Converter {
 	}
 
 	/**
-	 * Creates a PixelPointConv object using a bounding box on a map defined by
+	 * Creates a Converter object using a bounding box on a map defined by
 	 * two Points and a width of the image in pixels.
 	 *
 	 * This will be most useful for defining output images where you can
@@ -63,8 +66,7 @@ public class Converter {
 		Double meanLat = (ptUpperLeft.getLat() + ptUpperLeft.getLat()) / 2;
 		double sizeRatio = Math.cos(Math.toRadians(meanLat));
 
-		int height = new Double(sizeRatio * width * deltaLon / deltaLat)
-				.intValue();
+		int height = new Double(sizeRatio * width * deltaLon / deltaLat).intValue();
 		height = Math.abs(height);
 
 		degLatYPixConvFactor = deltaLat / height;
@@ -97,21 +99,43 @@ public class Converter {
 		return new double[] {dblLatConverted, dblLonConverted};
 	}
 
+	/**
+	 * Converts a Point to a Pixel (i.e., from world space to screen space).
+	 * @param point The Point to convert.
+	 * @return The Pixel that corresponds to the location of the Point.
+	 */
 	public Pixel getPixelFromPoint(Point point) {
 		double[] arrDblLatLon = convert(point.getLat(), point.getLon(), Trip.typeSpace.SCREEN);
 		return new Pixel(Mathf.roundToInt(arrDblLatLon[0]), Mathf.roundToInt(arrDblLatLon[1]));
 	}
 
+	/**
+	 * Converts a Pixel to a Point (i.e., from screen space to world space).
+	 * @param pixel The Pixel to convert.
+	 * @return The Point that corresponds to the location of the Pixel.
+	 */
 	public Point getPointFromPixel(Pixel pixel) {
 		double[] arrDblLatLon = convert(pixel.getPixelX(), pixel.getPixelY(), Trip.typeSpace.WORLD);
 		return new Point(arrDblLatLon[0], arrDblLatLon[1]);
 	}
 	
+	/**
+	 * Converts a Point in one space (i.e., world or screen) to a corresponding Point in the other space.
+	 * @param point The Point to convert.
+	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
+	 * @return The converted Point.
+	 */
 	public Point getPointFromPoint(Point point, Trip.typeSpace enumTypeSpaceTo) {
 		double[] arrDblLatLon = convert(point.getLat(), point.getLon(), enumTypeSpaceTo);
 		return new Point(arrDblLatLon[0], arrDblLatLon[1]);
 	}
 	
+	/**
+	 * Converts a Trip in one space (i.e., world or screen) to a corresponding Trip in the other space.
+	 * @param trip The Trip to convert.
+	 * @param enumTypeSpaceTo The space to convert to (i.e., world or screen).
+	 * @return The converted Trip.
+	 */
 	public Trip getTripFromTrip(Trip trip, Trip.typeSpace enumTypeSpaceTo) {
 		Trip tripConverted = trip.clone();
 		ArrayList<Point> listPoints = tripConverted.getPoints();
