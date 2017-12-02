@@ -1,18 +1,19 @@
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * Tests the methods of the Animator class by generating a random list of Trips.
- * This class will not be in the final build.
- * @author Matt Surka
+ * The assertion is somewhat trivial, because all it does is check to ensure the output file exists.
+ * However, the output file can then be checked manually to verify that the animation behaves as expected.
  */
-public class AnimatorTester {
-	/**
-	 * Tests the methods of the Animator class by generating a random list of Trips.
-	 * This method will not be in the final build.
-	 * @param args
-	 */
-	public static void main(String[] args) {
+public class AnimatorTest {
+
+	@Test
+	public void testAnimateTrips() {
 		Random random = new Random();
 		Animator animator = new Animator();
 		ArrayList<Trip> listTrips = new ArrayList<Trip>();
@@ -46,7 +47,9 @@ public class AnimatorTester {
 			listTrips.add(trip);
 		}
 		
-		animator.animateTrips(listTrips, intCanvasSize, "#000000", 1, 200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
+		animator.animateTrips(listTrips, "animation_test", intCanvasSize, "#000000", 1, 200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
+		
+		File file = new File("animation.html");
+		Assert.assertTrue(file.exists());
 	}
-
 }

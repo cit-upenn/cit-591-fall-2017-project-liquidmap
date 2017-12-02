@@ -10,6 +10,7 @@ import java.util.Random;
 public class Animator {
 	Random random;
 	Writer writer;
+	String strFileName;
 	int intCanvasSize;
 	String strCanvasColor;
 	int intLineWidth;
@@ -27,11 +28,12 @@ public class Animator {
 		writer = new Writer();
 	}
 	
-	//TO DO: ensure intStrokeLength behaves properly
+	//TO DO: ensure intStrokeLength behaves as expected
 	
 	/**
-	 * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
+	 * Converts an ArrayList of Trips into an .html file that animates a line for each Trip.
 	 * @param listTrips The ArrayList of Trips.
+	 * @param strFileName The desired name of the output file, without the "html" extension.
 	 * @param intCanvasSize The size of one edge of the animation canvas (a square) in pixels.
 	 * @param strCanvasColor The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param intLineWidth The width of each line in pixels.
@@ -41,7 +43,8 @@ public class Animator {
 	 * @param strTextColor The color of text on the canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, int intCanvasSize, String strCanvasColor, int intLineWidth, int intLineLength, String strLineColorA, String strLineColorB, String strTextColor, double dblTimeBetweenSpawns) {
+	public void animateTrips (ArrayList<Trip> listTrips, String strFileName, int intCanvasSize, String strCanvasColor, int intLineWidth, int intLineLength, String strLineColorA, String strLineColorB, String strTextColor, double dblTimeBetweenSpawns) {
+		this.strFileName = strFileName;
 		this.intCanvasSize = intCanvasSize;
 		this.strCanvasColor = strCanvasColor;
 		this.intLineWidth = intLineWidth;
@@ -55,7 +58,7 @@ public class Animator {
 			listTrips.get(i).offsetTime(dblTimeBetweenSpawns * i);
 		}
 		
-		writer.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) + generateScriptBlock(listTrips), "animation.html");
+		writer.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) + generateScriptBlock(listTrips), strFileName + ".html");
 	}
 	
 	/**
