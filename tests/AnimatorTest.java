@@ -31,7 +31,7 @@ public class AnimatorTest {
 		double dblMaxLon = intCanvasSize - intSpawnPadding;
 		
 		for (int i = 0; i < intNumberOfTrips; i++) {
-			Trip trip = new Trip(Trip.typeSpace.SCREEN);
+			Trip trip = new Trip();
 			int intNumberOfPoints = intMinPointsPerTrip + random.nextInt(intMaxPointsPerTrip - intMinPointsPerTrip) + 1;
 			double dblTime = 0;
 			
@@ -39,7 +39,7 @@ public class AnimatorTest {
 				double dblLat = Math.round(random.nextDouble() * (dblMaxLat - dblMinLat) + dblMinLat);
 				double dblLon = Math.round(random.nextDouble() * (dblMaxLon - dblMinLon) + dblMinLon);
 				
-				trip.addPoint(new Point(dblLat, dblLon, dblTime));
+				trip.addPoint(new PointWorld(dblLat, dblLon, dblTime));
 				
 				dblTime += Math.round(random.nextDouble() * (dblMaxDurationOfTripLeg - dblMinDurationOfTripLeg) + (dblMinDurationOfTripLeg));
 			}
