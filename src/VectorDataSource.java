@@ -7,7 +7,7 @@ public class VectorDataSource implements DataSource {
 
 	@Override
 	public Point getRandPoint() {
-		return new Point(0, 0);
+		return new PointScreen(0, 0);
 	}
 
 }

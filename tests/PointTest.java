@@ -7,7 +7,7 @@ public class PointTest {
 	public void testPointEquals() {
 		Point p1 = new Point(20., 30., 40.); // on equator
 		Point p2 = new Point(20., 30., 40.);
-		Assert.assertTrue("P1 is the same as P2", p1.equals(p2));
+		Assert.assertTrue("P1 is the same as P2", p1.equals(p2, Trip.typeSpace.WORLD));
 	}
 
 	@Test
@@ -21,7 +21,7 @@ public class PointTest {
 	public void testPointTimeEqualsTrue() {
 		Point p1 = new Point(0., 0., 0.); // on equator
 		Point p2 = new Point(0., 0., 1E-4);
-		Assert.assertTrue("P1 is close enough to P2 in time", p1.equals(p2));
+		Assert.assertTrue("P1 is close enough to P2 in time", p1.equals(p2, Trip.typeSpace.WORLD));
 	}
 
 	@Test
@@ -35,14 +35,14 @@ public class PointTest {
 	public void testPointEqualsLocTrue() {
 		Point p1 = new Point(0., 0., 0.); // on equator
 		Point p2 = new Point(1E-5, 0., 0.); // near equator (1.1m north)
-		Assert.assertTrue("P1 is close enough to P2 in space", p1.equals(p2));
+		Assert.assertTrue("P1 is close enough to P2 in space", p1.equals(p2, Trip.typeSpace.WORLD));
 	}
 
 	@Test
 	public void testPointEquals2Args() {
 		Point p1 = new Point(1., 2.);
 		Point p2 = new Point(1., 2., 0.);
-		Assert.assertTrue("P1 two args is at t=0", p1.equals(p2));
+		Assert.assertTrue("P1 two args is at t=0", p1.equals(p2, Trip.typeSpace.WORLD));
 	}
 
 	@Test

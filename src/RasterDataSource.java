@@ -50,7 +50,7 @@ public class RasterDataSource implements DataSource {
 	private Pixel px1;
 	private Pixel px2;
 	
-	private PixelPointConv ppc;
+	private Converter converter;
 	
 	/**
 	 * This constructor requires the name of the image file
@@ -64,7 +64,7 @@ public class RasterDataSource implements DataSource {
 	 * @param px2 the second reference Pixel
 	 */
 	
-	public RasterDataSource(String fileName, Point pt1, Pixel px1, Point pt2,
+	public RasterDataSource(String fileName, PointWorld pt1, Pixel px1, PointWorld pt2,
 			Pixel px2) {
 		imageReader = new ImageReader(fileName);
 		img = imageReader.getImg();
@@ -78,7 +78,7 @@ public class RasterDataSource implements DataSource {
 		this.pt2 = pt2;
 		this.px2 = px2;
 		
-		ppc = new PixelPointConv(pt1, px1, pt2, px2);
+		converter = new Converter(pt1, px1, pt2, px2);
 		
 		//create Pixel ArrayList
 		
@@ -178,7 +178,7 @@ public class RasterDataSource implements DataSource {
 	@Override
 	public Point getRandPoint() throws NullPointerException {
 		Pixel pixel = getRandPixel();
-		Point randPoint = ppc.getPtFromPix(pixel);
+		Point randPoint = converter.getPointFromPixel(pixel);
 		return randPoint;
 	}
 	

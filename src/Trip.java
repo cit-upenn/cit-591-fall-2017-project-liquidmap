@@ -1,22 +1,30 @@
 import java.util.ArrayList;
 
 /**
- * Represents a traveled path on the globe (i.e., on Earth).
+ * Represents a traveled path (e.g., on a globe or map).
  * Contains an ArrayList of Points, each with a latitude, a longitude, and a time value.
  * @author Brian Edwards, Matt Surka
  */
-public class Trip {
-	public enum typeSpace { WORLD, SCREEN }
-	private typeSpace enumTypeSpace;
-	private ArrayList<Point> points;
+public class Trip implements Cloneable {
+	private ArrayList<Point> listPoints;
 
 	/**
-	 * Constructor. Initializes the Trip with an empty set of Points.
-	 * 
+	 * Constructor.
+	 * Initializes the Trip with an empty set of Points.
 	 */
-	public Trip(typeSpace enumTypeSpace) {
-		this.enumTypeSpace = enumTypeSpace;
-		points = new ArrayList<>();
+	public Trip() {
+		listPoints = new ArrayList<>();
+	}
+	
+	/**
+	 * Returns a clone of this Trip.
+	 * @return A clone of this Trip.
+	 */
+	@Override
+	public Trip clone() {
+		Trip tripClone = new Trip();
+		tripClone.getPoints().addAll(this.getPoints());
+		return tripClone;
 	}
 
 	/**
@@ -24,7 +32,7 @@ public class Trip {
 	 * @return The ArrayList of Points.
 	 */
 	public ArrayList<Point> getPoints() {
-		return points;
+		return listPoints;
 	}
 
 	/**
@@ -32,7 +40,7 @@ public class Trip {
 	 * @param point The Point to be added.
 	 */
 	public void addPoint(Point point) {
-		points.add(point);
+		listPoints.add(point);
 	}
 
 	/**
@@ -40,7 +48,7 @@ public class Trip {
 	 * @return The time at the start of the Trip in seconds.
 	 */
 	public double minTime() {
-		return points.get(0).getTime();
+		return listPoints.get(0).getTime();
 	}
 
 	/**
@@ -48,7 +56,7 @@ public class Trip {
 	 * @return The time at the end of the Trip in seconds.
 	 */
 	public double maxTime() {
-		return points.get(points.size() - 1).getTime();
+		return listPoints.get(listPoints.size() - 1).getTime();
 	}
 
 	/**
@@ -56,7 +64,7 @@ public class Trip {
 	 * @param timeOffset The time value by which to shift the Point times.         
 	 */
 	public void offsetTime(double timeOffset) {
-		for (Point point : points) {
+		for (Point point : listPoints) {
 			point.setTime(point.getTime() + timeOffset);
 		}
 	}
@@ -67,7 +75,7 @@ public class Trip {
 	 * @param scaleFactor The factor by which to scale the Point times.      
 	 */
 	public void scaleTime(double scaleFactor) {
-		for (Point point : points) {
+		for (Point point : listPoints) {
 			point.setTime(point.getTime() * scaleFactor);
 		}
 	}
@@ -79,7 +87,7 @@ public class Trip {
 	 * @return The time to travel along the path between the two Points.
 	 */
 	public double computeTripTime (int intPointStart, int intPointEnd) {
-		double dblTime = points.get(intPointEnd).getTime() - points.get(intPointStart).getTime();
+		double dblTime = listPoints.get(intPointEnd).getTime() - listPoints.get(intPointStart).getTime();
 		return dblTime;
 	}
 	
@@ -94,7 +102,7 @@ public class Trip {
 		double dblDistance = 0;
 		
 		for (int i = intPointStart; i < intPointEnd; i++) {
-			dblDistance += points.get(i).distanceTo(points.get(i + 1), enumTypeSpace);
+			dblDistance += listPoints.get(i).distanceTo(listPoints.get(i + 1));
 		}
 		
 		return dblDistance;
@@ -107,15 +115,15 @@ public class Trip {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[ ");
+		StringBuilder strb = new StringBuilder();
+		strb.append("[ ");
 		
-		for (Point p : this.points) {
-			sb.append(p.toString() + ", ");
+		for (Point point : this.listPoints) {
+			strb.append(point.toString() + ", ");
 		}
 
-		sb.delete(sb.length() - 2, sb.length());
-		sb.append(" ]");
-		return sb.toString();
+		strb.delete(strb.length() - 2, strb.length());
+		strb.append(" ]");
+		return strb.toString();
 	}
 }

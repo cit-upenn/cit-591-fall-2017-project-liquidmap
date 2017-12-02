@@ -56,7 +56,7 @@ public class GHInterface {
 						.setLocale(Locale.US);
 		GHResponse rsp = hopper.route(req);
 		if (rsp.hasErrors()) {
-			return new Trip(Trip.typeSpace.WORLD); // returns null trip.
+			return new Trip(); // returns null trip.
 		}
 		PathWrapper path = rsp.getBest();
 		InstructionList il = path.getInstructions();
@@ -104,7 +104,7 @@ public class GHInterface {
 		if (DEBUG) {
 			System.out.println("   ==== building trip ====");
 		}
-		Trip trip = new Trip(Trip.typeSpace.WORLD);
+		Trip trip = new Trip();
 		ArrayList<Double> legTimes = new ArrayList<>();
 		ArrayList<Integer> pointCounts = new ArrayList<>();
 
@@ -128,7 +128,7 @@ public class GHInterface {
 			for (int j = 0; j < nPoints; j++) {
 				double lat = pList.getLat(j);
 				double lon = pList.getLon(j);
-				Point p = new Point(lat, lon);
+				Point p = new PointWorld(lat, lon);
 				trip.addPoint(p);
 			}
 		}
@@ -138,7 +138,7 @@ public class GHInterface {
 			PointList pList = inst.getPoints();
 			double lat = pList.getLat(0);
 			double lon = pList.getLon(0);
-			Point p = new Point(lat, lon);
+			Point p = new PointWorld(lat, lon);
 			trip.addPoint(p);
 		}
 		if (DEBUG) {
@@ -156,7 +156,7 @@ public class GHInterface {
 		for (int i = 1; i < trip.getPoints().size(); i++) {
 			Point pA = trip.getPoints().get(i - 1);
 			Point pB = trip.getPoints().get(i);
-			double dist = pA.distanceTo(pB, Trip.typeSpace.WORLD);
+			double dist = pA.distanceTo(pB);
 			dists.add(dist);
 		}
 		if (DEBUG) {
