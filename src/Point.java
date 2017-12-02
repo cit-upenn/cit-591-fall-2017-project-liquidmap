@@ -1,7 +1,6 @@
 /**
  * Represents a position in latitude-longitude-time space.
- * Latitude and longitude are measured in degrees/pixels.
- * Method parameters specify how latitude/longitude should be interpreted (i.e., as degrees or pixels).
+ * Implementations of this interface can measure latitude and longitude in different units (e.g., degrees on a globe, pixels on a map).
  * Time is measured in seconds.
  * @author Brian Edwards, Matt Surka
  */

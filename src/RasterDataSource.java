@@ -66,7 +66,7 @@ public class RasterDataSource implements DataSource {
 	 * @param px2 the second reference Pixel
 	 */
 	
-	public RasterDataSource(String fileName, Point pt1, Pixel px1, Point pt2,
+	public RasterDataSource(String fileName, PointWorld pt1, Pixel px1, PointWorld pt2,
 			Pixel px2) {
 		imageReader = new ImageReader(fileName);
 		img = imageReader.getImg();

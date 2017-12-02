@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Represents a traveled path on the globe (i.e., on Earth).
+ * Represents a traveled path (e.g., on a globe or map).
  * Contains an ArrayList of Points, each with a latitude, a longitude, and a time value.
  * @author Brian Edwards, Matt Surka
  */
@@ -93,7 +93,6 @@ public class Trip implements Cloneable {
 	
 	/**
 	 * Computes the distance along a path between two Points in the Trip.
-	 * Distance is calculated based on the Trip's typeSpace (i.e., degrees for world space, pixels for screen space).
 	 * @param listPoints The ArrayList of Points.
 	 * @param intPointStart The start point of the path.
 	 * @param intPointEnd The end point of the path.
@@ -116,15 +115,15 @@ public class Trip implements Cloneable {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[ ");
+		StringBuilder strb = new StringBuilder();
+		strb.append("[ ");
 		
-		for (Point p : this.listPoints) {
-			sb.append(p.toString() + ", ");
+		for (Point point : this.listPoints) {
+			strb.append(point.toString() + ", ");
 		}
 
-		sb.delete(sb.length() - 2, sb.length());
-		sb.append(" ]");
-		return sb.toString();
+		strb.delete(strb.length() - 2, strb.length());
+		strb.append(" ]");
+		return strb.toString();
 	}
 }
