@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Points are interpreted according to the Trip's typeSpace (i.e., degrees for world space, pixels for screen space).
  * @author Brian Edwards, Matt Surka
  */
-public class Trip {
+public class Trip implements Cloneable {
 	public enum typeSpace { WORLD, SCREEN }
 	private typeSpace enumTypeSpace;
 	private ArrayList<Point> points;
@@ -19,6 +19,17 @@ public class Trip {
 	public Trip(typeSpace enumTypeSpace) {
 		this.enumTypeSpace = enumTypeSpace;
 		points = new ArrayList<>();
+	}
+	
+	/**
+	 * Returns a clone of this Trip.
+	 * @return A clone of this Trip.
+	 */
+	@Override
+	public Trip clone() {
+		Trip tripClone = new Trip(enumTypeSpace);
+		tripClone.getPoints().addAll(this.getPoints());
+		return tripClone;
 	}
 
 	/**
@@ -72,6 +83,14 @@ public class Trip {
 		for (Point point : points) {
 			point.setTime(point.getTime() * scaleFactor);
 		}
+	}
+	
+	/**
+	 * Sets the Trip's typeSpace (i.e., degrees for world space, pixels for screen space).
+	 * @param enumTypeSpace The typeSpace to set the Trip to.
+	 */
+	public void setEnumTypeSpace(typeSpace enumTypeSpace) {
+		this.enumTypeSpace = enumTypeSpace;
 	}
 	
 	/**

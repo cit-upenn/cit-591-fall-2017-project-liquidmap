@@ -110,9 +110,9 @@ public class Point {
 	 * @return The distance between the Points in degrees/pixels.
 	 */
 	public double distanceTo(Point pointOther, Trip.typeSpace enumTypeSpace) {
-		double dblDistance = -1;
-		double dblDistanceX = -1;
-		double dblDistanceY = -1;
+		double dblDistance = 0;
+		double dblDistanceX = 0;
+		double dblDistanceY = 0;
 		
 		switch (enumTypeSpace) {
 		case WORLD:
