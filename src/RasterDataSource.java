@@ -45,8 +45,8 @@ public class RasterDataSource implements DataSource {
 	private int lightest;
 	private int darkest;
 	
-	private Point pt1;
-	private Point pt2;
+	private PointWorld pt1;
+	private PointWorld pt2;
 	private Pixel px1;
 	private Pixel px2;
 	
@@ -178,7 +178,7 @@ public class RasterDataSource implements DataSource {
 	@Override
 	public Point getRandPoint() throws NullPointerException {
 		Pixel pixel = getRandPixel();
-		Point randPoint = converter.getPointFromPixel(pixel);
+		PointWorld randPoint = converter.getPointFromPixel(pixel);
 		return randPoint;
 	}
 	
@@ -219,13 +219,13 @@ public class RasterDataSource implements DataSource {
 	/**
 	 * @return the pt1
 	 */
-	public Point getPt1() {
+	public PointWorld getPt1() {
 		return pt1;
 	}
 	/**
 	 * @return the pt2
 	 */
-	public Point getPt2() {
+	public PointWorld getPt2() {
 		return pt2;
 	}
 	/**
