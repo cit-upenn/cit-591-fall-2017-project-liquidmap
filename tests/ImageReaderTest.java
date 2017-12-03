@@ -12,7 +12,7 @@ public class ImageReaderTest {
 	}
 	@Test
 	public void testImageIOHeight() {
-		ImageReader imageReader = new ImageReader("PhillyPopDensity2012png");
+		ImageReader imageReader = new ImageReader("PhillyPopDensity2012.png");
 		BufferedImage img = imageReader.getImg();
 		assertEquals("Image height should be 720", 720, img.getHeight());
 	}
