@@ -7,31 +7,29 @@ import java.util.Random;
  * This class creates an ArrayList of type Pixel
  * in order to represent the image that is fed to it. 
  * 
- * This is done using ImageReader. A probability weight 
- * is also added to each Pixel object based on its
- * red-channel RGB value (0-255) so that darker pixels, 
+ * This process relies on ImageReader and Pixel. 
+ * 
+ * A probability weight is added to each Pixel object based on its
+ * red-channel RGB value (0-255). This is so that darker pixels, 
  * (redValues closer to 0), will be more likely to be chosen 
  * from the getRandPoint() method.
  * 
- * The weight is calculated as follows: 
+ * The weight is calculated as follows, using an exponential
+ * probability density function: 
  * 
  * colorWeight = 1 / ((redValue + 1) ^ 1.1)
  * 
  * When choosing a random Pixel, the getRandPixel() method first 
  * randomly selects any Pixel regardless of color and then calculates 
- * a constraint.  If the Pixel's weight is a larger number than the 
- * constraint, then it is returned.  If not, the method tries again.
+ * a constraint. If the Pixel's weight is a larger number than the 
+ * constraint, then it is returned. If not, the method tries again.
  * 
- * The constraint is calculated as follows:
+ * The constraint pulls a random number from this formula:
  * 
- * constraint = 1 / randInt,
+ * constraint = 1 / (lightest - darkest)
  * 
- * where the randInt is defined as any integer between the 
- * lightest and darkest color-valued pixels in the image.
- * 
- * 
- * A PixelPointConv object is created in order to allow
- * this DataSource type class to convert Pixels to Points.
+ * A Converter object is created in order to allow
+ * this class to convert Pixels to Points.
  * 
  * @author - sgb
  * 

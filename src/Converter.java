@@ -125,10 +125,12 @@ public class Converter {
 	 * @return The converted Point.
 	 */
 	public Point getConvertedPoint(Point point) {		
-		if (point.getClass() == PointWorld.class) {								// convert from world space to screen space
+		if (point.getClass() == PointWorld.class) {								
+			// convert from world space to screen space
 			double[] arrDblLatLon = convertPositionWorldToScreen(point.getLat(), point.getLon());
 			return new PointScreen(arrDblLatLon[0], arrDblLatLon[1]);
-		} else if (point.getClass() == PointScreen.class) {						// convert from screen space to world space
+		} else if (point.getClass() == PointScreen.class) {						
+			// convert from screen space to world space
 			double[] arrDblLatLon = convertPositionScreenToWorld(point.getLat(), point.getLon());
 			return new PointWorld(arrDblLatLon[0], arrDblLatLon[1]);
 		}
@@ -153,7 +155,8 @@ public class Converter {
 	}
 	
 	/**
-	 * Converts an ArrayList of Trips in one space (i.e., world or screen) to a corresponding ArrayList of Trips in the other space.
+	 * Converts an ArrayList of Trips in one space (i.e., world or screen) to a 
+	 * corresponding ArrayList of Trips in the other space.
 	 * @param listTrips The ArrayList of Trips to convert.
 	 * @return The converted ArrayList of Trips.
 	 */

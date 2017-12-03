@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openstreetmap.osmosis.osmbinary.file.FileFormatException;
 /**
- * This class will take in a fileName (.json, .csv, or .txt) 
+ * This class will take in a fileName (.csv) 
  * and allow the user to call getRandPoint(). 
  * 
  * VectorDataSource will find and allow access to the Latitude and Longitude 
@@ -18,8 +18,6 @@ import org.openstreetmap.osmosis.osmbinary.file.FileFormatException;
  * 4).Latitude, Longitude, and Weight are separated by something
  * other than a period 
  * 5).Weights are all decimal values between 0 and 1, inclusive.
- * 6).A file is consistent - it just has lat/long pairs, or it just
- * has lat/long pairs with weights.
  * 
  * @author sgb
  *
@@ -31,34 +29,37 @@ public class VectorDataSource implements DataSource {
 	private ArrayList<Point> points;
 
 	
-	public VectorDataSource(String fileName) throws FileFormatException {
+	public VectorDataSource(String fileName) {
 		
 		fileReader = new FileReader(fileName);
 		lines = fileReader.getLines();
 		
 		for (String line : lines) {
 			Matcher matcher = Pattern.compile("[\\d]*\\.[\\d]*").matcher(line);
+			
 			while (matcher.find()) {
 				ArrayList<Double> matches = new ArrayList<>();
+				
 				for (int i = 0; i < matcher.groupCount(); i++) {
-					double match = Double.parseDouble(matcher.group());
-					matches.add(match);
+					for (int j = 0; j < 2; j++) {
+						double match = Double.parseDouble(matcher.group());
+						matches.add(match);
+					}
 				}
+				//constructing a Point with just a Lat/Lng pair and weights set to 1
 				if (matches.size() == 2) {
 					PointWorld point = new PointWorld(matches.get(0), matches.get(1));
 					points.add(point);
+				//if weights are provided, then use em!
 				} else if (matches.size() == 3) {
-					PointWorld point = new PointWorld(matches.get(0), matches.get(1), matches.get(2));
+					double dblWeight = matches.get(2);
+					float weight = (float) dblWeight;
+					
+					PointWorld point = new PointWorld(matches.get(0), matches.get(1), weight);
 					points.add(point);
 				}
 			}
 		}
-	}
-	/**
-	 * @return the fileReader
-	 */
-	public FileReader getFileReader() {
-		return fileReader;
 	}
 
 	/**
@@ -81,13 +82,28 @@ public class VectorDataSource implements DataSource {
 	public ArrayList<Point> getPoints() {
 		return points;
 	}
-
+	
 	@Override
-	public Point getRandPoint() {
+	public Point getRandPoint() throws NullPointerException {
+		ArrayList<Point> points = getPoints();
+		
 		Random rand = new Random();
-		int randIndex = rand.nextInt(points.size());
-		Point point = points.get(randIndex);
-		return point;
+		Point chosenPoint = null;
+		int count = 0;
+		
+		while (count < 10000) {
+			int randIndex = rand.nextInt(points.size());
+			double randPointWeight = points.get(randIndex).getWeight();
+			//constraint = a random decimal between 0 and 1
+			double constraint = (double) (rand.nextInt(10000)/10000);
+
+			if (randPointWeight >= constraint) {
+				chosenPoint = points.get(randIndex);
+				break;
+			}
+			count++;
+		}
+		return chosenPoint;
 	}
 
 }

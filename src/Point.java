@@ -12,6 +12,8 @@ public interface Point {
 	public double getLon();
 	
 	public double getTime();
+	
+	public float getWeight();
 
 	@Override
 	public String toString();

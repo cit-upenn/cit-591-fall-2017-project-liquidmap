@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * This class reads in a file and delivers an ArrayList of 
@@ -18,12 +20,17 @@ public class FileReader {
 		this.fileName = fileName;
 
 		try {
+			
 			File file = new File(fileName);
 			Scanner in = new Scanner(file);
 			
-			while (in.hasNextLine()) {
-				String line = in.nextLine();
-				lines.add(line);
+			if (goodFileType()) {
+				while (in.hasNextLine()) {
+					String line = in.nextLine();
+					lines.add(line);
+				}
+			} else {
+				System.out.println("Currently only .csv files supported");
 			}
 			
 			in.close();
@@ -33,6 +40,21 @@ public class FileReader {
 		}
 	}
 
+	private boolean goodFileType() {
+		Matcher matcher = Pattern.compile("(?>.*\\.)(.+)").matcher(fileName);
+		String fileType = new String();
+		
+		if (matcher.matches()) {
+			fileType = matcher.group(1);
+		}
+		
+		if (fileType.equalsIgnoreCase("csv")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * @return the lines
 	 */
