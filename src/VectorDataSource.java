@@ -25,14 +25,14 @@ import org.openstreetmap.osmosis.osmbinary.file.FileFormatException;
 public class VectorDataSource implements DataSource {
 	private FileReader fileReader;
 	private ArrayList<String> lines;
-	private ArrayList<Point> points;
+	private ArrayList<PointWorld> points;
 
 
 	public VectorDataSource(String fileName) {
 
 		fileReader = new FileReader(fileName);
 		lines = fileReader.getLines();
-		points = new ArrayList<Point>();
+		points = new ArrayList<PointWorld>();
 
 		for (String line : lines) {
 			Matcher matcher = Pattern.compile("[\\d]*\\.[\\d]*").matcher(line);
@@ -52,10 +52,9 @@ public class VectorDataSource implements DataSource {
 					points.add(point);
 					//if weights are provided, then use em!
 				} else if (matches.size() == 3) {
-					double dblWeight = matches.get(2);
-					float weight = (float) dblWeight;
-
-					PointWorld point = new PointWorld(matches.get(0), matches.get(1), weight);
+					double weight = matches.get(2);
+					PointWorld point = new PointWorld(matches.get(0), matches.get(1));
+					point.setProbWeight(weight);
 					points.add(point);
 				}
 			}
@@ -71,13 +70,13 @@ public class VectorDataSource implements DataSource {
 	/**
 	 * @return the points
 	 */
-	public ArrayList<Point> getPoints() {
+	public ArrayList<PointWorld> getPoints() {
 		return points;
 	}
 	
 	@Override
 	public Point getRandPoint() throws NullPointerException {
-		ArrayList<Point> points = getPoints();
+		ArrayList<PointWorld> points = getPoints();
 		
 		Random rand = new Random();
 		Point chosenPoint = null;

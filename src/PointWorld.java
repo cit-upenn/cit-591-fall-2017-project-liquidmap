@@ -8,7 +8,7 @@ public class PointWorld implements Point {
 	private double lat;
 	private double lon;
 	private double time;
-	private float probWeight = 1.0f;
+	private double probWeight = 1.0f;
 
 	/**
 	 * Constructor. Sets the latitude, longitude, and time of the Point.
@@ -27,17 +27,6 @@ public class PointWorld implements Point {
 	 * @param lat The latitude in degrees.
 	 * @param lon The longitude in degrees.
 	 */
-	public PointWorld(double lat, double lon, float probWeight) {
-		this.lat = lat;
-		this.lon = lon;
-		this.probWeight = probWeight;
-	}
-	
-	/**
-	 * Constructor. Sets the latitude and longitude of the Point.
-	 * @param lat The latitude in degrees.
-	 * @param lon The longitude in degrees.
-	 */
 	public PointWorld(double lat, double lon) {
 		this(lat, lon, 0.);
 	}
@@ -48,6 +37,14 @@ public class PointWorld implements Point {
 	 */
 	public void setTime(double time) {
 		this.time = time;
+	}
+	
+	/**
+	 * Sets the probability weight
+	 * @param weight the probability weight between 0 and 1
+	 */
+	public void setProbWeight(double weight) {
+		this.probWeight = weight;
 	}
 
 	/**
@@ -78,7 +75,7 @@ public class PointWorld implements Point {
 	 * gets the probability weight of the Point
 	 * @return probability weight between 0 and 1
 	 */
-	public float getWeight() {
+	public double getWeight() {
 		return probWeight;
 	}
 
