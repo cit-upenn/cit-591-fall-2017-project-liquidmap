@@ -28,18 +28,18 @@ public class VectorDataSource implements DataSource {
 	private String fileType;
 	private ArrayList<Point> points;
 
-	
+
 	public VectorDataSource(String fileName) {
-		
+
 		fileReader = new FileReader(fileName);
 		lines = fileReader.getLines();
-		
+
 		for (String line : lines) {
 			Matcher matcher = Pattern.compile("[\\d]*\\.[\\d]*").matcher(line);
-			
+
 			while (matcher.find()) {
 				ArrayList<Double> matches = new ArrayList<>();
-				
+
 				for (int i = 0; i < matcher.groupCount(); i++) {
 					for (int j = 0; j < 2; j++) {
 						double match = Double.parseDouble(matcher.group());
@@ -50,18 +50,17 @@ public class VectorDataSource implements DataSource {
 				if (matches.size() == 2) {
 					PointWorld point = new PointWorld(matches.get(0), matches.get(1));
 					points.add(point);
-				//if weights are provided, then use em!
+					//if weights are provided, then use em!
 				} else if (matches.size() == 3) {
 					double dblWeight = matches.get(2);
 					float weight = (float) dblWeight;
-					
+
 					PointWorld point = new PointWorld(matches.get(0), matches.get(1), weight);
 					points.add(point);
 				}
 			}
 		}
 	}
-
 	/**
 	 * @return the lines
 	 */

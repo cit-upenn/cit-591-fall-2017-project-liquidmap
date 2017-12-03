@@ -27,8 +27,12 @@ public class FileReader {
 			if (goodFileType()) {
 				while (in.hasNextLine()) {
 					String line = in.nextLine();
-					lines.add(line);
+					Matcher matcher = Pattern.compile("(?<!.*)\\d*(?!.*)").matcher(line);
+					if (!matcher.find()) { 
+						lines.add(line);
+					}
 				}
+				
 			} else {
 				System.out.println("Currently only .csv files supported");
 			}
