@@ -18,15 +18,15 @@ public class FileReader {
 	
 	public FileReader(String fileName) {
 		this.fileName = fileName;
-
+		lines = new ArrayList<String>();
+		File file = new File(fileName);
+		
 		try {
-			
-			File file = new File(fileName);
 			Scanner in = new Scanner(file);
-			
+			in.useDelimiter(",");
 			if (goodFileType()) {
-				while (in.hasNextLine()) {
-					String line = in.nextLine();
+				while (in.hasNext()) {
+					String line = in.next();
 					Matcher matcher = Pattern.compile("(?<!.*)\\d*(?!.*)").matcher(line);
 					if (!matcher.find()) { 
 						lines.add(line);

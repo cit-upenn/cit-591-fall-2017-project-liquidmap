@@ -25,7 +25,6 @@ import org.openstreetmap.osmosis.osmbinary.file.FileFormatException;
 public class VectorDataSource implements DataSource {
 	private FileReader fileReader;
 	private ArrayList<String> lines;
-	private String fileType;
 	private ArrayList<Point> points;
 
 
@@ -33,6 +32,7 @@ public class VectorDataSource implements DataSource {
 
 		fileReader = new FileReader(fileName);
 		lines = fileReader.getLines();
+		points = new ArrayList<Point>();
 
 		for (String line : lines) {
 			Matcher matcher = Pattern.compile("[\\d]*\\.[\\d]*").matcher(line);
@@ -66,13 +66,6 @@ public class VectorDataSource implements DataSource {
 	 */
 	public ArrayList<String> getLines() {
 		return lines;
-	}
-
-	/**
-	 * @return the fileType
-	 */
-	public String getFileType() {
-		return fileType;
 	}
 
 	/**
