@@ -107,9 +107,4 @@ public class PointScreen implements Point {
 		
 		return dblDistance;
 	}
-
-	@Override
-	public float getWeight() {
-		return 1;
-	}
 }

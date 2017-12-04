@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class VectorDataSourceTest {
-	private ArrayList<Point> points;
+	private ArrayList<PointWorld> points;
 	private VectorDataSource vds;
 	
 	@Before
