@@ -23,20 +23,17 @@ public class FileReader {
 		
 		try {
 			Scanner in = new Scanner(file);
-			in.useDelimiter(",");
+			//make sure its a .csv
 			if (goodFileType()) {
-				while (in.hasNext()) {
-					String line = in.next();
-					Matcher matcher = Pattern.compile("(?<!.*)\\d*(?!.*)").matcher(line);
-					if (!matcher.find()) { 
-						lines.add(line);
-					}
+				while (in.hasNextLine()) {
+					String line = in.nextLine();
+					lines.add(line);
 				}
-				
+
 			} else {
-				System.out.println("Currently only .csv files supported");
+				System.out.println("Currently only tab delimited .txt files supported");
 			}
-			
+
 			in.close();
 			
 		} catch (FileNotFoundException fnfe) {
@@ -52,7 +49,7 @@ public class FileReader {
 			fileType = matcher.group(1);
 		}
 		
-		if (fileType.equalsIgnoreCase("csv")) {
+		if (fileType.equalsIgnoreCase("txt")) {
 			return true;
 		} else {
 			return false;

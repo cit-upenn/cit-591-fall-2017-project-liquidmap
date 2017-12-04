@@ -27,7 +27,6 @@ public class VectorDataSource implements DataSource {
 	private ArrayList<String> lines;
 	private ArrayList<PointWorld> points;
 
-
 	public VectorDataSource(String fileName) {
 
 		fileReader = new FileReader(fileName);
@@ -35,38 +34,30 @@ public class VectorDataSource implements DataSource {
 		points = new ArrayList<PointWorld>();
 
 		for (String line : lines) {
-			Matcher matcher = Pattern.compile("[\\d]*\\.[\\d]*").matcher(line);
-
-			while (matcher.find()) {
-				ArrayList<Double> matches = new ArrayList<>();
-
-				for (int i = 0; i < matcher.groupCount(); i++) {
-					for (int j = 0; j < 2; j++) {
-						double match = Double.parseDouble(matcher.group());
-						matches.add(match);
-					}
-				}
-				//constructing a Point with just a Lat/Lng pair and weights set to 1
-				if (matches.size() == 2) {
-					PointWorld point = new PointWorld(matches.get(0), matches.get(1));
-					points.add(point);
-					//if weights are provided, then use em!
-				} else if (matches.size() == 3) {
-					double weight = matches.get(2);
-					PointWorld point = new PointWorld(matches.get(0), matches.get(1));
-					point.setProbWeight(weight);
-					points.add(point);
-				}
+			String[] lineArray = line.split("	");
+			double lat = Double.parseDouble(lineArray[0]);
+			double lng = Double.parseDouble(lineArray[1]);
+			//constructing a Point with just a Lat/Lng pair and weights set to 1
+			if (lineArray.length == 2) {
+				PointWorld point = new PointWorld(lat, lng);
+				points.add(point);
+				//if weights are provided, then use em!
+			} else if (lineArray.length == 3) {
+				double weight = Double.parseDouble(lineArray[2]);
+				PointWorld point = new PointWorld(lat, lng);
+				point.setProbWeight(weight);
+				points.add(point);
 			}
 		}
 	}
+
 	/**
 	 * @return the lines
 	 */
 	public ArrayList<String> getLines() {
 		return lines;
 	}
-
+	
 	/**
 	 * @return the points
 	 */

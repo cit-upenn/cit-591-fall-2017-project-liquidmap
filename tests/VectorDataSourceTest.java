@@ -11,14 +11,15 @@ public class VectorDataSourceTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.vds = new VectorDataSource("VDSTest.csv");
+		this.vds = new VectorDataSource("VDSTest.txt");
 		this.points = vds.getPoints();
+		System.out.println(points.size());
 	}
 
 	@Test
 	public void testPointLat() {
-		assertEquals("The first index should have a latitude of 42.1234567",
-				42.1234567, points.get(0).getLat());
+		assertEquals("The first index should have a latitude of 39.949741",
+				39.949741, points.get(0).getLat(), 0.00001);
 	}
 
 }
