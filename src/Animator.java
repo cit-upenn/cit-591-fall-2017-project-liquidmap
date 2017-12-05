@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class Animator {
 	Random random;
-	Writer writer;
+	FileWriter fileWriter;
 	String strFileName;
 	int intCanvasSize;
 	String strCanvasColor;
@@ -25,7 +25,7 @@ public class Animator {
 	 */
 	public Animator () {
 		random = new Random();
-		writer = new Writer();
+		fileWriter = new FileWriter();
 	}
 	
 	//TO DO: ensure intStrokeLength behaves as expected
@@ -60,7 +60,7 @@ public class Animator {
 			listTrips.get(i).offsetTime(dblTimeBetweenSpawns * i);
 		}
 		
-		writer.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) 
+		fileWriter.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) 
 		+ generateScriptBlock(listTrips), strFileName + ".html");
 	}
 	

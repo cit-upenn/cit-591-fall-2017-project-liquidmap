@@ -4,9 +4,8 @@ import java.io.PrintWriter;
  * Writes a string to a text file.
  * Uses the default constructor.
  * @author Matt Surka
- *
  */
-public class Writer {
+public class FileWriter {
 	
 	/**
 	 * Writes a string to a text file.
