@@ -45,7 +45,7 @@ public class VectorDataSource implements DataSource {
 			} else if (lineArray.length == 3) {
 				double weight = Double.parseDouble(lineArray[2]);
 				PointWorld point = new PointWorld(lat, lng);
-				point.setProbWeight(weight);
+				point.setWeight(weight);
 				points.add(point);
 			}
 		}

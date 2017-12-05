@@ -4,11 +4,7 @@
  * Time is measured in seconds.
  * @author Brian Edwards, Matt Surka
  */
-public class PointScreen implements Point {
-	private double lat;
-	private double lon;
-	private double time;
-
+public class PointScreen extends Point {
 	/**
 	 * Constructor. Sets the latitude, longitude, and time of the Point.
 	 * @param lat The latitude in pixels.
@@ -16,50 +12,17 @@ public class PointScreen implements Point {
 	 * @param time The time in seconds.
 	 */
 	public PointScreen(double lat, double lon, double time) {
-		this.lat = lat;
-		this.lon = lon;
-		this.time = time;
+		super(lat, lon, time);
 	}
-
+	
 	/**
 	 * Constructor. Sets the latitude and longitude of the Point.
+	 * Sets the time to zero.
 	 * @param lat The latitude in pixels.
 	 * @param lon The longitude in pixels.
 	 */
 	public PointScreen(double lat, double lon) {
-		this(lat, lon, 0.);
-	}
-
-	/**
-	 * Sets the time of the Point.
-	 * @param time The time in seconds.
-	 */
-	public void setTime(double time) {
-		this.time = time;
-	}
-
-	/**
-	 * Gets the latitude of the Point.
-	 * @return The latitude in pixels.
-	 */
-	public double getLat() {
-		return lat;
-	}
-
-	/**
-	 * Gets the longitude of the Point.
-	 * @return The longitude in pixels.
-	 */
-	public double getLon() {
-		return lon;
-	}
-
-	/**
-	 * Gets the time of the Point.
-	 * @return The time of the Point in seconds.
-	 */
-	public double getTime() {
-		return time;
+		super(lat, lon);
 	}
 
 	/**
@@ -79,6 +42,7 @@ public class PointScreen implements Point {
 	 * @param pointOther The Point to compare to.
 	 * @return True if the Points are equal; false otherwise.
 	 */
+	@Override
 	public boolean equals(Point pointOther) {
 		double closeDistance = 0;
 		double closeTime = 0;
@@ -96,6 +60,7 @@ public class PointScreen implements Point {
 	 * @param pointOther The Point to compare to.
 	 * @return The distance between the Points in pixels.
 	 */
+	@Override
 	public double distanceTo(Point pointOther) {
 		double dblDistance = 0;
 		double dblDistanceX = 0;

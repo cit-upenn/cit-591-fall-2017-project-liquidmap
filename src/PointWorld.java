@@ -4,12 +4,9 @@
  * Time is measured in seconds.
  * @author Brian Edwards, Matt Surka
  */
-public class PointWorld implements Point {
-	private double lat;
-	private double lon;
-	private double time;
-	private double probWeight = 1.0f;
-
+public class PointWorld extends Point {
+	private double weight;
+	
 	/**
 	 * Constructor. Sets the latitude, longitude, and time of the Point.
 	 * @param lat The latitude in degrees.
@@ -17,66 +14,33 @@ public class PointWorld implements Point {
 	 * @param time The time in seconds.
 	 */
 	public PointWorld(double lat, double lon, double time) {
-		this.lat = lat;
-		this.lon = lon;
-		this.time = time;
+		super(lat, lon, time);
 	}
 	
 	/**
 	 * Constructor. Sets the latitude and longitude of the Point.
-	 * @param lat The latitude in degrees.
-	 * @param lon The longitude in degrees.
+	 * Sets the time to zero.
+	 * @param lat The latitude in pixels.
+	 * @param lon The longitude in pixels.
 	 */
 	public PointWorld(double lat, double lon) {
-		this(lat, lon, 0.);
-	}
-
-	/**
-	 * Sets the time of the Point.
-	 * @param time The time in seconds.
-	 */
-	public void setTime(double time) {
-		this.time = time;
+		super(lat, lon);
 	}
 	
 	/**
-	 * Sets the probability weight
-	 * @param weight the probability weight between 0 and 1
+	 * Sets the probability weight of the Point.
+	 * @param weight The probability weight between 0 and 1.
 	 */
-	public void setProbWeight(double weight) {
-		this.probWeight = weight;
-	}
-
-	/**
-	 * Gets the latitude of the Point.
-	 * @return The latitude in degrees.
-	 */
-	public double getLat() {
-		return lat;
-	}
-
-	/**
-	 * Gets the longitude of the Point.
-	 * @return The longitude in degrees.
-	 */
-	public double getLon() {
-		return lon;
-	}
-
-	/**
-	 * Gets the time of the Point.
-	 * @return The time of the Point in seconds.
-	 */
-	public double getTime() {
-		return time;
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 	
 	/**
-	 * gets the probability weight of the Point
-	 * @return probability weight between 0 and 1
+	 * Gets the probability weight of the Point.
+	 * @return The probability weight between 0 and 1.
 	 */
 	public double getWeight() {
-		return probWeight;
+		return weight;
 	}
 
 	/**
@@ -96,6 +60,7 @@ public class PointWorld implements Point {
 	 * @param pointOther The Point to compare to.
 	 * @return True if the Points are equal; false otherwise.
 	 */
+	@Override
 	public boolean equals(Point pointOther) {
 		double closeDistance = 3;
 		double closeTime = 1E-3;
@@ -113,6 +78,7 @@ public class PointWorld implements Point {
 	 * @param pointOther The Point to compare to.
 	 * @return The distance between the Points in degrees.
 	 */
+	@Override
 	public double distanceTo(Point pointOther) {
 		double dblDistance = 0;
 		double dblDistanceX = 0;

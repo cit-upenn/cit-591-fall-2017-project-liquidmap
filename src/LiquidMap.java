@@ -12,8 +12,12 @@ public class LiquidMap {
 		readSettings();
 		importDataSources();
 		getTrips();
-		// convertToPixelTrips();
-		// generateOutput();
+		Animator animator = new Animator();
+		
+		// TO DO:
+		// initialize pointWorldUpperLeft and pointWorldLowerRight appropriately
+		Converter converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight, 600);
+		animator.animateTrips(converter.getConvertedListTrips(trips), "animation", 600, "#000000", 1, 200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
 	}
 
 	private void readSettings() {
