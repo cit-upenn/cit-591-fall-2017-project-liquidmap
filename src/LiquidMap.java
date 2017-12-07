@@ -7,22 +7,16 @@ public class LiquidMap {
 	private Settings settings;
 	private HashMap<String, DataSource> dataSources = new HashMap<>();
 	ArrayList<Trip> trips = new ArrayList<>();
+	ArrayList<Trip> convTrips = new ArrayList<>();
+	Converter converter;
 
 	public LiquidMap() {
 		readSettings();
 		importDataSources();
 		getTrips();
-		Animator animator = new Animator();
-
-		PointWorld pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
-		PointWorld pointWorldLowerRight = settings.outputVars.pointLowerRight;
-		Integer outputWidth = settings.outputVars.imageWidth;
-
-		Converter converter = new Converter(pointWorldUpperLeft,
-				pointWorldLowerRight, outputWidth);
-		animator.animateTrips(converter.getConvertedListTrips(trips),
-				"animation", outputWidth, "#000000", 1, 200, "#AAFF88",
-				"#FFFFFF", "#FFFFFF", 0.05);
+		buildConverter();
+		convertTrips();
+		animateTrips();
 	}
 
 	private void readSettings() {
@@ -74,8 +68,30 @@ public class LiquidMap {
 				trip.scaleTime(sMult);
 				trip.offsetTime(tOff);
 				trips.add(trip);
+				goodTripCount++;
+				System.out.println("  trip added");
 			}
 		}
+	}
+
+	private void convertTrips() {
+		convTrips = converter.getConvertedListTrips(trips);
+	}
+
+	private void buildConverter() {
+		PointWorld pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
+		PointWorld pointWorldLowerRight = settings.outputVars.pointLowerRight;
+		Integer outputWidth = settings.outputVars.imageWidth;
+		converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight,
+				outputWidth);
+	}
+
+	private void animateTrips() {
+		Animator animator = new Animator();
+		Integer outputWidth = settings.outputVars.imageWidth;
+		animator.animateTrips(convTrips, "animation", outputWidth, "#000000", 1,
+				200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
+
 	}
 
 	public static void main(String[] args) {
