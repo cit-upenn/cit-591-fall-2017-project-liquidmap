@@ -57,11 +57,10 @@ public class Converter {
 	 * @param imageWidth The image width in pixels.
 	 */
 	public Converter(PointWorld pointWorldUpperLeft, PointWorld pointWorldLowerRight, int imageWidth) {
-		double deltaLat = pointWorldUpperLeft.getLat() - pointWorldUpperLeft.getLat();
-		double deltaLon = pointWorldUpperLeft.getLon() - pointWorldUpperLeft.getLon();
-		degLonXPixConvFactor = deltaLon / imageWidth;
+		double deltaLat = Math.abs(pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
+		double deltaLon = Math.abs(pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
 
-		Double meanLat = (pointWorldUpperLeft.getLat() + pointWorldUpperLeft.getLat()) / 2;
+		Double meanLat = (pointWorldUpperLeft.getLat() + pointWorldLowerRight.getLat()) / 2;
 		double sizeRatio = Math.cos(Math.toRadians(meanLat));
 
 		int height = new Double(sizeRatio * imageWidth * deltaLon / deltaLat).intValue();
@@ -71,6 +70,19 @@ public class Converter {
 		degLonXPixConvFactor = deltaLon / imageWidth;
 		latAt0Y = pointWorldUpperLeft.getLat();
 		lonAt0X = pointWorldUpperLeft.getLon();
+		
+		System.out.println("pointWorldUpperLeft: \t" + pointWorldUpperLeft);
+		System.out.println("pointWorldLowerRight: \t" + pointWorldLowerRight);
+		System.out.println("imageWidth: \t\t" + imageWidth);
+		System.out.println("deltaLat: \t\t" + deltaLat);
+		System.out.println("deltaLon: \t\t" + deltaLon);
+		System.out.println("meanLat: \t\t" + meanLat);
+		System.out.println("sizeRatio: \t\t" + sizeRatio);
+		System.out.println("height: \t\t" + height);
+		System.out.println("degLatYPixConvFactor: \t" + degLatYPixConvFactor);
+		System.out.println("degLonXPixConvFactor: \t" + degLonXPixConvFactor);
+		System.out.println("latAt0Y: \t\t" + latAt0Y);
+		System.out.println("lonAt0X: \t\t" + lonAt0X);
 	}
 	
 	/**
@@ -128,11 +140,11 @@ public class Converter {
 		if (point.getClass() == PointWorld.class) {								
 			// convert from world space to screen space
 			double[] arrDblLatLon = convertPositionWorldToScreen(point.getLat(), point.getLon());
-			return new PointScreen(arrDblLatLon[0], arrDblLatLon[1]);
+			return new PointScreen(arrDblLatLon[0], arrDblLatLon[1], point.getTime());
 		} else if (point.getClass() == PointScreen.class) {						
 			// convert from screen space to world space
 			double[] arrDblLatLon = convertPositionScreenToWorld(point.getLat(), point.getLon());
-			return new PointWorld(arrDblLatLon[0], arrDblLatLon[1]);
+			return new PointWorld(arrDblLatLon[0], arrDblLatLon[1], point.getTime());
 		}
 		
 		return null;

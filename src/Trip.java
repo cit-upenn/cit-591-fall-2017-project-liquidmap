@@ -132,8 +132,7 @@ public class Trip implements Cloneable {
 	}
 
 	/**
-	 * Rturns a short description of the Trip as a String.
-	 *
+	 * Returns a description of the Trip as a String.
 	 * @return A description of the Trip as a String.
 	 */
 	public String getDescrip() {

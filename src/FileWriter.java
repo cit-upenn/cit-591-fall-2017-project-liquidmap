@@ -20,6 +20,6 @@ public class FileWriter {
 		} catch (Exception exception) {
 			System.out.println("Could not write to file: " + strFileName);
 		}
-		System.out.println("... done!");
+		System.out.println("...done!");
 	}
 }

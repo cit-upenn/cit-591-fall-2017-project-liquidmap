@@ -32,8 +32,7 @@ public class LiquidMap {
 			PointWorld pt2 = settings.rasterDataDescs.get(i).point2;
 			Pixel px1 = settings.rasterDataDescs.get(i).pixel1;
 			Pixel px2 = settings.rasterDataDescs.get(i).pixel2;
-			RasterDataSource rds = new RasterDataSource(mapFileName, pt1, px1,
-					pt2, px2);
+			RasterDataSource rds = new RasterDataSource(mapFileName, pt1, px1, pt2, px2);
 			dataSources.put(name, rds);
 		}
 
@@ -74,7 +73,7 @@ public class LiquidMap {
 		}
 	}
 
-	private void convertTrips() {
+	private void convertTrips() {	
 		convTrips = converter.getConvertedListTrips(trips);
 	}
 

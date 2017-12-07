@@ -202,7 +202,7 @@ public class Animator {
 				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
 				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance), 0, Integer.MAX_VALUE);
 				int intLegTime = Mathf.roundToInt(trip.computeTripTime(j - 1, j));
-				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime() * 1000);
+				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime());
 				
 				if (j == trip.getPoints().size() - 1) {
 					intPositionFront = 100;
