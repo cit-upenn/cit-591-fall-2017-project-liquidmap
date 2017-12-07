@@ -89,7 +89,7 @@ public class LiquidMap {
 		Animator animator = new Animator();
 		Integer outputWidth = settings.outputVars.imageWidth;
 		animator.animateTrips(convTrips, "animation", outputWidth, "#000000", 1,
-				200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
+				500, "#AAFF88", "#FFFFFF", "#FFFFFF", 0);
 
 	}
 

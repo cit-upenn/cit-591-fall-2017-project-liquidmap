@@ -57,32 +57,19 @@ public class Converter {
 	 * @param imageWidth The image width in pixels.
 	 */
 	public Converter(PointWorld pointWorldUpperLeft, PointWorld pointWorldLowerRight, int imageWidth) {
-		double deltaLat = Math.abs(pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
-		double deltaLon = Math.abs(pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
+		double deltaLat = pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat();
+		double deltaLon = pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon();
 
 		Double meanLat = (pointWorldUpperLeft.getLat() + pointWorldLowerRight.getLat()) / 2;
 		double sizeRatio = Math.cos(Math.toRadians(meanLat));
 
-		int height = new Double(sizeRatio * imageWidth * deltaLon / deltaLat).intValue();
-		height = Math.abs(height);
+		int imageHeight = new Double(sizeRatio * imageWidth * deltaLon / deltaLat).intValue();
+		imageHeight = Math.abs(imageHeight);
 
-		degLatYPixConvFactor = deltaLat / height;
+		degLatYPixConvFactor = deltaLat / imageHeight;
 		degLonXPixConvFactor = deltaLon / imageWidth;
 		latAt0Y = pointWorldUpperLeft.getLat();
 		lonAt0X = pointWorldUpperLeft.getLon();
-		
-		System.out.println("pointWorldUpperLeft: \t" + pointWorldUpperLeft);
-		System.out.println("pointWorldLowerRight: \t" + pointWorldLowerRight);
-		System.out.println("imageWidth: \t\t" + imageWidth);
-		System.out.println("deltaLat: \t\t" + deltaLat);
-		System.out.println("deltaLon: \t\t" + deltaLon);
-		System.out.println("meanLat: \t\t" + meanLat);
-		System.out.println("sizeRatio: \t\t" + sizeRatio);
-		System.out.println("height: \t\t" + height);
-		System.out.println("degLatYPixConvFactor: \t" + degLatYPixConvFactor);
-		System.out.println("degLonXPixConvFactor: \t" + degLonXPixConvFactor);
-		System.out.println("latAt0Y: \t\t" + latAt0Y);
-		System.out.println("lonAt0X: \t\t" + lonAt0X);
 	}
 	
 	/**
@@ -95,7 +82,8 @@ public class Converter {
 		double dblLatConverted = (dblLon - lonAt0X) / degLonXPixConvFactor;
 		double dblLonConverted = (dblLat - latAt0Y) / degLatYPixConvFactor;
 		
-		return new double[] {dblLatConverted, dblLonConverted};
+		//TO DO: remove the hack below (multiplying by -1)
+		return new double[] {dblLatConverted * -1, dblLonConverted * -1};
 	}
 	
 	/**
