@@ -130,4 +130,19 @@ public class Trip implements Cloneable {
 		strb.append(" ]");
 		return strb.toString();
 	}
+
+	/**
+	 * Rturns a short description of the Trip as a String.
+	 *
+	 * @return A description of the Trip as a String.
+	 */
+	public String getDescrip() {
+		StringBuilder strb = new StringBuilder();
+		strb.append("trip: ");
+		strb.append(this.listPoints.size());
+		strb.append(" points; ");
+		strb.append(Math.round(this.maxTime()));
+		strb.append("(s)");
+		return strb.toString();
+	}
 }
