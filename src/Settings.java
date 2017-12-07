@@ -13,6 +13,7 @@ public class Settings {
 	public final ArrayList<RasterDataDesc> rasterDataDescs = new ArrayList<RasterDataDesc>();
 	public final ArrayList<VectorDataDesc> vectorDataDescs = new ArrayList<VectorDataDesc>();
 	public final RoutingVars routingVars = new RoutingVars();
+	public final OutputVars outputVars = new OutputVars();
 
 	Settings() {
 	}
@@ -78,6 +79,20 @@ public class Settings {
 
 	}
 
+	public class OutputVars {
+
+		public final Integer imageWidth = null;
+		public final Point pointUpperLeft = null;
+		public final Point pointLowerRight = null;
+
+		@Override
+		public String toString() {
+			String str = "  imageWidth: " + imageWidth + "  pointUpperLeft:  "
+					+ pointUpperLeft + "  pointLowerRight:  " + pointLowerRight;
+			return str;
+		}
+	}
+
 	@Override
 	public String toString() {
 
@@ -94,7 +109,9 @@ public class Settings {
 			str += "   " + desc.toString() + "\n";
 		}
 		str += " ]\n";
-		str += routingVars;
+		str += "routingVars:\n" + routingVars + "\n";
+		str += "outputVars:\n" + outputVars;
+
 		return str;
 	}
 }

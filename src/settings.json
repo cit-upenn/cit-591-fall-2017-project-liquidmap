@@ -3,68 +3,48 @@
     "rasterDataDescs": [
         {
             "name": "pop2012",
-            "mapFileName": "mapPhillyPopDensity2012.png",
+            "mapFileName": "PhillyPopDensity2012.png",
             "point1": {
-                "lat": 1313,
-                "lon": 12313
+                "lat": 40.121069,
+                "lon": -75.259564
             },
             "pixel1": {
-                "pixelX": 123,
-                "pixelY": 123
+                "pixelX": 40,
+                "pixelY": 34
             },
             "point2": {
-                "lat": 1313,
-                "lon": 12313
+                "lat": 39.860137,
+                "lon": -74.974606
             },
             "pixel2": {
-                "pixelX": 123,
-                "pixelY": 123
-            }
-        },
-        {
-            "name": "pop2017",
-            "mapFileName": "mapPhillyPopDensity2017.png",
-            "point1": {
-                "lat": 1313,
-                "lon": 12313
-            },
-            "pixel1": {
-                "pixelX": 123,
-                "pixelY": 123
-            },
-            "point2": {
-                "lat": 1313,
-                "lon": 12313
-            },
-            "pixel2": {
-                "pixelX": 123,
-                "pixelY": 123
+                "pixelX": 458,
+                "pixelY": 530
             }
         }
     ],
     "vectorDataDescs": [
         {
             "name": "home",
-            "vecFileName": "homeLatLon.txt"
+            "vecFileName": "VDSTest.txt"
         }
     ],
     "routingVars": {
-        "routeBeg": "home",
-        "routeEnd": "pop2017",
+        "routeBeg": "pop2012",
+        "routeEnd": "pop2012",
         "routeCount": 1000,
         "routeMaxTime": 800,
         "timeStartVariance": 100,
         "speedVariance": 0.20
     },
     "outputVars": {
-        "imageWidth": 500,
+        "imageWidth": 600,
         "pointUpperLeft": {
-            "lat": 111231,
-            "lon": 123432
+                "lat": 40.121069,
+                "lon": -75.259564
         },
         "pointLowerRight": {
-            "lat": 111231,
-            "lon": 123432
+                "lat": 39.860137,
+                "lon": -74.974606
         }
     }
 }
