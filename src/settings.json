@@ -31,7 +31,7 @@
     "routingVars": {
         "routeBeg": "pop2012",
         "routeEnd": "pop2012",
-        "routeCount": 1000,
+        "routeCount": 50,
         "routeMinTime": 5,
         "routeMaxTime": 10000,
         "timeStartVariance": 100,
