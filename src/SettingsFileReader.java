@@ -32,6 +32,7 @@ public class SettingsFileReader {
 	public static void main(String[] args) {
 		SettingsFileReader sfr = new SettingsFileReader();
 		Settings settings = sfr.settings;
+
 	}
 
 }

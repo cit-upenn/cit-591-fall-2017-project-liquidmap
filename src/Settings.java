@@ -22,9 +22,9 @@ public class Settings {
 
 		public final String name = null;
 		public final String mapFileName = null;
-		public final Point point1 = null;
+		public final PointWorld point1 = null;
 		public final Pixel pixel1 = null;
-		public final Point point2 = null;
+		public final PointWorld point2 = null;
 		public final Pixel pixel2 = null;
 
 		public RasterDataDesc() {
@@ -82,8 +82,8 @@ public class Settings {
 	public class OutputVars {
 
 		public final Integer imageWidth = null;
-		public final Point pointUpperLeft = null;
-		public final Point pointLowerRight = null;
+		public final PointWorld pointUpperLeft = null;
+		public final PointWorld pointLowerRight = null;
 
 		@Override
 		public String toString() {

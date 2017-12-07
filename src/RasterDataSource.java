@@ -174,14 +174,14 @@ public class RasterDataSource implements DataSource {
 	}
 
 	@Override
-	public Point getRandPoint() throws NullPointerException {
+	public PointWorld getRandPoint() throws NullPointerException {
 		Pixel pixel = getRandPixel();
 		PointWorld randPoint = converter.getPointFromPixel(pixel);
 		return randPoint;
 	}
-	
-	//****Instance Variable Getters****//
-	
+
+	// ****Instance Variable Getters****//
+
 	/**
 	 * @return the totalPixels
 	 */

@@ -64,13 +64,13 @@ public class VectorDataSource implements DataSource {
 	public ArrayList<PointWorld> getPoints() {
 		return points;
 	}
-	
+
 	@Override
-	public Point getRandPoint() throws NullPointerException {
+	public PointWorld getRandPoint() throws NullPointerException {
 		ArrayList<PointWorld> points = getPoints();
 		
 		Random rand = new Random();
-		Point chosenPoint = null;
+		PointWorld chosenPoint = null;
 		int count = 0;
 		
 		while (count < 10000) {
