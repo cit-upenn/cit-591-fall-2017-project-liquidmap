@@ -13,11 +13,16 @@ public class LiquidMap {
 		importDataSources();
 		getTrips();
 		Animator animator = new Animator();
-		
-		// TO DO:
-		// initialize pointWorldUpperLeft and pointWorldLowerRight appropriately
-		Converter converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight, 600);
-		animator.animateTrips(converter.getConvertedListTrips(trips), "animation", 600, "#000000", 1, 200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
+
+		Point pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
+		Point pointWorldLowerRight = settings.outputVars.pointLowerRight;
+		Integer outputWidth = settings.outputVars.imageWidth;
+
+		Converter converter = new Converter((PointWorld) pointWorldUpperLeft,
+				(PointWorld) pointWorldLowerRight, outputWidth);
+		animator.animateTrips(converter.getConvertedListTrips(trips),
+				"animation", outputWidth, "#000000", 1, 200, "#AAFF88",
+				"#FFFFFF", "#FFFFFF", 0.05);
 	}
 
 	private void readSettings() {
@@ -33,7 +38,8 @@ public class LiquidMap {
 			Point pt2 = settings.rasterDataDescs.get(i).point2;
 			Pixel px1 = settings.rasterDataDescs.get(i).pixel1;
 			Pixel px2 = settings.rasterDataDescs.get(i).pixel2;
-			RasterDataSource rds = new RasterDataSource(mapFileName);
+			RasterDataSource rds = new RasterDataSource(mapFileName,
+					(PointWorld) pt1, px1, (PointWorld) pt2, px2);
 			dataSources.put(name, rds);
 		}
 
@@ -54,6 +60,8 @@ public class LiquidMap {
 		while (goodTripCount < settings.routingVars.routeCount) {
 			Point ptBeg = sourceBeg.getRandPoint();
 			Point ptEnd = sourceEnd.getRandPoint();
+			System.out.println(ptBeg);
+			System.out.println(ptEnd);
 			Trip trip = ghi.getTrip(ptBeg, ptEnd);
 			if (trip.maxTime() < settings.routingVars.routeMaxTime) {
 				double tVar = settings.routingVars.timeStartVariance;
