@@ -59,6 +59,7 @@ public class Settings {
 		public final String routeBeg = null;
 		public final String routeEnd = null;
 		public final Integer routeCount = null;
+		public final Double routeMinTime = null;
 		public final Double routeMaxTime = null;
 		public final Double timeStartVariance = null;
 		public final Double speedVariance = null;
@@ -69,8 +70,8 @@ public class Settings {
 		@Override
 		public String toString() {
 			String str = "Data will consist of " + routeCount + " trips from '"
-					+ routeBeg + "' to '" + routeEnd
-					+ "' that take no more that " + routeMaxTime
+					+ routeBeg + "' to '" + routeEnd + "' that take between "
+					+ routeMinTime + " and " + routeMaxTime
 					+ " seconds with start times distrubited over "
 					+ timeStartVariance + " seconds with speeds varying over "
 					+ (speedVariance * 100) + "%";

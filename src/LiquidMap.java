@@ -63,7 +63,9 @@ public class LiquidMap {
 			System.out.println(ptBeg);
 			System.out.println(ptEnd);
 			Trip trip = ghi.getTrip(ptBeg, ptEnd);
-			if (trip.maxTime() < settings.routingVars.routeMaxTime) {
+			System.out.println(trip.getDescrip());
+			if (trip.maxTime() > settings.routingVars.routeMinTime
+					&& trip.maxTime() < settings.routingVars.routeMaxTime) {
 				double tVar = settings.routingVars.timeStartVariance;
 				double tOff = tVar * rdn.nextDouble();
 				double sVar = settings.routingVars.speedVariance;

@@ -56,7 +56,11 @@ public class Trip implements Cloneable {
 	 * @return The time at the end of the Trip in seconds.
 	 */
 	public double maxTime() {
-		return listPoints.get(listPoints.size() - 1).getTime();
+		if (listPoints.size() == 0) {
+			return 0;
+		} else {
+			return listPoints.get(listPoints.size() - 1).getTime();
+		}
 	}
 
 	/**
