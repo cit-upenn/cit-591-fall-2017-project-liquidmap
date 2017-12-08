@@ -56,22 +56,27 @@ public class Converter {
 	 * @param pointWorldLowerRight PointWorld in the lower-right corner.
 	 * @param imageWidth The image width in pixels.
 	 */
-	public Converter(PointWorld pointWorldUpperLeft, PointWorld pointWorldLowerRight, int imageWidth) {
-		double deltaLat = pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat();
-		double deltaLon = pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon();
+	public Converter(PointWorld pointWorldUpperLeft,
+			PointWorld pointWorldLowerRight, int imageWidth) {
+		double deltaLat = Math.abs(
+				pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
+		double deltaLon = Math.abs(
+				pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
 
-		Double meanLat = (pointWorldUpperLeft.getLat() + pointWorldLowerRight.getLat()) / 2;
+		Double meanLat = (pointWorldUpperLeft.getLat()
+				+ pointWorldLowerRight.getLat()) / 2;
 		double sizeRatio = Math.cos(Math.toRadians(meanLat));
-
-		int imageHeight = new Double(sizeRatio * imageWidth * deltaLon / deltaLat).intValue();
+		// "m per deg lon" / "m per deg lat"
+		int imageHeight = new Double(
+				imageWidth * deltaLat / (deltaLon * sizeRatio)).intValue();
 		imageHeight = Math.abs(imageHeight);
 
-		degLatYPixConvFactor = deltaLat / imageHeight;
+		degLatYPixConvFactor = -deltaLat / imageHeight;
 		degLonXPixConvFactor = deltaLon / imageWidth;
 		latAt0Y = pointWorldUpperLeft.getLat();
 		lonAt0X = pointWorldUpperLeft.getLon();
 	}
-	
+
 	/**
 	 * Converts a position in world space (i.e., degrees) to its corresponding position in screen space (i.e., pixels).
 	 * @param dblLat The latitude in degrees.
