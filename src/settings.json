@@ -5,20 +5,20 @@
             "name": "pop2012",
             "mapFileName": "PhillyPopDensity2012.png",
             "point1": {
-                "lat": 39.85096,
+                "lat": 40.138178,
                 "lon": -75.308141
+            },
+            "point2": {
+                "lat": 39.85096,
+                "lon": -74.929113
             },
             "pixel1": {
                 "pixelX": 0,
-                "pixelY": 550
-            },
-            "point2": {
-                "lat": 40.138178,
-                "lon": -74.929113
+                "pixelY": 0
             },
             "pixel2": {
                 "pixelX": 550,
-                "pixelY": 0
+                "pixelY": 550
             }
         }
     ],
@@ -31,7 +31,7 @@
     "routingVars": {
         "routeBeg": "pop2012",
         "routeEnd": "pop2012",
-        "routeCount": 50,
+        "routeCount": 200,
         "routeMinTime": 5,
         "routeMaxTime": 10000,
         "timeStartVariance": 100,
@@ -40,11 +40,11 @@
     "outputVars": {
         "imageWidth": 600,
         "pointUpperLeft": {
-                "lat": 39.85096,
+                "lat": 40.138178,
                 "lon": -75.308141
         },
         "pointLowerRight": {
-                "lat": 40.138178,
+                "lat": 39.85096,
                 "lon": -74.929113
         }
     }
