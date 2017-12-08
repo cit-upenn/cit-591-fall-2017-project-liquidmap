@@ -2,7 +2,7 @@
  * Represents a position in latitude-longitude-time space.
  * @author Brian Edwards, Matt Surka
  */
-public class Point {
+public abstract class Point {
 	private double lat;
 	private double lon;
 	private double time;
@@ -78,32 +78,12 @@ public class Point {
 	 * @param pointOther The Point to compare to.
 	 * @return True if the Points are equal; false otherwise.
 	 */
-	public boolean equals(Point pointOther) {
-		double closeDistance = 0;
-		double closeTime = 0;
-		
-		double dblDistance = this.distanceTo(pointOther);
-		double dblTimeDifference = Math.abs(getTime() - pointOther.getTime());
-		
-		boolean isCloseInSpace = dblDistance <= closeDistance;
-		boolean isCloseInTime = dblTimeDifference <= closeTime;
-		return isCloseInTime && isCloseInSpace;
-	}
+	public abstract boolean equals(Point pointOther);
 
 	/**
 	 * Computes the distance between this Point and a provided Point.
 	 * @param pointOther The Point to compare to.
 	 * @return The distance between the Points.
 	 */
-	public double distanceTo(Point pointOther) {
-		double dblDistance = 0;
-		double dblDistanceX = 0;
-		double dblDistanceY = 0;
-		
-		dblDistanceX = this.getLat() - pointOther.getLat();
-		dblDistanceY = this.getLon() - pointOther.getLon();		
-		dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));
-		
-		return dblDistance;
-	}
+	public abstract double distanceTo(Point pointOther);
 }
