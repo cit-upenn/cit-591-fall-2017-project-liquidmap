@@ -62,8 +62,7 @@ public class LiquidMap {
 				double tVar = settings.routingVars.timeStartVariance;
 				double tOff = tVar * rdn.nextDouble();
 				double sVar = settings.routingVars.speedVariance;
-				double sOff = tVar * rdn.nextDouble();
-				double sMult = sOff + 1 - sVar / 2;
+				double sMult = sVar * rdn.nextDouble() - sVar / 2 + 1;
 				trip.scaleTime(sMult);
 				trip.offsetTime(tOff);
 				trips.add(trip);
