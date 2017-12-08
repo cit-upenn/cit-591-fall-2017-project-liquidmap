@@ -82,8 +82,7 @@ public class Converter {
 		double dblLatConverted = (dblLon - lonAt0X) / degLonXPixConvFactor;
 		double dblLonConverted = (dblLat - latAt0Y) / degLatYPixConvFactor;
 		
-		//TO DO: remove the hack below (multiplying by -1)
-		return new double[] {dblLatConverted * -1, dblLonConverted * -1};
+		return new double[] {dblLatConverted, dblLonConverted};
 	}
 	
 	/**
