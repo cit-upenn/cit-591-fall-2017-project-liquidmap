@@ -39,7 +39,6 @@ public class RasterDataSource implements DataSource {
 	private ArrayList<Pixel> pixels;
 	private ImageReader imageReader;
 	private BufferedImage img;
-	private int totalPixels;
 	private int lightest;
 	private int darkest;
 	
@@ -67,7 +66,6 @@ public class RasterDataSource implements DataSource {
 		imageReader = new ImageReader(fileName);
 		img = imageReader.getImg();
 		pixels = new ArrayList<>();
-		totalPixels = img.getWidth() * img.getHeight();
 		
 		//reference points
 		
@@ -104,45 +102,7 @@ public class RasterDataSource implements DataSource {
 		lightest = pixels.get(pixels.size() - 1).getRedValue();
 		darkest = pixels.get(0).getRedValue();
 	}
-	/**
-	 * Same constructor but without reference points.
-	 * 
-	 * You won't be able to call getRandPoint() if you use
-	 * this constructor
-	 * 
-	 * @param fileName
-	 */
-	public RasterDataSource(String fileName) {
-		imageReader = new ImageReader(fileName);
-		img = imageReader.getImg();
-		pixels = new ArrayList<>();
-		totalPixels = img.getWidth() * img.getHeight();
-		
-		//create Pixel ArrayList
-		
-		for (int x = 0; x < img.getWidth(); x++) {
-			for (int y = 0; y < img.getHeight(); y++) {
-			
-				int redValue = new Color(img.getRGB(x, y)).getRed();
-				double weight = 0.0d;
-				if (redValue != 255) {
-					weight =  (double) 
-							(1 / (Math.pow(redValue + 1, 1.1)));
-				} else {
-					weight = 0;
-				}
-				Pixel pixel = new Pixel(x, y, redValue, weight) ;
-				pixels.add(pixel);
-			}
-		}
-		
-		//sort Pixel AL to extract lightest and darkest pixels
-		
-		Collections.sort(pixels);
-		lightest = pixels.get(pixels.size() - 1).getRedValue();
-		darkest = pixels.get(0).getRedValue();
-	}
-	
+
 	/**
 	 * @return a random Pixel, with a higher likelihood of being
 	 * chosen going to the darker pixels.
@@ -180,62 +140,10 @@ public class RasterDataSource implements DataSource {
 		return randPoint;
 	}
 
-	// ****Instance Variable Getters****//
-
-	/**
-	 * @return the totalPixels
-	 */
-	public int getTotalPixels() {
-		return totalPixels;
-	}
-
-	/**
-	 * @return the lightest
-	 */
-	public int getLightest() {
-		return lightest;
-	}
-
-	/**
-	 * @return the darkest
-	 */
-	public int getDarkest() {
-		return darkest;
-	}
-	/**
-	 * @return the img
-	 */
-	public BufferedImage getImg() {
-		return img;
-	}
 	/**
 	 * @return the Pixel ArrayList
 	 */
 	public ArrayList<Pixel> getPixels() {
 		return pixels;
-	}
-	/**
-	 * @return the pt1
-	 */
-	public PointWorld getPt1() {
-		return pt1;
-	}
-	/**
-	 * @return the pt2
-	 */
-	public PointWorld getPt2() {
-		return pt2;
-	}
-	/**
-	 * @return the px1
-	 */
-	public Pixel getPx1() {
-		return px1;
-	}
-	/**
-	 * @return the px2
-	 */
-	public Pixel getPx2() {
-		return px2;
 	}
 }

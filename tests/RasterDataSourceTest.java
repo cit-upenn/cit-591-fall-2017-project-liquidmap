@@ -1,32 +1,41 @@
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class RasterDataSourceTest {
 	private ArrayList<Pixel> pixels;
 	private RasterDataSource rds;
+	private Pixel firstPixel;
+	private PointWorld pt1 = new PointWorld(39,42);
+	private PointWorld pt2 = new PointWorld(40,41);
+	private Pixel px1 = new Pixel(0,0);
+	private Pixel px2 = new Pixel(10,10);
 	
 	@Before
 	public void setup() {
-		this.rds = new RasterDataSource("PhillyPopDensity2012.png");
+		this.rds = new RasterDataSource("PhillyPopDensity2012.png", pt1, px1, pt2, px2);
 		this.pixels = rds.getPixels();
+		this.firstPixel = pixels.get(0);
 	}
 	@Test
 	public void testPixelX() {
-		assertEquals("The first pixel should have an X of 0", 
-				0, pixels.get(0).getPixelX());
+		assertTrue("The first pixel should have an X between 0 and 550", 
+				(firstPixel.getPixelX() <= 550 && firstPixel.getPixelX() >= 0));
 	}
 	@Test
 	public void testPixelY() {
-		assertEquals("The first pixel should have an Y of 0", 
-				0, pixels.get(0).getPixelY());
+		assertTrue("The first pixel should have an X between 0 and 550", 
+				(firstPixel.getPixelY() <= 550 && firstPixel.getPixelY() >= 0));
 	}
 	@Test
 	public void testPixelRedValue() {
-		assertEquals("The first pixel a red value of 165", 
-				165, pixels.get(0).getRedValue());
+		Pixel randPixel = rds.getRandPixel();
+		int redValue = randPixel.getRedValue();
+		assertTrue("Random pixel should have a redValue between 0 and 255, ", 
+				(redValue <= 255 && redValue >= 0));
 	}
 	@Test
 	public void testGetRandPixel() {
@@ -53,6 +62,11 @@ public class RasterDataSourceTest {
 		System.out.println(hundCount + " | " + ((double) hundCount/10) + "%");
 		System.out.println(hundFiftyCount + " | " + ((double) hundFiftyCount/10) + "%");
 		System.out.println(rest + " | " + ((double) rest/10) + "%");
+	}
+	@Test
+	public void testGetRandPoint() {
+		Point randPoint = rds.getRandPoint();
+		Assert.assertNotNull("A random point should not be null", randPoint);
 	}
 
 }

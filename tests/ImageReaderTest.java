@@ -8,12 +8,12 @@ public class ImageReaderTest {
 	public void testImageIOWidth() {
 		ImageReader imageReader = new ImageReader("PhillyPopDensity2012.png");
 		BufferedImage img = imageReader.getImg();
-		assertEquals("Image width should be 1280", 1280, img.getWidth());
+		assertEquals("Image width should be 550", 550, img.getWidth());
 	}
 	@Test
 	public void testImageIOHeight() {
 		ImageReader imageReader = new ImageReader("PhillyPopDensity2012.png");
 		BufferedImage img = imageReader.getImg();
-		assertEquals("Image height should be 720", 720, img.getHeight());
+		assertEquals("Image height should be 550", 550, img.getHeight());
 	}
 }

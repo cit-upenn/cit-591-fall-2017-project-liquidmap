@@ -19,12 +19,13 @@ public class PointWorld extends Point {
 	
 	/**
 	 * Constructor. Sets the latitude and longitude of the Point.
-	 * Sets the time to zero.
+	 * Sets the time to zero. Sets weight to 1.
 	 * @param lat The latitude in pixels.
 	 * @param lon The longitude in pixels.
 	 */
 	public PointWorld(double lat, double lon) {
 		super(lat, lon);
+		this.weight = 1.0d;
 	}
 	
 	/**

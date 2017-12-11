@@ -43,12 +43,4 @@ public class ImageReader {
 	public BufferedImage getImg() {
 		return img;
 	}
-
-	/**
-	 * @return the filePath
-	 */
-	public String getFilePath() {
-		return filePath;
-	}
-
 }
