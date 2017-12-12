@@ -129,10 +129,12 @@ public class Converter {
 	 * @return The converted Point.
 	 */
 	public Point getConvertedPoint(Point point) {		
+		
 		if (point.getClass() == PointWorld.class) {								
 			// convert from world space to screen space
 			double[] arrDblLatLon = convertPositionWorldToScreen(point.getLat(), point.getLon());
 			return new PointScreen(arrDblLatLon[0], arrDblLatLon[1], point.getTime());
+		
 		} else if (point.getClass() == PointScreen.class) {						
 			// convert from screen space to world space
 			double[] arrDblLatLon = convertPositionScreenToWorld(point.getLat(), point.getLon());

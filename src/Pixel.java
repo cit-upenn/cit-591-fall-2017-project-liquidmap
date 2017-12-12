@@ -39,13 +39,6 @@ public class Pixel implements Comparable<Pixel> {
 	public int getRedValue() {
 		return redValue;
 	}
-	
-	/**
-	 * @param colorWeight the colorWeight to set
-	 */
-	public void setColorWeight(double colorWeight) {
-		this.colorWeight = colorWeight;
-	}
 
 	/**
 	 * @return the colorWeight
@@ -67,31 +60,11 @@ public class Pixel implements Comparable<Pixel> {
 	public int getPixelY() {
 		return pixelY;
 	}
-
 	/**
-	 * @param redValue
-	 *            the redValue to set
+	 * Overriding the compareTo method of the interface Comparable:
+	 * 
+	 * This method will compare Pixels based on their redValue.
 	 */
-	public void setRedValue(int redValue) {
-		this.redValue = redValue;
-	}
-
-	/**
-	 * @param pixelX
-	 *            the pixelX to set
-	 */
-	public void setPixelX(int pixelX) {
-		this.pixelX = pixelX;
-	}
-
-	/**
-	 * @param pixelY
-	 *            the pixelY to set
-	 */
-	public void setPixelY(int pixelY) {
-		this.pixelY = pixelY;
-	}
-
 	@Override
 	public int compareTo(Pixel o) {
 		int own = redValue;
@@ -104,7 +77,11 @@ public class Pixel implements Comparable<Pixel> {
 			return 1;
 		}
 	}
-		
+	/**
+	 * This method overrides Object's toString() method
+	 * in order to display Pixels more pleasantly.
+	 */
+	@Override
 	public String toString() {
 		String str = "(X: " + this.pixelX + "  Y: " + this.pixelY + "  v: "
 				+ this.redValue + ")";
