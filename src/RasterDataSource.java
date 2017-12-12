@@ -108,7 +108,7 @@ public class RasterDataSource implements DataSource {
 	 * chosen going to the darker pixels.
 	 */
 	
-	public Pixel getRandPixel() throws NullPointerException {
+	public Pixel getRandPixel() {
 		ArrayList<Pixel> pixels = getPixels();
 		
 		Random rand = new Random();

@@ -66,7 +66,7 @@ public class VectorDataSource implements DataSource {
 	}
 
 	@Override
-	public PointWorld getRandPoint() throws NullPointerException {
+	public PointWorld getRandPoint() {
 		ArrayList<PointWorld> points = getPoints();
 		
 		Random rand = new Random();
