@@ -68,5 +68,6 @@ public class RasterDataSourceTest {
 		Point randPoint = rds.getRandPoint();
 		Assert.assertNotNull("A random point should not be null", randPoint);
 	}
+	//Test
 
 }
