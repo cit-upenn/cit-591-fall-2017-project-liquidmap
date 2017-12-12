@@ -1,4 +1,4 @@
-GHJarTest
+# Liquid Map
 
 This utilizes a JAR method of using GraphHopper.
 
