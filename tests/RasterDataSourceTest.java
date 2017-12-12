@@ -38,10 +38,6 @@ public class RasterDataSourceTest {
 				(redValue <= 255 && redValue >= 0));
 	}
 	@Test
-	public void testPixelToString() {
-		System.out.println(firstPixel.toString());
-	}
-	@Test
 	public void testGetRandPixel() {
 		ArrayList<Pixel> randPixels = new ArrayList<>();
 		for (int i = 0; i < 1000; i++) {
@@ -72,4 +68,9 @@ public class RasterDataSourceTest {
 		Point randPoint = rds.getRandPoint();
 		Assert.assertNotNull("A random point should not be null", randPoint);
 	}
+
+	//Test
+	//Test again
+	//Test third time
+
 }
