@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.IllegalFormatException;
 import java.util.Random;
 /**
  * This class creates an ArrayList of type Pixel
@@ -101,6 +102,13 @@ public class RasterDataSource implements DataSource {
 		Collections.sort(pixels);
 		lightest = pixels.get(pixels.size() - 1).getRedValue();
 		darkest = pixels.get(0).getRedValue();
+		
+		//make all Pixels have a weight of 1 if img. is all white or all red (all 255-valued).
+		if (darkest == 255 && lightest == 255) {
+			for (int i = 0; i < pixels.size(); i++) {
+				pixels.get(i).setColorWeight(1);
+			}
+		}
 	}
 
 	/**
@@ -146,4 +154,5 @@ public class RasterDataSource implements DataSource {
 	public ArrayList<Pixel> getPixels() {
 		return pixels;
 	}
+	
 }
