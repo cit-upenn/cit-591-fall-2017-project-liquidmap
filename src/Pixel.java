@@ -21,16 +21,36 @@ public class Pixel implements Comparable<Pixel> {
 	private double colorWeight;
 	private int pixelX;
 	private int pixelY;
-
+	/**
+	 * Constructor creates a representation of a pixel based on its location
+	 * (X,Y), its red-channel value (0-255) using RGB color codes, and its 
+	 * weight based on that value.
+	 * 
+	 * @param pixelX 
+	 * @param pixelY
+	 * @param redValue
+	 * @param colorWeight
+	 */
 	public Pixel(int pixelX, int pixelY, int redValue, double colorWeight) {
 		this.pixelX = pixelX;
 		this.pixelY = pixelY;
 		this.redValue = redValue;
 		this.colorWeight = colorWeight;
 	}
-
+	/**
+	 * Second constructor - just takes X and Y, and sets redValue and Weight to 1.
+	 * @param pixelX 
+	 * @param pixelY
+	 */
 	public Pixel(int pixelX, int pixelY) {
-		this(pixelX, pixelY, 0, 0);
+		this(pixelX, pixelY, 0, 1);
+	}
+	
+	/**
+	 * @param redValue the redValue to set
+	 */
+	public void setColorWeight(double colorWeight) {
+		this.colorWeight = colorWeight;
 	}
 
 	/**

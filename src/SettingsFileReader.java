@@ -24,15 +24,11 @@ public class SettingsFileReader {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * This will return the settings to the user
+	 * @return settings from settings.json file
+	 */
 	public Settings getSettings() {
 		return settings;
 	}
-
-	public static void main(String[] args) {
-		SettingsFileReader sfr = new SettingsFileReader();
-		Settings settings = sfr.settings;
-
-	}
-
 }

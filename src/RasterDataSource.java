@@ -84,7 +84,7 @@ public class RasterDataSource implements DataSource {
 				int redValue = new Color(img.getRGB(x, y)).getRed();
 				double weight = 0.0d;
 				//Make pure white (255), often used in boundaries between
-				//census tracts or counties, have a 0% chance 
+				//census tracts or counties and bodies of water, have a 0% chance 
 				if (redValue != 255) {
 					weight =  (double) 
 							(1 / (Math.pow(redValue + 1, 1.1)));
@@ -101,6 +101,13 @@ public class RasterDataSource implements DataSource {
 		Collections.sort(pixels);
 		lightest = pixels.get(pixels.size() - 1).getRedValue();
 		darkest = pixels.get(0).getRedValue();
+		
+		//make all Pixels have a weight of 1 if img. is all white or all red (all 255-valued).
+		if (darkest == 255 && lightest == 255) {
+			for (int i = 0; i < pixels.size(); i++) {
+				pixels.get(i).setColorWeight(1);
+			}
+		}
 	}
 
 	/**
@@ -120,9 +127,8 @@ public class RasterDataSource implements DataSource {
 			int randIndex = rand.nextInt(pixels.size());
 			double randPixelWeight = pixels.get(randIndex).getColorWeight();
 			
-			int denominator = rand.nextInt(lightest - darkest) 
-					+ darkest + 1;
-			double constraint = (double) (1 / denominator);
+			int denominator = rand.nextInt(lightest - darkest) + darkest + 1;
+			double constraint = (double) 1 / denominator;
 
 			if (randPixelWeight >= constraint) {
 				chosenPixel = pixels.get(randIndex);
@@ -146,4 +152,5 @@ public class RasterDataSource implements DataSource {
 	public ArrayList<Pixel> getPixels() {
 		return pixels;
 	}
+	
 }
