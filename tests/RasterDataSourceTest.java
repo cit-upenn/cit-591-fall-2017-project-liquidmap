@@ -58,10 +58,10 @@ public class RasterDataSourceTest {
 				rest++;
 			}
 		}
-		System.out.println(fiftyCount + " | " + ((double) fiftyCount/10) + "%");
-		System.out.println(hundCount + " | " + ((double) hundCount/10) + "%");
-		System.out.println(hundFiftyCount + " | " + ((double) hundFiftyCount/10) + "%");
-		System.out.println(rest + " | " + ((double) rest/10) + "%");
+		System.out.println("<=50: " + fiftyCount + " | " + ((double) fiftyCount/10) + "%");
+		System.out.println(">50<=100: " + hundCount + " | " + ((double) hundCount/10) + "%");
+		System.out.println(">100<=150: " + hundFiftyCount + " | " + ((double) hundFiftyCount/10) + "%");
+		System.out.println(">150: " + rest + " | " + ((double) rest/10) + "%");
 	}
 	@Test
 	public void testGetRandPoint() {
