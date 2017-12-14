@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Settings and the inner classes it contains are data structures to be filled
@@ -82,13 +83,21 @@ public class Settings {
 
 	public class OutputVars {
 
-		public final Integer imageWidth = null;
 		public final PointWorld pointUpperLeft = null;
 		public final PointWorld pointLowerRight = null;
+		public final String strFileName = null;
+		public final Integer intCanvasWidth = null;
+		public final String strCanvasColor = null;
+		public final Integer intLineWidth = null;
+		public final Integer intLineLength = null;
+		public final String strLineColorA = null;
+		public final String strLineColorB = null;
+		public final String strTextColor = null;
+		public final Double dblTimeBetweenSpawns = null;
 
 		@Override
 		public String toString() {
-			String str = "  imageWidth: " + imageWidth + "  pointUpperLeft:  "
+			String str = "  imageWidth: " + intCanvasWidth + "  pointUpperLeft:  "
 					+ pointUpperLeft + "  pointLowerRight:  " + pointLowerRight;
 			return str;
 		}

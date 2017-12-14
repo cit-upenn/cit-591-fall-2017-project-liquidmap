@@ -38,7 +38,6 @@
         "speedVariance": 0.20
     },
     "outputVars": {
-        "imageWidth": 600,
         "pointUpperLeft": {
                 "lat": 40.138178,
                 "lon": -75.308141
@@ -46,6 +45,15 @@
         "pointLowerRight": {
                 "lat": 39.85096,
                 "lon": -74.929113
-        }
+        },
+        "strFileName": "animation",
+        "intCanvasWidth": 600,
+		"strCanvasColor": "#000000",
+		"intLineWidth": 1,
+		"intLineLength": 200,
+		"strLineColorA": "#AAFF88",
+		"strLineColorB": "#FFFFFF",
+		"strTextColor": "#FFFFFF",
+		"dblTimeBetweenSpawns": 0
     }
 }

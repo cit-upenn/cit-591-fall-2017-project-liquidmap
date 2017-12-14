@@ -47,9 +47,12 @@ public class AnimatorTest {
 			listTrips.add(trip);
 		}
 		
-		animator.animateTrips(listTrips, "animation_test", intCanvasSize, "#000000", 1, 200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
+		animator.animateTrips(listTrips, "animation_test_1", intCanvasSize, "#000000", 1, 200, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
+		animator.animateTrips(listTrips, "animation_test_2", intCanvasSize, "#000000", 1, 200, "#FFFFFF", "#FFFFFF", "#FFFFFF", 0.05);
 		
-		File file = new File("animation.html");
-		Assert.assertTrue(file.exists());
+		File file1 = new File("animation_test_1.html");
+		File file2 = new File("animation_test_2.html");
+		Assert.assertTrue(file1.exists());
+		Assert.assertTrue(file2.exists());
 	}
 }
