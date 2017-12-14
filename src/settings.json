@@ -31,7 +31,7 @@
     "routingVars": {
         "routeBeg": "pop2012",
         "routeEnd": "pop2012",
-        "routeCount": 200,
+        "routeCount": 100,
         "routeMinTime": 5,
         "routeMaxTime": 10000,
         "timeStartVariance": 100,
@@ -54,6 +54,6 @@
 		"strLineColorA": "#AAFF88",
 		"strLineColorB": "#FFFFFF",
 		"strTextColor": "#FFFFFF",
-		"dblTimeBetweenSpawns": 0
+		"dblTimeBetweenSpawns": 0.1
     }
 }

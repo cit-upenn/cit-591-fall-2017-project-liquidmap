@@ -159,8 +159,14 @@ public class Animator {
 		}
 		
 		strbOut.append(	"\t\tstroke-width: " + intLineWidth + ";\r\n" + 
-						"\t\tfill-opacity: 0;" +
+						"\t\tfill-opacity: 0;\r\n" +
 						"\t}\r\n" + 
+						"\r\n" +
+						"\t.js-loading *,\r\n" +
+						"\t.js-loading *:before,\r\n" +
+						"\t.js-loading *:after {\r\n" +
+						"\t\tanimation-play-state: paused !important;\r\n" +
+						"\t}\r\n" +
 						"</style>\r\n\r\n");
 		
 		return strbOut.toString();
@@ -174,7 +180,14 @@ public class Animator {
 	private String generateScriptBlock (ArrayList<Trip> listTrips) {
 		StringBuilder strbOut = new StringBuilder();
 		
-		strbOut.append("<script>\r\n");
+		strbOut.append(	"<script>\r\n" +
+						"\tdocument.body.classList.add('js-loading');\r\n" +
+						"\twindow.addEventListener(\"load\", showPage);\r\n" +
+						"\r\n" +
+						"\tfunction showPage() {\r\n" +
+						"\t\tdocument.body.classList.remove('js-loading');\r\n" +
+						"\t}\r\n" +
+						"\r\n");
 		
 		// initialize a Segment object for each <path> element
 		for (int i = 0; i < listTrips.size(); i++) {
@@ -199,7 +212,7 @@ public class Animator {
 				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);
 				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
 				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance), 0, Integer.MAX_VALUE);
-				int intLegTime = Mathf.roundToInt(trip.computeTripTime(j - 1, j));
+				int intLegTime = Mathf.clampInt(Mathf.roundToInt(trip.computeTripTime(j - 1, j)), 1, Integer.MAX_VALUE);
 				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime());
 				
 				if (j == trip.getPoints().size() - 1) {
