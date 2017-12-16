@@ -6,10 +6,16 @@ import java.io.UnsupportedEncodingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * Reads the JSON file (settings.json) and initializes the settings variables.
+ * @author brian
+ */
 public class SettingsFileReader {
-
 	private Settings settings;
 
+	/**
+	 * Constructor. Reads the JSON file (settings.json) and initializes the settings variables.
+	 */
 	public SettingsFileReader() {
 		try (Reader reader = new InputStreamReader(
 				SettingsFileReader.class.getResourceAsStream("/settings.json"),
@@ -24,9 +30,10 @@ public class SettingsFileReader {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
-	 * This will return the settings to the user
-	 * @return settings from settings.json file
+	 * Returns a Settings object containing the settings from settings.json.
+	 * @return A Settings object containing the settings from settings.json.
 	 */
 	public Settings getSettings() {
 		return settings;

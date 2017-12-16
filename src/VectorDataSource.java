@@ -37,7 +37,7 @@ public class VectorDataSource implements DataSource {
 			String[] lineArray = line.split("	");
 			double lat = Double.parseDouble(lineArray[0]);
 			double lng = Double.parseDouble(lineArray[1]);
-			//constructing a Point with just a Lat/Lng pair and weights set to 1
+			//constructing a PointWorld with just a lat/lon pair and weights set to 1
 			if (lineArray.length == 2) {
 				PointWorld point = new PointWorld(lat, lng);
 				points.add(point);

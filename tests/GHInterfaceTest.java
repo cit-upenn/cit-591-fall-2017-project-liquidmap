@@ -9,9 +9,9 @@ public class GHInterfaceTest {
 	public void testLongTrip() {
 		String mapFileName = "philadelphia.osm.pbf";
 		GHInterface gh = new GHInterface(mapFileName);
-		Point p1 = new PointWorld(39.9539856, -75.1868489);
-		Point p2 = new PointWorld(39.9839484, -75.1299003);
-		Trip trip = gh.getTrip(p1, p2);
+		PointWorld pointWorldStart = new PointWorld(39.9539856, -75.1868489);
+		PointWorld pointWorldEnd = new PointWorld(39.9839484, -75.1299003);
+		Trip trip = gh.getTrip(pointWorldStart, pointWorldEnd);
 
 		// Check that there is a large number of points
 		ArrayList<Point> points = trip.getPoints();
@@ -39,9 +39,9 @@ public class GHInterfaceTest {
 	public void testShortTrip() {
 		String mapFileName = "philadelphia.osm.pbf";
 		GHInterface gh = new GHInterface(mapFileName);
-		Point p1 = new PointWorld(40.0583080, -75.1856526);
-		Point p2 = new PointWorld(40.0571932, -75.1838301);
-		Trip trip = gh.getTrip(p1, p2);
+		PointWorld pointWorldStart = new PointWorld(40.0583080, -75.1856526);
+		PointWorld pointWorldEnd = new PointWorld(40.0571932, -75.1838301);
+		Trip trip = gh.getTrip(pointWorldStart, pointWorldEnd);
 		System.out.println(trip);
 	}
 
@@ -49,9 +49,9 @@ public class GHInterfaceTest {
 	public void testNonTrip() {
 		String mapFileName = "philadelphia.osm.pbf";
 		GHInterface gh = new GHInterface(mapFileName);
-		Point p1 = new PointWorld(40.0571932, -75.1838301);
-		Point p2 = new PointWorld(40.0571932, -75.1838301);
-		Trip trip = gh.getTrip(p1, p2);
+		PointWorld pointWorldStart = new PointWorld(40.0571932, -75.1838301);
+		PointWorld pointWorldEnd = new PointWorld(40.0571932, -75.1838301);
+		Trip trip = gh.getTrip(pointWorldStart, pointWorldEnd);
 		System.out.println(trip);
 	}
 
@@ -59,9 +59,9 @@ public class GHInterfaceTest {
 	public void testFailedTrip() {
 		String mapFileName = "philadelphia.osm.pbf";
 		GHInterface gh = new GHInterface(mapFileName);
-		Point p1 = new PointWorld(39.9766282, -75.0804953); // middle of Delaware river
-		Point p2 = new PointWorld(40.0571932, -75.1838301);
-		Trip trip = gh.getTrip(p1, p2);
+		PointWorld pointWorldStart = new PointWorld(39.9766282, -75.0804953); // middle of Delaware river
+		PointWorld pointWorldEnd = new PointWorld(40.0571932, -75.1838301);
+		Trip trip = gh.getTrip(pointWorldStart, pointWorldEnd);
 		System.out.println(trip);
 	}
 

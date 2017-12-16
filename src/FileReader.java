@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
  * lines for that file to be parsed by another class.
  * 
  * @author sgb
- *
  */
 public class FileReader {
 	private String fileName;
@@ -57,7 +56,8 @@ public class FileReader {
 	}
 	
 	/**
-	 * @return the lines
+	 * Returns an ArrayList of lines pulled from the input file.
+	 * @return An ArrayList of lines pulled from the input file.
 	 */
 	public ArrayList<String> getLines() {
 		return lines;

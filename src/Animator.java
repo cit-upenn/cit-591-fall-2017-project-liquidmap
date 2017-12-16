@@ -225,7 +225,7 @@ public class Animator {
 				int intLegTime = Mathf.clampInt(Mathf.roundToInt(trip.computeTripTime(j - 1, j)), 1, Integer.MAX_VALUE);
 				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime());
 				
-				// hide the lines after they complete their animation
+				// if true, hide lines after they complete their animation
 				if (!isKeepLinesVisible) {
 					if (j == trip.getPoints().size() - 1) {
 						intPositionFront = 100;

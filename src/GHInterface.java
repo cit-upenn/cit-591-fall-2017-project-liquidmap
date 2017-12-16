@@ -15,14 +15,12 @@ public class GHInterface {
 	GraphHopper hopper;
 
 	/**
-	 * Initializes the GraphHopper server using the map specified in the City
-	 * object.<br>
-	 * <br>
+	 * Initializes the GraphHopper server using the map specified in the City object.
 	 *
 	 * The first time this is done on the local computer, it will initialize the
 	 * map into the GHHopperWD working directory.
 	 *
-	 * @param city
+	 * @param cityMapFile The file name of the .pbf, which stores map data.
 	 */
 	public GHInterface(String cityMapFile) {
 		hopper = new GraphHopper().forDesktop();
@@ -33,26 +31,22 @@ public class GHInterface {
 	}
 
 	/**
-	 * Uses the GHInterface object to compute a trip between Point p1 and Point
-	 * p2.<br>
-	 * <br>
+	 * Uses the GHInterface object to compute a trip between PointWorld pointWorldStart and PointWorld pointWorldEnd.
 	 *
-	 * While the Point objects support time, this is not used in the
+	 * While the PointWorld class supports time, this is not used in the
 	 * calculation. The returned trip will start at 0(s) and progress so that
-	 * the last point (ie the destination) will be at the concluding time of the
+	 * the last point (i.e., the destination) will be at the concluding time of the
 	 * trip. All points in between are sequential, monotonic in time, and
 	 * reflect the local velocities.
 	 *
-	 * @param p1
-	 *            The starting point
-	 * @param p2
-	 *            The destination point
-	 * @return A trip.
+	 * @param pointWorldStart The starting point
+	 * @param pointWorldEnd The destination point
+	 * @return A trip from pointWorldStart to pointWorldEnd.
 	 */
-	public Trip getTrip(Point p1, Point p2) {
+	public Trip getTrip(PointWorld pointWorldStart, PointWorld pointWorldEnd) {
 
-		GHRequest req = new GHRequest(p1.getLat(), p1.getLon(), p2.getLat(),
-				p2.getLon()).setWeighting("fastest").setVehicle("car")
+		GHRequest req = new GHRequest(pointWorldStart.getLat(), pointWorldStart.getLon(), pointWorldEnd.getLat(),
+				pointWorldEnd.getLon()).setWeighting("fastest").setVehicle("car")
 						.setLocale(Locale.US);
 		GHResponse rsp = hopper.route(req);
 		if (rsp.hasErrors()) {
@@ -65,35 +59,30 @@ public class GHInterface {
 	}
 
 	/**
-	 * Converts an InstructionList into an ArrayList of Points.<br>
-	 * <br>
+	 * Converts an InstructionList into an ArrayList of PointWorlds.
 	 *
 	 * The GraphHopper PathWrapper contains a lot of information, including all
-	 * lat-long pairs on the route. However the time data is not reported at
-	 * this granularity.<br>
-	 * <br>
+	 * lat-long pairs on the route. However, the time data is not reported at
+	 * this granularity.
 	 *
 	 * In order to find the time of each spatial point, we must mine the
 	 * InstructionList for the information. The InstructionList provides a total
 	 * time for each step of the journey and some number of spatial points that
 	 * describe that step. The last step is actually the first point of the next
-	 * step.<br>
-	 * <br>
+	 * step.
 	 *
 	 * We can then imagine each step in the InstructionList consisting of a
-	 * series of microsteps as reported by that Instructions points. We make two
+	 * series of microsteps as reported by that Instruction's points. We make two
 	 * assumptions: (1) the velocity is constant across all microsteps in a step
 	 * and (2) the linear distances between the points inform how much time
 	 * should occur on each microstep. We can then compute the time for each
 	 * microstep. The time for each point will be the accumulation of these
-	 * times. <br>
-	 * <br>
+	 * times.
 	 *
-	 * @param instList
-	 *            InstructionList object to be processed.
-	 * @return A Trip containing points with lat, long, and time.
+	 * @param instList InstructionList object to be processed.
+	 * @return A Trip containing PointWorld objects with lat, lon, and time values.
 	 */
-
+	
 	// TODO this method is massive. It internally shares a lot of data though so
 	// I don't think it can be easily broken into steps without creating lots of
 	// awkward objects that are used just once. One solution is to
@@ -128,17 +117,17 @@ public class GHInterface {
 			for (int j = 0; j < nPoints; j++) {
 				double lat = pList.getLat(j);
 				double lon = pList.getLon(j);
-				Point p = new PointWorld(lat, lon);
+				PointWorld p = new PointWorld(lat, lon);
 				trip.addPoint(p);
 			}
 		}
 
-		{// Add final point from terminating instruction to the trip
+		{// add final point from terminating instruction to the trip
 			Instruction inst = instList.get(nLegs);
 			PointList pList = inst.getPoints();
 			double lat = pList.getLat(0);
 			double lon = pList.getLon(0);
-			Point p = new PointWorld(lat, lon);
+			PointWorld p = new PointWorld(lat, lon);
 			trip.addPoint(p);
 		}
 		if (DEBUG) {
@@ -151,7 +140,7 @@ public class GHInterface {
 		}
 		int nPoints = trip.getPoints().size();
 
-		// Compute the distance between every pair of points.
+		// compute the distance between every pair of points
 		ArrayList<Double> dists = new ArrayList<>();
 		for (int i = 1; i < trip.getPoints().size(); i++) {
 			Point pA = trip.getPoints().get(i - 1);
@@ -162,7 +151,7 @@ public class GHInterface {
 		if (DEBUG) {
 			System.out.println("dists[" + dists.size() + "]: " + dists);
 		}
-		// Compute the indices that correspond to each leg in the point list.
+		// compute the indices that correspond to each leg in the point list
 		ArrayList<Integer> breakPoints = new ArrayList<>();
 		int posIndex = 0;
 		breakPoints.add(posIndex);
@@ -171,13 +160,13 @@ public class GHInterface {
 			breakPoints.add(posIndex);
 		}
 
-		// include termination point into the last leg.
+		// include termination point into the last leg
 		// breakPoints.set(nLegs, breakPoints.get(nLegs) + 1);
 		if (DEBUG) {
 			System.out.println(
 					"breakPoints[" + breakPoints.size() + "]: " + breakPoints);
 		}
-		// Find the total distance for each leg.
+		// find the total distance for each leg
 		ArrayList<Double> legDists = new ArrayList<>();
 		for (int i = 0; i < nLegs; i++) {
 			// System.out.print(i + " ");
@@ -194,7 +183,7 @@ public class GHInterface {
 			System.out
 					.println("legDists[" + legDists.size() + "]: " + legDists);
 		}
-		// compute the time for each point based on the current time and
+		// compute the time for each point based on the current time
 		ArrayList<Double> times = new ArrayList<>();
 		double time = 0.;
 		times.add(time);
@@ -216,6 +205,5 @@ public class GHInterface {
 		}
 
 		return trip;
-
 	}
 }

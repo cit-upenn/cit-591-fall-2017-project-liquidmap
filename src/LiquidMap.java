@@ -3,10 +3,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * The main class for LiquidMap project.
- *
+ * The main class for the LiquidMaps program.
+ * Calls methods in sequence to read settings, import data, generate trips, and produce an animation.
  * @author brian
- *
  */
 public class LiquidMap {
 
@@ -17,7 +16,7 @@ public class LiquidMap {
 	Converter converter;
 
 	/**
-	 * The script which calls each of LiquidMap steps in sequence.
+	 * Constructor. Calls each of the LiquidMaps steps in sequence.
 	 */
 	public LiquidMap() {
 		readSettings();
@@ -29,7 +28,7 @@ public class LiquidMap {
 	}
 
 	/**
-	 * Reads the JSON file and sets the settings attribute.
+	 * Reads the JSON file (settings.json) and initializes the settings variables.
 	 */
 	private void readSettings() {
 		SettingsFileReader sfr = new SettingsFileReader();
@@ -37,8 +36,8 @@ public class LiquidMap {
 	}
 
 	/**
-	 * Cycles through all Data Sources Descriptors in the JSON file and attempts
-	 * to uses each to build datasources and put them into a HashMap so that
+	 * Cycles through all data-sources descriptors in the JSON file and attempts
+	 * to use each to build data sources and put them into a HashMap so that
 	 * they can be addressed later by name.
 	 */
 	private void importDataSources() {
@@ -49,8 +48,7 @@ public class LiquidMap {
 			PointWorld pt2 = settings.rasterDataDescs.get(i).point2;
 			Pixel px1 = settings.rasterDataDescs.get(i).pixel1;
 			Pixel px2 = settings.rasterDataDescs.get(i).pixel2;
-			RasterDataSource rds = new RasterDataSource(mapFileName, pt1, px1,
-					pt2, px2);
+			RasterDataSource rds = new RasterDataSource(mapFileName, pt1, px1, pt2, px2);
 			dataSources.put(name, rds);
 		}
 
@@ -63,7 +61,7 @@ public class LiquidMap {
 	}
 
 	/**
-	 * Generates the list of trips
+	 * Generates a list of trips using GraphHopper.
 	 */
 	private void getTrips() {
 		Random rdn = new Random();
@@ -91,7 +89,7 @@ public class LiquidMap {
 
 	/**
 	 * Builds a converter object capable of translating from world coordinates
-	 * to the pixel coordinates of the output file.
+	 * to pixel coordinates (for the output file).
 	 */
 	private void buildConverter() {
 		PointWorld pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
@@ -102,14 +100,14 @@ public class LiquidMap {
 	}
 
 	/**
-	 * Converts the trips from world coordinates to output file coordinates.
+	 * Converts the trips from world coordinates to pixel coordinates.
 	 */
 	private void convertTrips() {
 		convTrips = converter.getConvertedListTrips(trips);
 	}
 
 	/**
-	 * Generates the animated output html file.
+	 * Generates the animated output .html file.
 	 */
 	private void animateTrips() {
 		Animator animator = new Animator();
@@ -129,8 +127,7 @@ public class LiquidMap {
 	}
 
 	/**
-	 * The main method.
-	 *
+	 * The main method. Calls the LiquidMap constructor, which performs all the steps of the LiquidMaps program.
 	 * @param args
 	 */
 	public static void main(String[] args) {

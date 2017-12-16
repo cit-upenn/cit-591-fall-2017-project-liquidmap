@@ -7,8 +7,8 @@ import java.util.Random;
 
 /**
  * Tests the methods of the Animator class by generating a random list of Trips.
- * The assertion is somewhat trivial, because all it does is check to ensure the output file exists.
- * However, the output file can then be checked manually to verify that the animation behaves as expected.
+ * The assertion is somewhat trivial, because all it does is check to ensure the output files exist.
+ * However, the output files can then be checked manually to verify that the animation behaves as expected.
  */
 public class AnimatorTest {
 

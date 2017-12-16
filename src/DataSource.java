@@ -1,6 +1,6 @@
 /**
  * This interface allows for the user of getRandPoint() not to worry about where
- * the data for the Point is coming from (Vector or Raster).
+ * the data for the PointWorld is coming from (vector or raster).
  *
  * @author sgb
  *
