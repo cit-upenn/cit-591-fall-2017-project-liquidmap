@@ -10,8 +10,6 @@ LiquidMap is a java application designed to create an artistic animated image of
 
 The tool to generate routes is based on the fabulous project [GraphHopper](https://github.com/graphhopper/graphhopper).  In order to operate, GraphHopper requires a map file such as the included "philadelphia.osm.pbf".  On the first run, this file will generate derived networks that can be used to rapidly fine routes.  The map file is specified with `cityMapFile`.
 
-|  `cityMapFile`  |  "philadelphia.osm.pbf"  |
-
 Trips have a beginning and an end.  In order to efficiently specify the hundreds of trips, we need a way of describing hundreds of locations.  We do this using `DataSource`s.  A `DataSource` can be either a `VectorDataSource`, or a `RasterDataSource`.  Each `DataSource` is given a name so that it can be easily addressed later.  One may specify many `DataSource`s, but ultimately, only two will be used.  There are two variations on `DataSource`.
 
 A `VectorDataSource` is a list of Latitudes and Longitudes from which we draw a random sample.  For instance one could imaging a list of the locations of all fire emergencies in a city for a year or a list consiting of just one point, the locations of your home.
