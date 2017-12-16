@@ -120,7 +120,6 @@ public class Animator {
 		strbOut.append(	"\t\t</svg>\r\n" + 
 						"\r\n" + 
 						"\t\t<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n" + 
-						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.min.js'></script>\r\n" + 
 						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/segment-js/1.0.8/segment.js'></script>\r\n" + 
 						"\t</body>\r\n" + 
 						"</html>\r\n\r\n");

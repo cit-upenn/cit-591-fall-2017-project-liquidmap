@@ -36,7 +36,7 @@ public class LiquidMap {
 	}
 
 	/**
-	 * Cycles through all data-sources descriptors in the JSON file and attempts
+	 * Cycles through all DataSources Descriptors in the JSON file and attempts
 	 * to use each to build data sources and put them into a HashMap so that
 	 * they can be addressed later by name.
 	 */
