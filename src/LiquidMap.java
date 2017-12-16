@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * The main class for LiquidMap project.
+ *
+ * @author brian
+ *
+ */
 public class LiquidMap {
 
 	private Settings settings;
@@ -10,6 +16,9 @@ public class LiquidMap {
 	ArrayList<Trip> convTrips = new ArrayList<>();
 	Converter converter;
 
+	/**
+	 * The script which calls each of LiquidMap steps in sequence.
+	 */
 	public LiquidMap() {
 		readSettings();
 		importDataSources();
@@ -19,11 +28,19 @@ public class LiquidMap {
 		animateTrips();
 	}
 
+	/**
+	 * Reads the JSON file and sets the settings attribute.
+	 */
 	private void readSettings() {
 		SettingsFileReader sfr = new SettingsFileReader();
 		settings = sfr.getSettings();
 	}
 
+	/**
+	 * Cycles through all Data Sources Descriptors in the JSON file and attempts
+	 * to uses each to build datasources and put them into a HashMap so that
+	 * they can be addressed later by name.
+	 */
 	private void importDataSources() {
 		for (int i = 0; i < settings.rasterDataDescs.size(); i++) {
 			String name = settings.rasterDataDescs.get(i).name;
@@ -32,7 +49,8 @@ public class LiquidMap {
 			PointWorld pt2 = settings.rasterDataDescs.get(i).point2;
 			Pixel px1 = settings.rasterDataDescs.get(i).pixel1;
 			Pixel px2 = settings.rasterDataDescs.get(i).pixel2;
-			RasterDataSource rds = new RasterDataSource(mapFileName, pt1, px1, pt2, px2);
+			RasterDataSource rds = new RasterDataSource(mapFileName, pt1, px1,
+					pt2, px2);
 			dataSources.put(name, rds);
 		}
 
@@ -44,6 +62,9 @@ public class LiquidMap {
 		}
 	}
 
+	/**
+	 * Generates the list of trips
+	 */
 	private void getTrips() {
 		Random rdn = new Random();
 		GHInterface ghi = new GHInterface(settings.cityMapFile);
@@ -53,10 +74,7 @@ public class LiquidMap {
 		while (goodTripCount < settings.routingVars.routeCount) {
 			PointWorld ptBeg = sourceBeg.getRandPoint();
 			PointWorld ptEnd = sourceEnd.getRandPoint();
-			System.out.println(ptBeg);
-			System.out.println(ptEnd);
 			Trip trip = ghi.getTrip(ptBeg, ptEnd);
-			System.out.println(trip.getDescrip());
 			if (trip.maxTime() > settings.routingVars.routeMinTime
 					&& trip.maxTime() < settings.routingVars.routeMaxTime) {
 				double tVar = settings.routingVars.timeStartVariance;
@@ -67,37 +85,51 @@ public class LiquidMap {
 				trip.offsetTime(tOff);
 				trips.add(trip);
 				goodTripCount++;
-				System.out.println("  trip added");
 			}
 		}
 	}
 
-	private void convertTrips() {	
-		convTrips = converter.getConvertedListTrips(trips);
-	}
-
+	/**
+	 * Builds a converter object capable of translating from world coordinates
+	 * to the pixel coordinates of the output file.
+	 */
 	private void buildConverter() {
 		PointWorld pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
 		PointWorld pointWorldLowerRight = settings.outputVars.pointLowerRight;
 		Integer outputWidth = settings.outputVars.intCanvasWidth;
-		converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight, outputWidth);
+		converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight,
+				outputWidth);
 	}
 
+	/**
+	 * Converts the trips from world coordinates to output file coordinates.
+	 */
+	private void convertTrips() {
+		convTrips = converter.getConvertedListTrips(trips);
+	}
+
+	/**
+	 * Generates the animated output html file.
+	 */
 	private void animateTrips() {
 		Animator animator = new Animator();
-		
-		animator.animateTrips(convTrips,
-							  settings.outputVars.strFileName,
-							  settings.outputVars.intCanvasWidth,
-							  settings.outputVars.strCanvasColor,
-							  settings.outputVars.intLineWidth,
-							  settings.outputVars.intLineLength,
-							  settings.outputVars.strLineColorA,
-							  settings.outputVars.strLineColorB,
-							  settings.outputVars.strTextColor,
-							  settings.outputVars.dblTimeBetweenSpawns);
+
+		animator.animateTrips(convTrips, settings.outputVars.strFileName,
+				settings.outputVars.intCanvasWidth,
+				settings.outputVars.strCanvasColor,
+				settings.outputVars.intLineWidth,
+				settings.outputVars.intLineLength,
+				settings.outputVars.strLineColorA,
+				settings.outputVars.strLineColorB,
+				settings.outputVars.strTextColor,
+				settings.outputVars.dblTimeBetweenSpawns);
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		LiquidMap lm = new LiquidMap();
 	}
