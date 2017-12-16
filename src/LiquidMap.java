@@ -115,10 +115,13 @@ public class LiquidMap {
 		Animator animator = new Animator();
 
 		animator.animateTrips(convTrips, settings.outputVars.strFileName,
+				settings.outputVars.strPageTitle,
+				settings.outputVars.strCanvasText,
 				settings.outputVars.intCanvasWidth,
 				settings.outputVars.strCanvasColor,
 				settings.outputVars.intLineWidth,
 				settings.outputVars.intLineLength,
+				settings.outputVars.isKeepLinesVisible,
 				settings.outputVars.strLineColorA,
 				settings.outputVars.strLineColorB,
 				settings.outputVars.strTextColor,

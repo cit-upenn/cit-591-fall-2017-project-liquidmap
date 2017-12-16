@@ -86,10 +86,13 @@ public class Settings {
 		public final PointWorld pointUpperLeft = null;
 		public final PointWorld pointLowerRight = null;
 		public final String strFileName = null;
+		public final String strPageTitle = null;
+		public final String strCanvasText = null;
 		public final Integer intCanvasWidth = null;
 		public final String strCanvasColor = null;
 		public final Integer intLineWidth = null;
 		public final Integer intLineLength = null;
+		public final Boolean isKeepLinesVisible = null;
 		public final String strLineColorA = null;
 		public final String strLineColorB = null;
 		public final String strTextColor = null;
