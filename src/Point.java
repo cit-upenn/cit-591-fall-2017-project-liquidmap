@@ -67,9 +67,7 @@ public abstract class Point {
 	 * @return A description of the Point as a String.
 	 */
 	@Override
-	public String toString() {
-		return String.format("(lat (px): %f  lon (px): %f  time (s): %f)", getLat(), getLon(), getTime());
-	}
+	public abstract String toString();
 
 	/**
 	 * Determines if this Point is equal to a provided Point.

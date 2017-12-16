@@ -56,19 +56,14 @@ public class Converter {
 	 * @param pointWorldLowerRight PointWorld in the lower-right corner.
 	 * @param imageWidth The image width in pixels.
 	 */
-	public Converter(PointWorld pointWorldUpperLeft,
-			PointWorld pointWorldLowerRight, int imageWidth) {
-		double deltaLat = Math.abs(
-				pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
-		double deltaLon = Math.abs(
-				pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
+	public Converter(PointWorld pointWorldUpperLeft, PointWorld pointWorldLowerRight, int imageWidth) {
+		double deltaLat = Math.abs(pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
+		double deltaLon = Math.abs(pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
 
-		Double meanLat = (pointWorldUpperLeft.getLat()
-				+ pointWorldLowerRight.getLat()) / 2;
+		Double meanLat = (pointWorldUpperLeft.getLat() + pointWorldLowerRight.getLat()) / 2;
 		double sizeRatio = Math.cos(Math.toRadians(meanLat));
 		// "m per deg lon" / "m per deg lat"
-		int imageHeight = new Double(
-				imageWidth * deltaLat / (deltaLon * sizeRatio)).intValue();
+		int imageHeight = new Double(imageWidth * deltaLat / (deltaLon * sizeRatio)).intValue();
 		imageHeight = Math.abs(imageHeight);
 
 		degLatYPixConvFactor = -deltaLat / imageHeight;

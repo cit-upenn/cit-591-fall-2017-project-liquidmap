@@ -79,17 +79,23 @@ public class LiquidMap {
 	private void buildConverter() {
 		PointWorld pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
 		PointWorld pointWorldLowerRight = settings.outputVars.pointLowerRight;
-		Integer outputWidth = settings.outputVars.imageWidth;
-		converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight,
-				outputWidth);
+		Integer outputWidth = settings.outputVars.intCanvasWidth;
+		converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight, outputWidth);
 	}
 
 	private void animateTrips() {
 		Animator animator = new Animator();
-		Integer outputWidth = settings.outputVars.imageWidth;
-		animator.animateTrips(convTrips, "animation", outputWidth, "#000000", 1,
-				500, "#AAFF88", "#FFFFFF", "#FFFFFF", 0);
-
+		
+		animator.animateTrips(convTrips,
+							  settings.outputVars.strFileName,
+							  settings.outputVars.intCanvasWidth,
+							  settings.outputVars.strCanvasColor,
+							  settings.outputVars.intLineWidth,
+							  settings.outputVars.intLineLength,
+							  settings.outputVars.strLineColorA,
+							  settings.outputVars.strLineColorB,
+							  settings.outputVars.strTextColor,
+							  settings.outputVars.dblTimeBetweenSpawns);
 	}
 
 	public static void main(String[] args) {

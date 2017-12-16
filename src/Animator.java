@@ -11,7 +11,7 @@ public class Animator {
 	Random random;
 	FileWriter fileWriter;
 	String strFileName;
-	int intCanvasSize;
+	int intCanvasWidth;
 	String strCanvasColor;
 	int intLineWidth;
 	int intLineLength;
@@ -28,13 +28,11 @@ public class Animator {
 		fileWriter = new FileWriter();
 	}
 	
-	//TO DO: ensure intStrokeLength behaves as expected
-	
 	/**
 	 * Converts an ArrayList of Trips into an .html file that animates a line for each Trip.
 	 * @param listTrips The ArrayList of Trips.
 	 * @param strFileName The desired name of the output file, without the "html" extension.
-	 * @param intCanvasSize The size of one edge of the animation canvas (a square) in pixels.
+	 * @param intCanvasWidth The width the animation canvas in pixels.
 	 * @param strCanvasColor The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param intLineWidth The width of each line in pixels.
 	 * @param intLineLength The height of each line in pixels.
@@ -43,11 +41,11 @@ public class Animator {
 	 * @param strTextColor The color of text on the canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, String strFileName, int intCanvasSize, 
+	public void animateTrips (ArrayList<Trip> listTrips, String strFileName, int intCanvasWidth, 
 			String strCanvasColor, int intLineWidth, int intLineLength, String strLineColorA, 
 			String strLineColorB, String strTextColor, double dblTimeBetweenSpawns) {
 		this.strFileName = strFileName;
-		this.intCanvasSize = intCanvasSize;
+		this.intCanvasWidth = intCanvasWidth;
 		this.strCanvasColor = strCanvasColor;
 		this.intLineWidth = intLineWidth;
 		this.intLineLength = intLineLength;
@@ -131,8 +129,8 @@ public class Animator {
 		strbOut.append(	"<style>\r\n" + 
 						"\tbody {\r\n" + 
 						"\t\tfont-family: \"Helvetica Neue\", Helvetica;\r\n" + 
-						"\t\twidth: " + intCanvasSize + "px;\r\n" + 
-						"\t\theight: " + intCanvasSize + "px;\r\n" + 
+						"\t\twidth: " + intCanvasWidth + "px;\r\n" + 
+						"\t\theight: " + intCanvasWidth + "px;\r\n" + 
 						"\t\tfont-weight: 200;\r\n" + 
 						"\t\tletter-spacing: 1px;\r\n" + 
 						"\t\tmargin: 25px auto 0 auto;\r\n" + 
@@ -161,8 +159,14 @@ public class Animator {
 		}
 		
 		strbOut.append(	"\t\tstroke-width: " + intLineWidth + ";\r\n" + 
-						"\t\tfill-opacity: 0;" +
+						"\t\tfill-opacity: 0;\r\n" +
 						"\t}\r\n" + 
+						"\r\n" +
+						"\t.js-loading *,\r\n" +
+						"\t.js-loading *:before,\r\n" +
+						"\t.js-loading *:after {\r\n" +
+						"\t\tanimation-play-state: paused !important;\r\n" +
+						"\t}\r\n" +
 						"</style>\r\n\r\n");
 		
 		return strbOut.toString();
@@ -176,7 +180,14 @@ public class Animator {
 	private String generateScriptBlock (ArrayList<Trip> listTrips) {
 		StringBuilder strbOut = new StringBuilder();
 		
-		strbOut.append("<script>\r\n");
+		strbOut.append(	"<script>\r\n" +
+						"\tdocument.body.classList.add('js-loading');\r\n" +
+						"\twindow.addEventListener(\"load\", showPage);\r\n" +
+						"\r\n" +
+						"\tfunction showPage() {\r\n" +
+						"\t\tdocument.body.classList.remove('js-loading');\r\n" +
+						"\t}\r\n" +
+						"\r\n");
 		
 		// initialize a Segment object for each <path> element
 		for (int i = 0; i < listTrips.size(); i++) {
@@ -201,7 +212,7 @@ public class Animator {
 				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);
 				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
 				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance), 0, Integer.MAX_VALUE);
-				int intLegTime = Mathf.roundToInt(trip.computeTripTime(j - 1, j));
+				int intLegTime = Mathf.clampInt(Mathf.roundToInt(trip.computeTripTime(j - 1, j)), 1, Integer.MAX_VALUE);
 				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime());
 				
 				if (j == trip.getPoints().size() - 1) {
