@@ -99,9 +99,9 @@ public class Converter {
 	}
 
 	/**
-	 * Converts a Point to a Pixel (i.e., from world space to screen space).
-	 * @param point The Point to convert.
-	 * @return The Pixel that corresponds to the location of the Point.
+	 * Converts a PointWorld to a Pixel (i.e., from world space to screen space).
+	 * @param pointWorld The PointWorld to convert.
+	 * @return The Pixel that corresponds to the location of the PointWorld.
 	 */
 	public Pixel getPixelFromPointWorld(PointWorld pointWorld) {
 		double[] arrDblLatLon = convertPositionWorldToScreen(pointWorld.getLat(), pointWorld.getLon());

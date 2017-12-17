@@ -7,8 +7,8 @@ import java.util.Random;
 
 /**
  * Tests the methods of the Animator class by generating a random list of Trips.
- * The assertion is somewhat trivial, because all it does is check to ensure the output file exists.
- * However, the output file can then be checked manually to verify that the animation behaves as expected.
+ * The assertion is somewhat trivial, because all it does is check to ensure the output files exist.
+ * However, the output files can then be checked manually to verify that the animation behaves as expected.
  */
 public class AnimatorTest {
 
@@ -18,11 +18,11 @@ public class AnimatorTest {
 		Animator animator = new Animator();
 		ArrayList<Trip> listTrips = new ArrayList<>();
 		
-		int intNumberOfTrips = 1;
-		int intMinPointsPerTrip = 150;
-		int intMaxPointsPerTrip = 300;
+		int intNumberOfTrips = 100;
+		int intMinPointsPerTrip = 100;
+		int intMaxPointsPerTrip = 600;
 		double dblMinDurationOfTripLeg = 1;
-		double dblMaxDurationOfTripLeg = 10;
+		double dblMaxDurationOfTripLeg = 50;
 		int intCanvasSize = 600;
 		int intSpawnPadding = 10;
 		double dblMinLat = intSpawnPadding;
@@ -47,8 +47,8 @@ public class AnimatorTest {
 			listTrips.add(trip);
 		}
 		
-		animator.animateTrips(listTrips, "animation_test_1", intCanvasSize, "#000000", 1, 500, "#AAFF88", "#FFFFFF", "#FFFFFF", 0.05);
-		animator.animateTrips(listTrips, "animation_test_2", intCanvasSize, "#000000", 1, 500, "#FFFFFF", "#FFFFFF", "#FFFFFF", 0.05);
+		animator.animateTrips(listTrips, "animation_test_1", "LiquidMaps: Test 1", "", intCanvasSize, "#000000", 2, 300, false, "#224488", "#88FF00", "#FFFFFF", 0);
+		animator.animateTrips(listTrips, "animation_test_2", "LiquidMaps: Test 2", "Refresh page to replay.", intCanvasSize, "#000000", 4, 500, true, "#FFFFFF", "#FFFFFF", "#FFFFFF", 0.05);
 		
 		File file1 = new File("animation_test_1.html");
 		File file2 = new File("animation_test_2.html");

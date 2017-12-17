@@ -55,9 +55,9 @@ public class RasterDataSource implements DataSource {
 	 * lat/lng and pixel x,y coordinates.
 	 * 
 	 * @param fileName the name of the image to be read
-	 * @param pt1 the first reference Point (Lat/Lng)
-	 * @param px1 the first reference Pixel (X,Y)
-	 * @param pt2 the second reference Point
+	 * @param pt1 the first reference PointWorld (lat/lon)
+	 * @param px1 the first reference Pixel (x, y)
+	 * @param pt2 the second reference PointWorld
 	 * @param px2 the second reference Pixel
 	 */
 	

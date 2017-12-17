@@ -1,15 +1,11 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
- * Settings and the inner classes it contains are data structures to be filled
- * by the GSON library.
- *
+ * Stores the input and output settings for the LiquidMaps program.
+ * The variables within inner classes are data structures to be filled by the GSON library using SettingsFileReader.
  * @author brian
- *
  */
 public class Settings {
-
 	public final String cityMapFile = null;
 	public final ArrayList<RasterDataDesc> rasterDataDescs = new ArrayList<RasterDataDesc>();
 	public final ArrayList<VectorDataDesc> vectorDataDescs = new ArrayList<VectorDataDesc>();
@@ -19,8 +15,11 @@ public class Settings {
 	Settings() {
 	}
 
+	/**
+	 * Inner class that stores raster data settings.
+	 * @author brian
+	 */
 	public class RasterDataDesc {
-
 		public final String name = null;
 		public final String mapFileName = null;
 		public final PointWorld point1 = null;
@@ -39,8 +38,11 @@ public class Settings {
 		}
 	}
 
+	/**
+	 * Inner class that stores vector data settings.
+	 * @author brian
+	 */
 	public class VectorDataDesc {
-
 		public final String name = null;
 		public final String vecFileName = null;
 
@@ -55,8 +57,11 @@ public class Settings {
 
 	}
 
+	/**
+	 * Inner class that stores routing settings.
+	 * @author brian
+	 */
 	public class RoutingVars {
-
 		public final String routeBeg = null;
 		public final String routeEnd = null;
 		public final Integer routeCount = null;
@@ -81,15 +86,21 @@ public class Settings {
 
 	}
 
+	/**
+	 * Inner class that stores output settings.
+	 * @author brian
+	 */
 	public class OutputVars {
-
 		public final PointWorld pointUpperLeft = null;
 		public final PointWorld pointLowerRight = null;
 		public final String strFileName = null;
+		public final String strPageTitle = null;
+		public final String strCanvasText = null;
 		public final Integer intCanvasWidth = null;
 		public final String strCanvasColor = null;
 		public final Integer intLineWidth = null;
 		public final Integer intLineLength = null;
+		public final Boolean isKeepLinesVisible = null;
 		public final String strLineColorA = null;
 		public final String strLineColorB = null;
 		public final String strTextColor = null;
@@ -103,9 +114,12 @@ public class Settings {
 		}
 	}
 
+	/**
+	 * Returns a description of the current LiquidMaps settings.
+	 * @return A description of the current LiquidMaps settings.
+	 */
 	@Override
 	public String toString() {
-
 		String str = "cityMapFile: " + cityMapFile + "\n";
 		str += "rasterDataDescs:\n";
 		str += " [\n";

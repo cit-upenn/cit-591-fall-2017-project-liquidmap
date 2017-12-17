@@ -11,10 +11,13 @@ public class Animator {
 	Random random;
 	FileWriter fileWriter;
 	String strFileName;
+	String strPageTitle;
+	String strCanvasText;
 	int intCanvasWidth;
 	String strCanvasColor;
 	int intLineWidth;
 	int intLineLength;
+	boolean isKeepLinesVisible;
 	String strLineColorA;
 	String strLineColorB;
 	String strTextColor;
@@ -31,24 +34,31 @@ public class Animator {
 	/**
 	 * Converts an ArrayList of Trips into an .html file that animates a line for each Trip.
 	 * @param listTrips The ArrayList of Trips.
-	 * @param strFileName The desired name of the output file, without the "html" extension.
-	 * @param intCanvasWidth The width the animation canvas in pixels.
+	 * @param strFileName The desired name of the output file, without the ".html" extension.
+	 * @param strPageTitle The title of the output file (i.e., in the page's metadata).
+	 * @param strCanvasText Text that will appear on the canvas.
+	 * @param intCanvasWidth The width of the animation canvas in pixels.
 	 * @param strCanvasColor The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param intLineWidth The width of each line in pixels.
-	 * @param intLineLength The height of each line in pixels.
-	 * @param strLineColorA The first color boundary of the lines expressed as a hex triplet: (e.g., "#000000").
-	 * @param strLineColorA The second color boundary of the lines expressed as a hex triplet: (e.g., "#000000").
-	 * @param strTextColor The color of text on the canvas expressed as a hex triplet: (e.g., "#000000").
+	 * @param intLineLength The length of each line in pixels.
+	 * @param isKeepLinesVisible True if lines should remain on the canvas after they complete their animation.
+	 * @param strLineColorA The first color boundary of the lines expressed as a hex triplet (e.g., "#000000").
+	 * @param strLineColorA The second color boundary of the lines expressed as a hex triplet (e.g., "#000000").
+	 * @param strTextColor The color of text on the canvas expressed as a hex triplet (e.g., "#000000").
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
-	public void animateTrips (ArrayList<Trip> listTrips, String strFileName, int intCanvasWidth, 
-			String strCanvasColor, int intLineWidth, int intLineLength, String strLineColorA, 
-			String strLineColorB, String strTextColor, double dblTimeBetweenSpawns) {
+	public void animateTrips (ArrayList<Trip> listTrips, String strFileName, String strPageTitle, String strCanvasText,
+							  int intCanvasWidth, String strCanvasColor, int intLineWidth, int intLineLength,
+							  boolean isKeepLinesVisible, String strLineColorA, String strLineColorB, String strTextColor,
+							  double dblTimeBetweenSpawns) {
 		this.strFileName = strFileName;
+		this.strPageTitle = strPageTitle;
+		this.strCanvasText = strCanvasText;
 		this.intCanvasWidth = intCanvasWidth;
 		this.strCanvasColor = strCanvasColor;
 		this.intLineWidth = intLineWidth;
 		this.intLineLength = intLineLength;
+		this.isKeepLinesVisible = isKeepLinesVisible;
 		this.strLineColorA = strLineColorA;
 		this.strLineColorB = strLineColorB;
 		this.strTextColor = strTextColor;
@@ -74,12 +84,12 @@ public class Animator {
 						"<html lang=\"en\">\r\n" + 
 						"\t<head>\r\n" + 
 						"\t\t<meta charset=\"UTF-8\">\r\n" + 
-						"\t\t<title>LiquidMaps</title>\r\n" + 
+						"\t\t<title>" + strPageTitle + "</title>\r\n" + 
 						"\t</head>\r\n" + 
 						"\r\n" + 
 						"\t<body>\r\n" + 
 						"\t\t<p>\r\n" + 
-						"\t\t\tRefresh this page to replay.\r\n" + 
+						"\t\t\t" + strCanvasText + "\r\n" + 
 						"\t\t</p>\r\n" + 
 						"\r\n" + 
 						"\t\t<svg>\r\n");
@@ -110,7 +120,6 @@ public class Animator {
 		strbOut.append(	"\t\t</svg>\r\n" + 
 						"\r\n" + 
 						"\t\t<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n" + 
-						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.min.js'></script>\r\n" + 
 						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/segment-js/1.0.8/segment.js'></script>\r\n" + 
 						"\t</body>\r\n" + 
 						"</html>\r\n\r\n");
@@ -215,9 +224,12 @@ public class Animator {
 				int intLegTime = Mathf.clampInt(Mathf.roundToInt(trip.computeTripTime(j - 1, j)), 1, Integer.MAX_VALUE);
 				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime());
 				
-				if (j == trip.getPoints().size() - 1) {
-					intPositionFront = 100;
-					intPositionBack = 100;
+				// if true, hide lines after they complete their animation
+				if (!isKeepLinesVisible) {
+					if (j == trip.getPoints().size() - 1) {
+						intPositionFront = 100;
+						intPositionBack = 100;
+					}
 				}
 				
 				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + intDelayTime + ");\r\n");

@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * The main class for the LiquidMaps program.
+ * Calls methods in sequence to read settings, import data, generate trips, and produce an animation.
+ * @author brian
+ */
 public class LiquidMap {
 
 	private Settings settings;
@@ -10,6 +15,9 @@ public class LiquidMap {
 	ArrayList<Trip> convTrips = new ArrayList<>();
 	Converter converter;
 
+	/**
+	 * Constructor. Calls each of the LiquidMaps steps in sequence.
+	 */
 	public LiquidMap() {
 		readSettings();
 		importDataSources();
@@ -19,11 +27,19 @@ public class LiquidMap {
 		animateTrips();
 	}
 
+	/**
+	 * Reads the JSON file (settings.json) and initializes the settings variables.
+	 */
 	private void readSettings() {
 		SettingsFileReader sfr = new SettingsFileReader();
 		settings = sfr.getSettings();
 	}
 
+	/**
+	 * Cycles through all DataSources Descriptors in the JSON file and attempts
+	 * to use each to build data sources and put them into a HashMap so that
+	 * they can be addressed later by name.
+	 */
 	private void importDataSources() {
 		for (int i = 0; i < settings.rasterDataDescs.size(); i++) {
 			String name = settings.rasterDataDescs.get(i).name;
@@ -53,10 +69,7 @@ public class LiquidMap {
 		while (goodTripCount < settings.routingVars.routeCount) {
 			PointWorld ptBeg = sourceBeg.getRandPoint();
 			PointWorld ptEnd = sourceEnd.getRandPoint();
-			System.out.println(ptBeg);
-			System.out.println(ptEnd);
 			Trip trip = ghi.getTrip(ptBeg, ptEnd);
-			System.out.println(trip.getDescrip());
 			if (trip.maxTime() > settings.routingVars.routeMinTime
 					&& trip.maxTime() < settings.routingVars.routeMaxTime) {
 				double tVar = settings.routingVars.timeStartVariance;
@@ -67,35 +80,47 @@ public class LiquidMap {
 				trip.offsetTime(tOff);
 				trips.add(trip);
 				goodTripCount++;
-				System.out.println("  trip added");
 			}
 		}
 	}
 
-	private void convertTrips() {	
-		convTrips = converter.getConvertedListTrips(trips);
-	}
-
+	/**
+	 * Builds a converter object capable of translating from world coordinates
+	 * to pixel coordinates (for the output file).
+	 */
 	private void buildConverter() {
 		PointWorld pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
 		PointWorld pointWorldLowerRight = settings.outputVars.pointLowerRight;
 		Integer outputWidth = settings.outputVars.intCanvasWidth;
-		converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight, outputWidth);
+		converter = new Converter(pointWorldUpperLeft, pointWorldLowerRight,
+				outputWidth);
 	}
 
+	/**
+	 * Converts the trips from world coordinates to pixel coordinates.
+	 */
+	private void convertTrips() {
+		convTrips = converter.getConvertedListTrips(trips);
+	}
+
+	/**
+	 * Generates the animated output .html file.
+	 */
 	private void animateTrips() {
 		Animator animator = new Animator();
-		
-		animator.animateTrips(convTrips,
-							  settings.outputVars.strFileName,
-							  settings.outputVars.intCanvasWidth,
-							  settings.outputVars.strCanvasColor,
-							  settings.outputVars.intLineWidth,
-							  settings.outputVars.intLineLength,
-							  settings.outputVars.strLineColorA,
-							  settings.outputVars.strLineColorB,
-							  settings.outputVars.strTextColor,
-							  settings.outputVars.dblTimeBetweenSpawns);
+
+		animator.animateTrips(convTrips, settings.outputVars.strFileName,
+				settings.outputVars.strPageTitle,
+				settings.outputVars.strCanvasText,
+				settings.outputVars.intCanvasWidth,
+				settings.outputVars.strCanvasColor,
+				settings.outputVars.intLineWidth,
+				settings.outputVars.intLineLength,
+				settings.outputVars.isKeepLinesVisible,
+				settings.outputVars.strLineColorA,
+				settings.outputVars.strLineColorB,
+				settings.outputVars.strTextColor,
+				settings.outputVars.dblTimeBetweenSpawns);
 	}
 	
 	/**
@@ -106,7 +131,11 @@ public class LiquidMap {
 		return trips;
 	}
 
+	/**
+	 * The main method. Calls the LiquidMap constructor, which performs all the steps of the LiquidMaps program.
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		LiquidMap lm = new LiquidMap();
+		new LiquidMap();
 	}
 }
