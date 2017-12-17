@@ -13,7 +13,7 @@ public class LiquidMap {
 	public LiquidMap() {
 		readSettings();
 		importDataSources();
-		getTrips();
+		buildTrips();
 		buildConverter();
 		convertTrips();
 		animateTrips();
@@ -44,7 +44,7 @@ public class LiquidMap {
 		}
 	}
 
-	private void getTrips() {
+	private void buildTrips() {
 		Random rdn = new Random();
 		GHInterface ghi = new GHInterface(settings.cityMapFile);
 		DataSource sourceBeg = dataSources.get(settings.routingVars.routeBeg);
@@ -96,6 +96,14 @@ public class LiquidMap {
 							  settings.outputVars.strLineColorB,
 							  settings.outputVars.strTextColor,
 							  settings.outputVars.dblTimeBetweenSpawns);
+	}
+	
+	/**
+	 * Returns the AL of Trips that the buildTrips() method creates.
+	 * @return an ArrayList of Trips
+	 */
+	public ArrayList<Trip> getTrips() {
+		return trips;
 	}
 
 	public static void main(String[] args) {
