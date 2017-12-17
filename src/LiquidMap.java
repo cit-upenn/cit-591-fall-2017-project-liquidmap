@@ -14,6 +14,7 @@ public class LiquidMap {
 	ArrayList<Trip> trips = new ArrayList<>();
 	ArrayList<Trip> convTrips = new ArrayList<>();
 	Converter converter;
+	private TripAnalysis tripAnalysis;
 
 	/**
 	 * Constructor. Calls each of the LiquidMaps steps in sequence.
@@ -25,6 +26,20 @@ public class LiquidMap {
 		buildConverter();
 		convertTrips();
 		animateTrips();
+		
+		tripAnalysis = new TripAnalysis(trips);
+		double[] timeStats = tripAnalysis.getTimeStats();
+		double[] distanceStats = tripAnalysis.getDistanceStats();
+		
+		System.out.println("=========================================");
+		System.out.println("Descriptive Statistics for Trip Times (minutes):");
+		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f", 
+				timeStats[0], timeStats[1], timeStats[2], timeStats[3]);
+		System.out.println();
+		System.out.println("=========================================");
+		System.out.println("Descriptive Statistics for Trip Distances (miles):");
+		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f", 
+				distanceStats[0], distanceStats[1], distanceStats[2], distanceStats[3]);
 	}
 
 	/**

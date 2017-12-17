@@ -8,12 +8,10 @@ import java.util.ArrayList;
  *
  */
 public class TripAnalysis {
-	private LiquidMap liquidMap;
 	private ArrayList<Trip> trips;
 	
-	public TripAnalysis() {
-		liquidMap = new LiquidMap();
-		trips = liquidMap.getTrips();
+	public TripAnalysis(ArrayList<Trip> trips) {
+		this.trips = trips;
 	}
 	/**
 	 * This method computes min, mean, and max time of the 
@@ -53,8 +51,10 @@ public class TripAnalysis {
 			stDev += Math.pow(tripTime - meanTime, 2);
 		}
 		stDev = Math.sqrt(stDev / trips.size());
-
-		double[] timeStats = {minTime, meanTime, stDev, maxTime};
+		
+		final double SECONDS_TO_MINUTES = 60;
+		double[] timeStats = {minTime/SECONDS_TO_MINUTES, meanTime/SECONDS_TO_MINUTES, 
+				stDev/SECONDS_TO_MINUTES, maxTime/SECONDS_TO_MINUTES};
 		
 		return timeStats;
 	}
@@ -98,9 +98,9 @@ public class TripAnalysis {
 		}
 		stDev = Math.sqrt(stDev / trips.size());
 		
-		double[] distanceStats = {minDistance, meanDistance, stDev, maxDistance};
+		final double METERS_TO_MILES = 1609.34; 
+		double[] distanceStats = {minDistance/METERS_TO_MILES, meanDistance/METERS_TO_MILES, 
+				stDev/METERS_TO_MILES, maxDistance/METERS_TO_MILES};
 		return distanceStats;
 	}
-
-
 }
