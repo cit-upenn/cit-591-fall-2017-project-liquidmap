@@ -4,6 +4,8 @@
 
 LiquidMaps is a Java application designed to create an artistic animated image of a city's roads. This is done by defining up to a thousand trips that are all pictorially represented at once.
 
+![LiquidMaps animation sample](sample.gif)
+
 ## Technique
 
 ### Geographic DataSources
@@ -40,12 +42,58 @@ In order to animate the list of trips, all trip information must first be conver
 
 The converted trips are passed to the `Animator`, which generates HTML, CSS, and JS code that draws each trip as a path and animates it according to user-specified settings. The JavaScript class [Segment](https://github.com/lmgonzalves/segment) is used to draw sections of each path using percentages (e.g., draw the segment between 45% and 55%), and durations and delays are calculated appropriately to ensure that each leg of each trip is animated at the correct speed. The code is written to an .html file.
 
-## User Customization
-
-### Settings
+## Settings
 
 The input and output of LiquidMaps can be adjusted by modifying the fields of the settings file (settings.json). A description of each field is provided below.
 
+### rasterDataDescs
+`name`: 
+`mapFileName`: 
+`point1`: 
+	`lat`: 
+	`lon`: 
+`point2`: 
+	`lat`: 
+	`lon`: 
+`pixel1`: 
+	`pixelX`: 
+	`pixelY`: 
+`pixel2`: 
+	`pixelX`: 
+	`pixelY`: 
+
+### vectorDataDescs
+`name`: 
+`vecFileName`: 
+
+### routingVars
+`routeBeg`: 
+`routeEnd`: 
+`routeCount`: 
+`routeMinTime`: 
+`routeMaxTime`: 
+`timeStartVariance`: 
+`speedVariance`: 
+
+### outputVars
+`pointUpperLeft`
+	`lat`: 
+	`lon`: 
+`pointLowerRight`
+	`lat`: 
+	`lon`: 
+`strFileName`: The desired name of the output file, without the extension. A ".html" extension will automatically be added.
+`strPageTitle`: The title of the output file (i.e., in the page's metadata).
+`strCanvasText`: Text that will appear on the canvas.
+`intCanvasWidth`: The width of the animation canvas in pixels.
+`strCanvasColor`: The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
+`intLineWidth`: The width of each line in pixels.
+`intLineLength`: The length of each line in pixels.
+`isKeepLinesVisible`: True if lines should remain on the canvas after they complete their animation.
+`strLineColorA`: The first color boundary of the lines expressed as a hex triplet (e.g., "#66DD22").
+`strLineColorB`: The second color boundary of the lines expressed as a hex triplet (e.g., "#FF88AA").
+`strTextColor`: The color of text on the canvas expressed as a hex triplet (e.g., "#FFFFFF").
+`dblTimeBetweenSpawns`: The amount of time (in seconds) to wait before spawning a new line.
 
 ### Example Settings File
 

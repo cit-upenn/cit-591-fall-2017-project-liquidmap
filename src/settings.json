@@ -31,7 +31,7 @@
     "routingVars": {
         "routeBeg": "pop2012",
         "routeEnd": "pop2012",
-        "routeCount": 200,
+        "routeCount": 300,
         "routeMinTime": 5,
         "routeMaxTime": 10000,
         "timeStartVariance": 100,
@@ -49,13 +49,13 @@
         "strFileName": "animation",
         "strPageTitle": "LiquidMaps: Philadelphia",
         "strCanvasText": "",
-        "intCanvasWidth": 600,
-		"strCanvasColor": "#000000",
+        "intCanvasWidth": 400,
+		"strCanvasColor": "#110000",
 		"intLineWidth": 1,
 		"intLineLength": 500,
 		"isKeepLinesVisible": true,
-		"strLineColorA": "#AAFF88",
-		"strLineColorB": "#FFAA88",
+		"strLineColorA": "#DC89F4",
+		"strLineColorB": "#DC89B2",
 		"strTextColor": "#FFFFFF",
 		"dblTimeBetweenSpawns": 0
     }

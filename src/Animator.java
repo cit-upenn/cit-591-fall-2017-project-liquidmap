@@ -34,17 +34,17 @@ public class Animator {
 	/**
 	 * Converts an ArrayList of Trips into an .html file that animates a line for each Trip.
 	 * @param listTrips The ArrayList of Trips.
-	 * @param strFileName The desired name of the output file, without the "html" extension.
+	 * @param strFileName The desired name of the output file, without the ".html" extension.
 	 * @param strPageTitle The title of the output file (i.e., in the page's metadata).
 	 * @param strCanvasText Text that will appear on the canvas.
-	 * @param intCanvasWidth The width the animation canvas in pixels.
+	 * @param intCanvasWidth The width of the animation canvas in pixels.
 	 * @param strCanvasColor The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
 	 * @param intLineWidth The width of each line in pixels.
 	 * @param intLineLength The length of each line in pixels.
 	 * @param isKeepLinesVisible True if lines should remain on the canvas after they complete their animation.
-	 * @param strLineColorA The first color boundary of the lines expressed as a hex triplet: (e.g., "#000000").
-	 * @param strLineColorA The second color boundary of the lines expressed as a hex triplet: (e.g., "#000000").
-	 * @param strTextColor The color of text on the canvas expressed as a hex triplet: (e.g., "#000000").
+	 * @param strLineColorA The first color boundary of the lines expressed as a hex triplet (e.g., "#000000").
+	 * @param strLineColorA The second color boundary of the lines expressed as a hex triplet (e.g., "#000000").
+	 * @param strTextColor The color of text on the canvas expressed as a hex triplet (e.g., "#000000").
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
 	 */
 	public void animateTrips (ArrayList<Trip> listTrips, String strFileName, String strPageTitle, String strCanvasText,
