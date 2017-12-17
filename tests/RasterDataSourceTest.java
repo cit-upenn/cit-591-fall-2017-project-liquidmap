@@ -15,8 +15,9 @@ public class RasterDataSourceTest {
 	private Pixel px2 = new Pixel(10,10);
 	
 	@Before
-	public void setup() {
-		this.rds = new RasterDataSource("PhillyPopDensity2012.png", pt1, px1, pt2, px2);
+	public void setup() throws Exception {
+		this.rds = new RasterDataSource("PhillyPopDensity2012.png", pt1, px1,
+				pt2, px2);
 		this.pixels = rds.getPixels();
 		this.firstPixel = pixels.get(0);
 	}

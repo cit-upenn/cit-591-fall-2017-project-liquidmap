@@ -23,7 +23,7 @@ public class LiquidMap {
 		try {
 			readSettings();
 			importDataSources();
-			getTrips();
+			routeTrips();
 			buildConverter();
 			convertTrips();
 			animateTrips();
@@ -82,7 +82,7 @@ public class LiquidMap {
 	/**
 	 * Generates a list of trips using GraphHopper.
 	 */
-	private void getTrips() throws Exception {
+	private void routeTrips() throws Exception {
 		Random rdn = new Random();
 		GHInterface ghi = new GHInterface(settings.cityMapFile);
 		DataSource sourceBeg = dataSources.get(settings.routingVars.routeBeg);

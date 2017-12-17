@@ -13,9 +13,9 @@ public class ConverterTest {
 	private Pixel px2;
 	private Converter conv;
 	private Converter conv2;
-	
-	@Before 
-	public void setup() {
+
+	@Before
+	public void setup() throws Exception {
 		pt1 = new PointWorld(40.1, -75.3); // NW PHL (lat, lon)
 		pt2 = new PointWorld(39.9, -74.9); // SE PHL
 		// 0.2 degrees lat, 0.4 degrees lon
