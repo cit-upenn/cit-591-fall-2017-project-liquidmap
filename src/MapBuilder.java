@@ -30,7 +30,7 @@ public class MapBuilder {
 			animateTrips();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.out.println("Terminating Program");
+			System.out.println("Terminating program");
 		}
 	}
 
@@ -102,13 +102,12 @@ public class MapBuilder {
 
 	/**
 	 * Generates statistics on the routed trips.
-	 * 
 	 * @throws Exception
 	 */
 	private void performTripAnalysis() throws Exception {
 		tripAnalysis = new TripAnalysis(trips);
 		if (trips.size() == 0) {
-			throw new Exception("Can not analyze or graph no trips.");
+			throw new Exception("Cannot analyze trips or input has no trips");
 		}
 		double[] timeStats = tripAnalysis.getTimeStats();
 		double[] distanceStats = tripAnalysis.getDistanceStats();
@@ -168,7 +167,7 @@ public class MapBuilder {
 	}
 	
 	/**
-	 * Returns the AL of Trips that the buildTrips() method creates.
+	 * Returns the ArrayList of Trips that the buildTrips() method creates.
 	 * @return an ArrayList of Trips
 	 */
 	public ArrayList<Trip> getTrips() {

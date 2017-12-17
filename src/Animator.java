@@ -82,6 +82,7 @@ public class Animator {
 	private String generateMainBlock (ArrayList<Trip> listTrips) {
 		StringBuilder strbOut = new StringBuilder();
 		
+		// add <head> block and start <body> block
 		strbOut.append(	"<!DOCTYPE html>\r\n" + 
 						"<html lang=\"en\">\r\n" + 
 						"\t<head>\r\n" + 
@@ -104,6 +105,7 @@ public class Animator {
 			
 			strbOut.append("\t\t\t<path id=\"path" + i + "\" ");
 			
+			// if the lines will not all be one color, assign each one a random color here
 			if (!strLineColorA.equals(strLineColorB)) {
 				strbOut.append("stroke=\"" + generateRandomColor(strLineColorA, strLineColorB) + "\" ");
 			}
@@ -119,6 +121,7 @@ public class Animator {
 			strbOut.append("\" />\r\n");
 		}
 
+		// close the <body> block
 		strbOut.append(	"\t\t</svg>\r\n" + 
 						"\r\n" + 
 						"\t\t<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n" + 
@@ -137,6 +140,7 @@ public class Animator {
 	private String generateStyleBlock (ArrayList<Trip> listTrips) {
 		StringBuilder strbOut = new StringBuilder();
 		
+		// add style info for font, canvas size, text color, text alignment, etc.
 		strbOut.append(	"<style>\r\n" + 
 						"\tbody {\r\n" + 
 						"\t\tfont-family: \"Helvetica Neue\", Helvetica;\r\n" + 
@@ -165,10 +169,12 @@ public class Animator {
 						"\r\n" + 
 						"\tpath {\r\n");
 		
+		// if the lines will all be one color, define that color here
 		if (strLineColorA.equals(strLineColorB)) {
 			strbOut.append("\t\tstroke: " + strLineColorA + ";\r\n");
 		}
 		
+		// complete the <style> block, adding code to prevent the animation from starting before it is loaded
 		strbOut.append(	"\t\tstroke-width: " + intLineWidth + ";\r\n" + 
 						"\t\tfill-opacity: 0;\r\n" +
 						"\t}\r\n" + 
@@ -191,6 +197,7 @@ public class Animator {
 	private String generateScriptBlock (ArrayList<Trip> listTrips) {
 		StringBuilder strbOut = new StringBuilder();
 		
+		// start the <script> block with code to check for when the animation has finished loading
 		strbOut.append(	"<script>\r\n" +
 						"\tdocument.body.classList.add('js-loading');\r\n" +
 						"\twindow.addEventListener(\"load\", showPage);\r\n" +
