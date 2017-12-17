@@ -187,6 +187,7 @@ Below is the text of a correctly written settings file (settings.json). This can
     }
 }
 ```
+
 ##Design
 
 Please refer to the link to see the overall design of the project. [LiquidMapDesign](https://www.lucidchart.com/documents/view/44e290d0-5e43-4bee-9b36-b4477d47654c)
