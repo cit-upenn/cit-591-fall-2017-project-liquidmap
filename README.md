@@ -23,7 +23,11 @@ The weights for grayscale images are determined based on their red-channel RGB v
 
 The equation used is: colorWeight = 1 / ((redValue + 1) ^ 1.1).
 
-Values of 255, i.e. "White" in a grayscale image, are automatically assigned a weight equal of zero. If all pixels have a value of 255, then all pixels will be assigned a weight equal to one.
+Values of 255, i.e. "White" in a grayscale image, are automatically assigned a weight equal of zero. If all pixels have a value of 255, then all pixels will be assigned a weight equal to one. This is so that bodies of water (or other areas where humans don't start trips) do not generate start points or end points of trips.
+
+In the case of the above sample.gif, we used the grayscale image below:
+
+![PhillyPopDensity2012 raster sample](PhillyPopDensity2012.png)
 
 #### Vector Data
 A `VectorDataSource` is a list of latitudes and longitudes from which we draw a random sample. For instance, one could imagine a list of the locations of all fire emergencies in a city for a year or a list consisting of just one point (e.g., the location of your home). If probability weights (the likelihood of the point being chosen by the program) are provided then they will be used. If weights are not provided then each point will have a weight equal to one.
