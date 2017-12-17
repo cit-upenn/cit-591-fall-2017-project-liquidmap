@@ -14,7 +14,7 @@ The tool to generate routes is based on the fabulous project [GraphHopper](https
 
 Trips have a beginning and an end. In order to efficiently specify the hundreds of trips, we need a way of describing hundreds of locations. We do this using `DataSource`s. A `DataSource` can be either a `VectorDataSource` or a `RasterDataSource`. Each `DataSource` is given a name so that it can be easily addressed later. One may specify many `DataSource`s, but ultimately, only two will be used. There are two variations on `DataSource`.
 
-####Raster Data
+**Raster Data**
 A `RasterDataSource` is a grayscale image of the region where the color denotes some quantity of interest. For instance, one could use this to denote population density or median household income. In order to give such an image meaning, one needs to specify two pixels of known location to orient the image on the globe. It is preferable that these two pixels are diagonal from each other. 
 
 `RasterDataSource` assumes that the user is providing a choropleth map: [Choropleth Map](https://en.wikipedia.org/wiki/Choropleth_map)
@@ -23,9 +23,9 @@ The weights for grayscale images are determined based on their red-channel RGB v
 
 The equation used is: colorWeight = 1 / ((redValue + 1) ^ 1.1).
 
-Values of 255, i.e. "White" in a grayscale image, are automatically assigned a weight equal to zero. If all pixels have a value of 255, then all pixels will be assigned a weight equal to one.
+Values of 255, i.e. "White" in a grayscale image, are automatically assigned a weight equal of zero. If all pixels have a value of 255, then all pixels will be assigned a weight equal to one.
 
-####Vector Data
+**Vector Data**
 A `VectorDataSource` is a list of latitudes and longitudes from which we draw a random sample. For instance, one could imagine a list of the locations of all fire emergencies in a city for a year or a list consisting of just one point (e.g., the location of your home). If probability weights (the likelihood of the point being chosen by the program) are provided then they will be used. If weights are not provided then each point will have a weight equal to one.
 
 The file for `VectorDataSource` must be formatted as follows: 1). tab-delimited text file 2). no column headers 3). only two or three columns, where the first column is latitude, the second column is longitude, and the third column (optional) is probability weight.
