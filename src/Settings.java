@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Stores the input and output settings for the LiquidMaps program.

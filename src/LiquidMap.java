@@ -131,6 +131,6 @@ public class LiquidMap {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		LiquidMap lm = new LiquidMap();
+		new LiquidMap();
 	}
 }

@@ -15,12 +15,14 @@ public class GHInterface {
 	GraphHopper hopper;
 
 	/**
-	 * Initializes the GraphHopper server using the map specified in the City object.
+	 * Initializes the GraphHopper server using the map specified in the City
+	 * object.
 	 *
 	 * The first time this is done on the local computer, it will initialize the
 	 * map into the GHHopperWD working directory.
 	 *
-	 * @param cityMapFile The file name of the .pbf, which stores map data.
+	 * @param cityMapFile
+	 *            The file name of the .pbf, which stores map data.
 	 */
 	public GHInterface(String cityMapFile) {
 		hopper = new GraphHopper().forDesktop();
@@ -31,23 +33,27 @@ public class GHInterface {
 	}
 
 	/**
-	 * Uses the GHInterface object to compute a trip between PointWorld pointWorldStart and PointWorld pointWorldEnd.
+	 * Uses the GHInterface object to compute a trip between PointWorld
+	 * pointWorldStart and PointWorld pointWorldEnd.
 	 *
 	 * While the PointWorld class supports time, this is not used in the
 	 * calculation. The returned trip will start at 0(s) and progress so that
-	 * the last point (i.e., the destination) will be at the concluding time of the
-	 * trip. All points in between are sequential, monotonic in time, and
+	 * the last point (i.e., the destination) will be at the concluding time of
+	 * the trip. All points in between are sequential, monotonic in time, and
 	 * reflect the local velocities.
 	 *
-	 * @param pointWorldStart The starting point
-	 * @param pointWorldEnd The destination point
+	 * @param pointWorldStart
+	 *            The starting point
+	 * @param pointWorldEnd
+	 *            The destination point
 	 * @return A trip from pointWorldStart to pointWorldEnd.
 	 */
 	public Trip getTrip(PointWorld pointWorldStart, PointWorld pointWorldEnd) {
 
-		GHRequest req = new GHRequest(pointWorldStart.getLat(), pointWorldStart.getLon(), pointWorldEnd.getLat(),
-				pointWorldEnd.getLon()).setWeighting("fastest").setVehicle("car")
-						.setLocale(Locale.US);
+		GHRequest req = new GHRequest(pointWorldStart.getLat(),
+				pointWorldStart.getLon(), pointWorldEnd.getLat(),
+				pointWorldEnd.getLon()).setWeighting("fastest")
+						.setVehicle("car").setLocale(Locale.US);
 		GHResponse rsp = hopper.route(req);
 		if (rsp.hasErrors()) {
 			return new Trip(); // returns null trip.
@@ -72,22 +78,18 @@ public class GHInterface {
 	 * step.
 	 *
 	 * We can then imagine each step in the InstructionList consisting of a
-	 * series of microsteps as reported by that Instruction's points. We make two
-	 * assumptions: (1) the velocity is constant across all microsteps in a step
-	 * and (2) the linear distances between the points inform how much time
+	 * series of microsteps as reported by that Instruction's points. We make
+	 * two assumptions: (1) the velocity is constant across all microsteps in a
+	 * step and (2) the linear distances between the points inform how much time
 	 * should occur on each microstep. We can then compute the time for each
 	 * microstep. The time for each point will be the accumulation of these
 	 * times.
 	 *
-	 * @param instList InstructionList object to be processed.
-	 * @return A Trip containing PointWorld objects with lat, lon, and time values.
+	 * @param instList
+	 *            InstructionList object to be processed.
+	 * @return A Trip containing PointWorld objects with lat, lon, and time
+	 *         values.
 	 */
-	
-	// TODO this method is massive. It internally shares a lot of data though so
-	// I don't think it can be easily broken into steps without creating lots of
-	// awkward objects that are used just once. One solution is to
-	// create a library of mathematical list operations that encapsulate the
-	// microroutines found here.
 	private Trip buildTripFromInst(InstructionList instList) {
 		boolean DEBUG = false;
 		if (DEBUG) {
@@ -138,7 +140,6 @@ public class GHInterface {
 			System.out
 					.println("trip[" + trip.getPoints().size() + "]: " + trip);
 		}
-		int nPoints = trip.getPoints().size();
 
 		// compute the distance between every pair of points
 		ArrayList<Double> dists = new ArrayList<>();
