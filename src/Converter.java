@@ -62,9 +62,12 @@ public class Converter {
 	 * @param pointWorldLowerRight PointWorld in the lower-right corner.
 	 * @param imageWidth The image width in pixels.
 	 */
-	public Converter(PointWorld pointWorldUpperLeft, PointWorld pointWorldLowerRight, int imageWidth) {
-		double deltaLat = Math.abs(pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
-		double deltaLon = Math.abs(pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
+	public Converter(PointWorld pointWorldUpperLeft,
+			PointWorld pointWorldLowerRight, int imageWidth) throws Exception {
+		double deltaLat = Math.abs(
+				pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
+		double deltaLon = Math.abs(
+				pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
 		if (imageWidth <= 0 || deltaLon == 0. || deltaLat == 0.) {
 			throw new Exception("Converter failed.  The Points do not contain"
 					+ " sufficient separation in x and y or the specified image"
