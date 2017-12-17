@@ -5,16 +5,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class LiquidMapTester {
-	private LiquidMap lm;
+	private MapBuilder mb;
 	
 	@Before
 	public void setUp() {
-		lm = new LiquidMap();
+		mb = new MapBuilder();
 	}
 
 	@Test
 	public void test() {
-		assertNotNull(lm);
+		assertNotNull(mb);
 	}
 
 }

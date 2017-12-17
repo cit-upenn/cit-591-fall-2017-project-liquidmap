@@ -7,7 +7,7 @@ import java.util.Random;
  * Calls methods in sequence to read settings, import data, generate trips, and produce an animation.
  * @author brian
  */
-public class LiquidMap {
+public class MapBuilder {
 
 	private Settings settings;
 	private HashMap<String, DataSource> dataSources = new HashMap<>();
@@ -19,7 +19,7 @@ public class LiquidMap {
 	/**
 	 * Constructor. Calls each of the LiquidMaps steps in sequence.
 	 */
-	public LiquidMap() {
+	public MapBuilder() {
 		try {
 			readSettings();
 			importDataSources();
@@ -180,6 +180,6 @@ public class LiquidMap {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new LiquidMap();
+		new MapBuilder();
 	}
 }

@@ -24,8 +24,8 @@
     ],
     "vectorDataDescs": [
         {
-            "name": "home",
-            "vecFileName": "VDSTest.txt"
+            "name": "fire",
+            "vecFileName": "Fire_Dept_Facilities.txt"
         }
     ],
     "routingVars": {

@@ -5,15 +5,15 @@ import org.junit.Test;
 
 public class TripAnalysisTest {
 	private TripAnalysis tripAnalysis;
-	private LiquidMap lm;
+	private MapBuilder mb;
 	private ArrayList<Trip> trips;
 	private double[] timeStats;
 	private double[] distStats;
 	
 	@Before
 	public void setUp() {
-		lm = new LiquidMap();
-		trips = lm.getTrips();
+		mb = new MapBuilder();
+		trips = mb.getTrips();
 		tripAnalysis = new TripAnalysis(trips);
 		timeStats = tripAnalysis.getTimeStats();
 		distStats = tripAnalysis.getDistanceStats();
