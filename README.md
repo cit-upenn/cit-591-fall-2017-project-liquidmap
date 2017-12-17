@@ -14,9 +14,9 @@ The tool to generate routes is based on the fabulous project [GraphHopper](https
 
 Trips have a beginning and an end. In order to efficiently specify the hundreds of trips, we need a way of describing hundreds of locations. We do this using `DataSource`s. A `DataSource` can be either a `VectorDataSource` or a `RasterDataSource`. Each `DataSource` is given a name so that it can be easily addressed later. One may specify many `DataSource`s, but ultimately, only two will be used. There are two variations on `DataSource`.
 
-A `VectorDataSource` is a list of latitudes and longitudes from which we draw a random sample. For instance, one could imagine a list of the locations of all fire emergencies in a city for a year or a list consisting of just one point (e.g., the location of your home).
+A `VectorDataSource` is a list of latitudes and longitudes from which we draw a random sample. For instance, one could imagine a list of the locations of all fire emergencies in a city for a year or a list consisting of just one point (e.g., the location of your home). If weights are provided for these points then they will be used. If weights are not provided then each point will have a weight equal to 1.
 
-A `RasterDataSource` is a grayscale image of the region where the color denotes some quantity of interest. For instance, one could use this to denote population density or median household income. In order to give such an image meaning, one needs to specify two pixels of known location to orient the image on the globe. It is preferable that these two pixels are diagonal from each other.
+A `RasterDataSource` is a grayscale image of the region where the color denotes some quantity of interest. For instance, one could use this to denote population density or median household income. In order to give such an image meaning, one needs to specify two pixels of known location to orient the image on the globe. It is preferable that these two pixels are diagonal from each other. The weights for grayscale images are determined based on their red-channel RGB values (0-255), where darker pixels (smaller RGB value) are more likely to be chosen based on an exponential probability distribution. The equation used is as follows: colorWeight = 1 / ((redValue + 1) ^ 1.1). 
 
 ### Route Specification
 After all of the `DataSource`s have been specified, we must define the family of trips. This can be done with the following parameters:
@@ -70,8 +70,8 @@ Once these two forms of positional data are provided in settings.json (as `point
 	`pixelY`: The y-value of the second reference point in screen space. Must correspond to the longitude of `point2`. Must be an integer.<br />
 
 ### vectorDataDescs
-`name`: <br />
-`vecFileName`: <br />
+`name`: A shorthand name for the vector file, which will be used to reference the file.<br />
+`vecFileName`: The name of the vector file.<br />
 
 ### routingVars
 `routeBeg`: The `name` (i.e., the shorthand name) of the image file containing weight data that should be used to select start points for trips.<br />
@@ -175,5 +175,7 @@ Below is the text of a correctly written settings file (settings.json). This can
     }
 }
 ```
+##Design
 
+Please refer to the link to see the overall design of the project. [LiquidMapDesign](https://www.lucidchart.com/documents/view/44e290d0-5e43-4bee-9b36-b4477d47654c)
 
