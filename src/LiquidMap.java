@@ -76,7 +76,9 @@ public class LiquidMap {
 		DataSource sourceBeg = dataSources.get(settings.routingVars.routeBeg);
 		DataSource sourceEnd = dataSources.get(settings.routingVars.routeEnd);
 		int goodTripCount = 0;
+		int tripRouteTrials = 0;
 		while (goodTripCount < settings.routingVars.routeCount) {
+			tripRouteTrials++;
 			PointWorld ptBeg = sourceBeg.getRandPoint();
 			PointWorld ptEnd = sourceEnd.getRandPoint();
 			Trip trip = ghi.getTrip(ptBeg, ptEnd);
@@ -90,6 +92,10 @@ public class LiquidMap {
 				trip.offsetTime(tOff);
 				trips.add(trip);
 				goodTripCount++;
+			}
+			if (tripRouteTrials > 100 * settings.routingVars.routeCount) {
+				throw new Exception("It seems to be excessivly difficult to "
+						+ "match routing criteria");
 			}
 		}
 	}
