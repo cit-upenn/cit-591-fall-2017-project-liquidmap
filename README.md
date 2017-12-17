@@ -47,53 +47,65 @@ The converted trips are passed to the `Animator`, which generates HTML, CSS, and
 The input and output of LiquidMaps can be adjusted by modifying the fields of the settings file (settings.json). A description of each field is provided below.
 
 ### rasterDataDescs
-`name`: 
-`mapFileName`: 
-`point1`: 
-	`lat`: 
-	`lon`: 
-`point2`: 
-	`lat`: 
-	`lon`: 
-`pixel1`: 
-	`pixelX`: 
-	`pixelY`: 
-`pixel2`: 
-	`pixelX`: 
-	`pixelY`: 
+
+This section contains reference data that is used to align a world-space map (i.e., latitude and longitude in degrees) and a screen-space map (i.e., x and y in pixels). Two known points (ideally diagonal from each other) must be identified on both the world-space map and the screen-space map in order for alignment to be possible.
+
+For example, say that two prominent intersections are easily identifiable on a map with color-coded population density. The map is an image file. An image editor such as Microsoft Paint or GIMP could be used to get the pixel coordinates at those intersections. Meanwhile, the latitudes and longitudes of those intersections could be identified with Google Maps or a similar service.
+
+Once these two forms of positional data are provided in settings.json (as `point1`, `point2`, `pixel1`, and `pixel2`), LiquidMaps will align the two maps, and then it will be able to work with them both.
+
+`name`: A shorthand name for the image file containing weight data, which will be used to reference the file.<br />
+`mapFileName`: The name of the image file containing weight data (e.g., a map with color-coded population density).<br />
+`point1`<br />
+	`lat`: The latitude of the first reference point in world space. Must correspond to the x-value of `pixel1`.<br />
+	`lon`: The longitude of the first reference point in world space. Must correspond to the y-value of `pixel1`.<br />
+`point2`<br />
+	`lat`: The latitude of the second reference point in world space. Must correspond to the x-value of `pixel2`.<br />
+	`lon`: The longitude of the second reference point in world space. Must correspond to the y-value of `pixel2`.<br />
+`pixel1`<br />
+	`pixelX`: The x-value of the first reference point in screen space. Must correspond to the latitude of `point1`. Must be an integer.<br />
+	`pixelY`: The y-value of the first reference point in screen space. Must correspond to the longitude of `point1`. Must be an integer.<br />
+`pixel2`<br />
+	`pixelX`: The x-value of the second reference point in screen space. Must correspond to the latitude of `point2`. Must be an integer.<br />
+	`pixelY`: The y-value of the second reference point in screen space. Must correspond to the longitude of `point2`. Must be an integer.<br />
 
 ### vectorDataDescs
-`name`: 
-`vecFileName`: 
+`name`: <br />
+`vecFileName`: <br />
 
 ### routingVars
-`routeBeg`: 
-`routeEnd`: 
-`routeCount`: 
-`routeMinTime`: 
-`routeMaxTime`: 
-`timeStartVariance`: 
-`speedVariance`: 
+`routeBeg`: The `name` (i.e., the shorthand name) of the image file containing weight data that should be used to select start points for trips.<br />
+`routeEnd`: The `name` (i.e., the shorthand name) of the image file containing weight data that should be used to select end points for trips.<br />
+`routeCount`: The number of trips that LiquidMaps should generate. Must be an integer.<br />
+`routeMinTime`: <br />
+`routeMaxTime`: <br />
+`timeStartVariance`: <br />
+`speedVariance`: <br />
 
 ### outputVars
-`pointUpperLeft`
-	`lat`: 
-	`lon`: 
-`pointLowerRight`
-	`lat`: 
-	`lon`: 
-`strFileName`: The desired name of the output file, without the extension. A ".html" extension will automatically be added.
-`strPageTitle`: The title of the output file (i.e., in the page's metadata).
-`strCanvasText`: Text that will appear on the canvas.
-`intCanvasWidth`: The width of the animation canvas in pixels.
-`strCanvasColor`: The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").
-`intLineWidth`: The width of each line in pixels.
-`intLineLength`: The length of each line in pixels.
-`isKeepLinesVisible`: True if lines should remain on the canvas after they complete their animation.
-`strLineColorA`: The first color boundary of the lines expressed as a hex triplet (e.g., "#66DD22").
-`strLineColorB`: The second color boundary of the lines expressed as a hex triplet (e.g., "#FF88AA").
-`strTextColor`: The color of text on the canvas expressed as a hex triplet (e.g., "#FFFFFF").
-`dblTimeBetweenSpawns`: The amount of time (in seconds) to wait before spawning a new line.
+
+This section contains reference data that is used to convert trips from world space to screen space to enable animation. It also contains a variety of settings for the appearance of the animation (e.g., color, line width).
+
+To convert trips from world space to screen space, a bounding box is drawn using two points in world space (the desired upper-left and lower-right corners of the output map). It is scaled using a width value in pixels. For simplicity, `pointUpperLeft` and `pointLowerRight` can be the same as the two reference points (`point1` and `point2`) used in rasterDataDescs, if they are satisfactory as corners for the bounding box.
+
+`pointUpperLeft` <br />
+	`lat`: The latitude of the upper-left corner of the animation bounding box in world space.<br />
+	`lon`: The longitude of the upper-left corner of the animation bounding box in world space.<br />
+`pointLowerRight` <br />
+	`lat`: The latitude of the lower-right corner of the animation bounding box in world space.<br />
+	`lon`: The longitude of the lower-right of the animation bounding box in world space.<br />
+`strFileName`: The desired name of the output file, without the extension. A ".html" extension will automatically be added.<br />
+`strPageTitle`: The title of the output file (i.e., in the page's metadata).<br />
+`strCanvasText`: Text that will appear on the canvas.<br />
+`intCanvasWidth`: The width of the animation canvas in pixels.<br />
+`strCanvasColor`: The color of the animation canvas expressed as a hex triplet: (e.g., "#000000").<br />
+`intLineWidth`: The width of each line in pixels.<br />
+`intLineLength`: The length of each line in pixels.<br />
+`isKeepLinesVisible`: True if lines should remain on the canvas after they complete their animation.<br />
+`strLineColorA`: The first color boundary of the lines expressed as a hex triplet (e.g., "#66DD22").<br />
+`strLineColorB`: The second color boundary of the lines expressed as a hex triplet (e.g., "#FF88AA").<br />
+`strTextColor`: The color of text on the canvas expressed as a hex triplet (e.g., "#FFFFFF").<br />
+`dblTimeBetweenSpawns`: The amount of time (in seconds) to wait before spawning a new line.<br />
 
 ### Example Settings File
 
