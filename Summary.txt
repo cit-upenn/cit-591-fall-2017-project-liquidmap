@@ -4,16 +4,16 @@ https://github.com/cit-upenn/cit-591-fall-2017-project-liquidmap
 
 Brian Edwards, Steven Brooks, Matt Surka
 
-LiquidMaps is a Java application designed to create an artistic animated image of a city's roads. This is done by defining up to a thousand trips that are all pictorially represented at once.  We use a combination of image and text files to determine latitude and longitude locations.  These are fed to GraphHopper, an open-source routing engine.  Finally, the routes are converted into javascript code which can be rendered in an html file as an animated SVG.
+LiquidMaps is a Java application designed to create an artistic animated image of a city's roads. This is done by defining up to a thousand trips that are all pictorially represented at once.  We use a combination of image and text files to determine latitude and longitude locations.  These are fed to GraphHopper, an open-source routing engine.  Finally, the routes are converted into JavaScript code which can be rendered in an html file as an animated SVG.
 
 Steven Brooks:
 Primarily responsible for authoring the raster image input and vector data file parsing.
 
 Brian Edwards:
-Primarily responsible for interfacing with GraphHopper and converting the response into lat-long-time triplets.
+Primarily responsible for interfacing with GraphHopper and converting the response into lat-lon-time triplets.
 
 Matt Surka:
-Primarily responsible the javascript authoring code.
+Primarily responsible for the JavaScript-authoring code.
 
 All authors contributed to this project equally.
 

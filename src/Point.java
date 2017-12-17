@@ -1,5 +1,8 @@
 /**
  * Represents a position in latitude-longitude-time space.
+ * Is an abstract class that should be extended by subclasses that each define their own units.
+ * For example, in LiquidMaps, PointWorld and PointScreen both extend Point.
+ * PointWorld expresses position in degrees, whereas PointScreen expresses it in pixels.
  * @author Brian Edwards, Matt Surka
  */
 public abstract class Point {
