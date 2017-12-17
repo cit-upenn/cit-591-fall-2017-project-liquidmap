@@ -24,6 +24,7 @@ public class LiquidMap {
 			readSettings();
 			importDataSources();
 			routeTrips();
+			performTripAnalysis();
 			buildConverter();
 			convertTrips();
 			animateTrips();
@@ -31,19 +32,6 @@ public class LiquidMap {
 			System.out.println(e.getMessage());
 			System.out.println("Terminating Program");
 		}
-		tripAnalysis = new TripAnalysis(trips);
-		double[] timeStats = tripAnalysis.getTimeStats();
-		double[] distanceStats = tripAnalysis.getDistanceStats();
-		
-		System.out.println("=========================================");
-		System.out.println("Descriptive Statistics for Trip Times (minutes):");
-		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f", 
-				timeStats[0], timeStats[1], timeStats[2], timeStats[3]);
-		System.out.println();
-		System.out.println("=========================================");
-		System.out.println("Descriptive Statistics for Trip Distances (miles):");
-		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f", 
-				distanceStats[0], distanceStats[1], distanceStats[2], distanceStats[3]);
 	}
 
 	/**
@@ -104,6 +92,33 @@ public class LiquidMap {
 				goodTripCount++;
 			}
 		}
+	}
+
+	/**
+	 * Generates statistics on the routed trips.
+	 * 
+	 * @throws Exception
+	 */
+	private void performTripAnalysis() throws Exception {
+		tripAnalysis = new TripAnalysis(trips);
+		if (trips.size() == 0) {
+			throw new Exception("Can not analyze or graph no trips.");
+		}
+		double[] timeStats = tripAnalysis.getTimeStats();
+		double[] distanceStats = tripAnalysis.getDistanceStats();
+
+		System.out.println("=========================================");
+		System.out.println("Descriptive Statistics for Trip Times (minutes):");
+		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f",
+				timeStats[0], timeStats[1], timeStats[2], timeStats[3]);
+		System.out.println();
+		System.out.println("=========================================");
+		System.out
+				.println("Descriptive Statistics for Trip Distances (miles):");
+		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f",
+				distanceStats[0], distanceStats[1], distanceStats[2],
+				distanceStats[3]);
+		System.out.println();
 	}
 
 	/**
