@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
@@ -55,13 +57,13 @@ public class Animator {
 		this.strPageTitle = strPageTitle;
 		this.strCanvasText = strCanvasText;
 		this.intCanvasWidth = intCanvasWidth;
-		this.strCanvasColor = strCanvasColor;
+		this.strCanvasColor = verifyColor(strCanvasColor, "#000000");
 		this.intLineWidth = intLineWidth;
 		this.intLineLength = intLineLength;
 		this.isKeepLinesVisible = isKeepLinesVisible;
-		this.strLineColorA = strLineColorA;
-		this.strLineColorB = strLineColorB;
-		this.strTextColor = strTextColor;
+		this.strLineColorA = verifyColor(strLineColorA, "#FFFFFF");
+		this.strLineColorB = verifyColor(strLineColorB, "#FFFFFF");
+		this.strTextColor = verifyColor(strTextColor, "#FFFFFF");
 		this.dblTimeBetweenSpawns = dblTimeBetweenSpawns;
 		
 		for (int i = 0; i < listTrips.size(); i++) {
@@ -268,5 +270,23 @@ public class Animator {
 		Color clrRandom = new Color(fltComponentsClrRandom[0], fltComponentsClrRandom[1], fltComponentsClrRandom[2], fltComponentsClrRandom[3]);
 		String strColorRandom = String.format("#%02X%02X%02X", clrRandom.getRed(), clrRandom.getGreen(), clrRandom.getBlue());
 		return strColorRandom;
+	}
+	
+	/**
+	 * Verifies that a string expressing a color as a hex triplet is valid and correctly formatted.
+	 * Takes in a color to verify, as well as a default color to revert to if verification fails.
+	 * @param strColorToVerify A string that will be tested to ensure it is formatted as a hex triplet (e.g., "#000000").
+	 * @param strColorDefault A color expressed as a hex triplet to revert to if verification fails.
+	 * @return The verified color if verification succeeds; the default color otherwise.
+	 */
+	private String verifyColor (String strColorToVerify, String strColorDefault) {
+		Pattern pattern = Pattern.compile("#[0-9A-F]{6}");
+		Matcher matcher = pattern.matcher(strColorToVerify);
+		
+		if (matcher.matches()) {
+			return strColorToVerify;
+		} else {
+			return strColorDefault;
+		}
 	}
 }
