@@ -77,10 +77,10 @@ Once these two forms of positional data are provided in settings.json (as `point
 `routeBeg`: The `name` (i.e., the shorthand name) of the image file containing weight data that should be used to select start points for trips.<br />
 `routeEnd`: The `name` (i.e., the shorthand name) of the image file containing weight data that should be used to select end points for trips.<br />
 `routeCount`: The number of trips that LiquidMaps should generate. Must be an integer.<br />
-`routeMinTime`: <br />
-`routeMaxTime`: <br />
-`timeStartVariance`: <br />
-`speedVariance`: <br />
+`routeMinTime`: The minimum allowed transit time for a trip.  Any found trip shorter than this will be excluded and not count toward `routeCount`.<br />
+`routeMaxTime`: The maximum allowed transit time for a trip.  Any found trip longer than this will be excluded and not count toward `routeCount`.<br />
+`timeStartVariance`: A random variate added to each trip to delay the start.  Units are in seconds.<br />
+`speedVariance`: A random variate multiplied to each trip to change its speed.  For instance `speedVariance = 0.2` will result in a trip with a velocity between 90% and 110% of orginally calculated.<br />
 
 ### outputVars
 
