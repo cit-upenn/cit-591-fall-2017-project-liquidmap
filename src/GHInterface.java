@@ -25,11 +25,13 @@ public class GHInterface {
 	 *            The file name of the .pbf, which stores map data.
 	 */
 	public GHInterface(String cityMapFile) {
+		System.out.println();
 		hopper = new GraphHopper().forDesktop();
 		hopper.setOSMFile(cityMapFile);
 		hopper.setGraphHopperLocation("graphhopperWD\\");
 		hopper.setEncodingManager(new EncodingManager("car"));
 		hopper.importOrLoad();
+		System.out.println();
 	}
 
 	/**

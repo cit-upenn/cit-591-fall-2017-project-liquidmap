@@ -107,17 +107,18 @@ public class LiquidMap {
 		double[] timeStats = tripAnalysis.getTimeStats();
 		double[] distanceStats = tripAnalysis.getDistanceStats();
 
+		System.out.println();
 		System.out.println("=========================================");
 		System.out.println("Descriptive Statistics for Trip Times (minutes):");
-		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f",
+		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f \n",
 				timeStats[0], timeStats[1], timeStats[2], timeStats[3]);
-		System.out.println();
 		System.out.println("=========================================");
 		System.out
 				.println("Descriptive Statistics for Trip Distances (miles):");
-		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f",
+		System.out.printf("Min: %.2f | Mean: %.2f | SD: %.2f | Max: %.2f \n",
 				distanceStats[0], distanceStats[1], distanceStats[2],
 				distanceStats[3]);
+		System.out.println("=========================================");
 		System.out.println();
 	}
 
