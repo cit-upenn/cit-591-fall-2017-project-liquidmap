@@ -6,6 +6,12 @@ LiquidMaps is a Java application designed to create an artistic animated image o
 
 ![LiquidMaps animation sample](sample.gif)
 
+## Instructions
+
+The main() method of the program is contained in the MapBuilder class. To run the program, run that class.
+
+Optionally, the included file "settings.json" can be modified to change various aspects of the program, including input data and the appearance of the output animation. The fields of this file are explained in the Settings section of this readme. After the fields are modified, LiquidMaps should be run again in order to produce new output with the changed settings.
+
 ## Technique
 
 ### Geographic DataSources
