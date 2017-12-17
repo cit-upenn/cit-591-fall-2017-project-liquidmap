@@ -19,18 +19,23 @@ public class LiquidMap {
 	 * Constructor. Calls each of the LiquidMaps steps in sequence.
 	 */
 	public LiquidMap() {
-		readSettings();
-		importDataSources();
-		getTrips();
-		buildConverter();
-		convertTrips();
-		animateTrips();
+		try {
+			readSettings();
+			importDataSources();
+			getTrips();
+			buildConverter();
+			convertTrips();
+			animateTrips();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("Terminating Program");
+		}
 	}
 
 	/**
 	 * Reads the JSON file (settings.json) and initializes the settings variables.
 	 */
-	private void readSettings() {
+	private void readSettings() throws Exception {
 		SettingsFileReader sfr = new SettingsFileReader();
 		settings = sfr.getSettings();
 	}
@@ -40,7 +45,7 @@ public class LiquidMap {
 	 * to use each to build data sources and put them into a HashMap so that
 	 * they can be addressed later by name.
 	 */
-	private void importDataSources() {
+	private void importDataSources() throws Exception {
 		for (int i = 0; i < settings.rasterDataDescs.size(); i++) {
 			String name = settings.rasterDataDescs.get(i).name;
 			String mapFileName = settings.rasterDataDescs.get(i).mapFileName;
@@ -63,7 +68,7 @@ public class LiquidMap {
 	/**
 	 * Generates a list of trips using GraphHopper.
 	 */
-	private void getTrips() {
+	private void getTrips() throws Exception {
 		Random rdn = new Random();
 		GHInterface ghi = new GHInterface(settings.cityMapFile);
 		DataSource sourceBeg = dataSources.get(settings.routingVars.routeBeg);
@@ -91,7 +96,7 @@ public class LiquidMap {
 	 * Builds a converter object capable of translating from world coordinates
 	 * to pixel coordinates (for the output file).
 	 */
-	private void buildConverter() {
+	private void buildConverter() throws Exception {
 		PointWorld pointWorldUpperLeft = settings.outputVars.pointUpperLeft;
 		PointWorld pointWorldLowerRight = settings.outputVars.pointLowerRight;
 		Integer outputWidth = settings.outputVars.intCanvasWidth;
