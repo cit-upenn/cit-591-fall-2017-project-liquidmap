@@ -138,7 +138,12 @@ public class RasterDataSource implements DataSource {
 		}
 		return chosenPixel;
 	}
-
+	/**
+	 * generates a random PointWorld object based on the
+	 * random Pixel chosen by getRandPixel
+	 * 
+	 * @return a PointWorld object at random
+	 */
 	@Override
 	public PointWorld getRandPoint() {
 		Pixel pixel = getRandPixel();
