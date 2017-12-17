@@ -14,9 +14,25 @@ The tool to generate routes is based on the fabulous project [GraphHopper](https
 
 Trips have a beginning and an end. In order to efficiently specify the hundreds of trips, we need a way of describing hundreds of locations. We do this using `DataSource`s. A `DataSource` can be either a `VectorDataSource` or a `RasterDataSource`. Each `DataSource` is given a name so that it can be easily addressed later. One may specify many `DataSource`s, but ultimately, only two will be used. There are two variations on `DataSource`.
 
-A `VectorDataSource` is a list of latitudes and longitudes from which we draw a random sample. For instance, one could imagine a list of the locations of all fire emergencies in a city for a year or a list consisting of just one point (e.g., the location of your home).
+#### Raster Data
+A `RasterDataSource` is a grayscale image of the region where the color denotes some quantity of interest. For instance, one could use this to denote population density or median household income. In order to give such an image meaning, one needs to specify two pixels of known location to orient the image on the globe. It is preferable that these two pixels are diagonal from each other. 
 
-A `RasterDataSource` is a grayscale image of the region where the color denotes some quantity of interest. For instance, one could use this to denote population density or median household income. In order to give such an image meaning, one needs to specify two pixels of known location to orient the image on the globe. It is preferable that these two pixels are diagonal from each other.
+`RasterDataSource` assumes that the user is providing a choropleth map: [Choropleth Map](https://en.wikipedia.org/wiki/Choropleth_map)
+
+The weights for grayscale images are determined based on their red-channel RGB values (0-255), where darker pixels (smaller RGB value) are more likely to be chosen based on an exponential probability distribution. 
+
+The equation used is: colorWeight = 1 / ((redValue + 1) ^ 1.1).
+
+Values of 255, i.e. "White" in a grayscale image, are automatically assigned a weight equal of zero. If all pixels have a value of 255, then all pixels will be assigned a weight equal to one. This is so that bodies of water (or other areas where humans don't start trips) do not generate start points or end points of trips.
+
+In the case of the above sample.gif, we used the grayscale image below:
+
+![PhillyPopDensity2012 raster sample](PhillyPopDensity2012.png)
+
+#### Vector Data
+A `VectorDataSource` is a list of latitudes and longitudes from which we draw a random sample. For instance, one could imagine a list of the locations of all fire emergencies in a city for a year or a list consisting of just one point (e.g., the location of your home). If probability weights (the likelihood of the point being chosen by the program) are provided then they will be used. If weights are not provided then each point will have a weight equal to one.
+
+The file for `VectorDataSource` must be formatted as follows: 1). tab-delimited text file 2). no column headers 3). only two or three columns, where the first column is latitude, the second column is longitude, and the third column (optional) is probability weight.
 
 ### Route Specification
 After all of the `DataSource`s have been specified, we must define the family of trips. This can be done with the following parameters:
@@ -70,8 +86,8 @@ Once these two forms of positional data are provided in settings.json (as `point
 	`pixelY`: The y-value of the second reference point in screen space. Must correspond to the longitude of `point2`. Must be an integer.<br />
 
 ### vectorDataDescs
-`name`: <br />
-`vecFileName`: <br />
+`name`: A shorthand name for the vector file, which will be used to reference the file.<br />
+`vecFileName`: The name of the vector file.<br />
 
 ### routingVars
 `routeBeg`: The `name` (i.e., the shorthand name) of the image file containing weight data that should be used to select start points for trips.<br />
@@ -175,5 +191,6 @@ Below is the text of a correctly written settings file (settings.json). This can
     }
 }
 ```
+## Design
 
-
+Please refer to the link to see the overall design of the project. [LiquidMapDesign](https://www.lucidchart.com/documents/view/44e290d0-5e43-4bee-9b36-b4477d47654c)

@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.openstreetmap.osmosis.osmbinary.file.FileFormatException;
 /**
  * This class will take in a fileName (.csv) 
  * and allow the user to call getRandPoint(). 
