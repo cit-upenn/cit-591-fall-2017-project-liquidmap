@@ -32,11 +32,17 @@ public class Converter {
 	 * @param pointWorld2 Second reference PointWorld (lat, lon)
 	 * @param pixel2 Second reference Pixel (iX, iY)
 	 */
-	public Converter(PointWorld pointWorld1, Pixel pixel1, PointWorld pointWorld2, Pixel pixel2) {
+	public Converter(PointWorld pointWorld1, Pixel pixel1,
+			PointWorld pointWorld2, Pixel pixel2) throws Exception {
 		double deltaLon = (pointWorld2.getLon() - pointWorld1.getLon());
 		double deltaX = (pixel2.getPixelX() - pixel1.getPixelX());
 		double deltaLat = (pointWorld2.getLat() - pointWorld1.getLat());
 		double deltaY = (pixel2.getPixelY() - pixel1.getPixelY());
+		if (deltaX == 0. || deltaY == 0. || deltaLon == 0. || deltaLat == 0.) {
+			throw new Exception(
+					"Converter failed.  Either Pixel or Point do not contain"
+							+ " sufficient separation in x and y.");
+		}
 		degLonXPixConvFactor = deltaLon / deltaX;
 		degLatYPixConvFactor = deltaLat / deltaY;
 		lonAt0X = pointWorld1.getLon() - degLonXPixConvFactor * pixel1.getPixelX();
@@ -59,6 +65,11 @@ public class Converter {
 	public Converter(PointWorld pointWorldUpperLeft, PointWorld pointWorldLowerRight, int imageWidth) {
 		double deltaLat = Math.abs(pointWorldUpperLeft.getLat() - pointWorldLowerRight.getLat());
 		double deltaLon = Math.abs(pointWorldUpperLeft.getLon() - pointWorldLowerRight.getLon());
+		if (imageWidth <= 0 || deltaLon == 0. || deltaLat == 0.) {
+			throw new Exception("Converter failed.  The Points do not contain"
+					+ " sufficient separation in x and y or the specified image"
+					+ " width is zero. ");
+		}
 
 		Double meanLat = (pointWorldUpperLeft.getLat() + pointWorldLowerRight.getLat()) / 2;
 		double sizeRatio = Math.cos(Math.toRadians(meanLat));

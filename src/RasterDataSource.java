@@ -60,9 +60,9 @@ public class RasterDataSource implements DataSource {
 	 * @param pt2 the second reference PointWorld
 	 * @param px2 the second reference Pixel
 	 */
-	
-	public RasterDataSource(String fileName, PointWorld pt1, Pixel px1, PointWorld pt2,
-			Pixel px2) {
+
+	public RasterDataSource(String fileName, PointWorld pt1, Pixel px1,
+			PointWorld pt2, Pixel px2) throws Exception {
 		imageReader = new ImageReader(fileName);
 		img = imageReader.getImg();
 		pixels = new ArrayList<>();
