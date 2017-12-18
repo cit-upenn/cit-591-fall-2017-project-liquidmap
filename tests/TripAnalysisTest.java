@@ -29,6 +29,14 @@ public class TripAnalysisTest {
 		assertNotEquals(0, timeStats[2], 0.000001);
 		//make sure max isn't 0
 		assertNotEquals(0, timeStats[3], 0.000001);
+		//make sure min isn't 0
+		assertNotEquals(0, distStats[0], 0.000001);
+		//make sure mean isn't 0
+		assertNotEquals(0, distStats[1], 0.000001);
+		//make sure SD isn't 0
+		assertNotEquals(0, distStats[2], 0.000001);
+		//make sure max isn't 0
+		assertNotEquals(0, distStats[3], 0.000001);
 	}
 
 }

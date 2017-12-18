@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Point.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (Dec 17, 2017 8:43:24 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Point.java</span></div><h1>Point.java</h1><pre class="source lang-java linenums">/**
+ * Represents a position in latitude-longitude-time space.
+ * Is an abstract class that should be extended by subclasses that each define their own units.
+ * For example, in LiquidMaps, PointWorld and PointScreen both extend Point.
+ * PointWorld expresses position in degrees, whereas PointScreen expresses it in pixels.
+ * @author Brian Edwards, Matt Surka
+ */
+public abstract class Point {
+	private double lat;
+	private double lon;
+	private double time;
+
+	/**
+	 * Constructor. Sets the latitude, longitude, and time of the Point.
+	 * @param lat The latitude.
+	 * @param lon The longitude.
+	 * @param time The time.
+	 */
+<span class="fc" id="L19">	public Point(double lat, double lon, double time) {</span>
+<span class="fc" id="L20">		this.lat = lat;</span>
+<span class="fc" id="L21">		this.lon = lon;</span>
+<span class="fc" id="L22">		this.time = time;</span>
+<span class="fc" id="L23">	}</span>
+
+	/**
+	 * Constructor. Sets the latitude and longitude of the Point.
+	 * Sets the time to zero.
+	 * @param lat The latitude.
+	 * @param lon The longitude.
+	 */
+	public Point(double lat, double lon) {
+<span class="fc" id="L32">		this(lat, lon, 0.);</span>
+<span class="fc" id="L33">	}</span>
+
+	/**
+	 * Sets the time of the Point.
+	 * @param time The time.
+	 */
+	public void setTime(double time) {
+<span class="fc" id="L40">		this.time = time;</span>
+<span class="fc" id="L41">	}</span>
+
+	/**
+	 * Gets the latitude of the Point.
+	 * @return The latitude.
+	 */
+	public double getLat() {
+<span class="fc" id="L48">		return lat;</span>
+	}
+
+	/**
+	 * Gets the longitude of the Point.
+	 * @return The longitude.
+	 */
+	public double getLon() {
+<span class="fc" id="L56">		return lon;</span>
+	}
+
+	/**
+	 * Gets the time of the Point.
+	 * @return The time.
+	 */
+	public double getTime() {
+<span class="fc" id="L64">		return time;</span>
+	}
+
+	/**
+	 * Overrides toString().
+	 * Returns a description of the Point as a String.
+	 * @return A description of the Point as a String.
+	 */
+	@Override
+	public abstract String toString();
+
+	/**
+	 * Determines if this Point is equal to a provided Point.
+	 * Equality is defined as having all attributes equal or very close.
+	 * Having equality defined on Points makes jUnit testing much easier.
+	 * @param pointOther The Point to compare to.
+	 * @return True if the Points are equal; false otherwise.
+	 */
+	public abstract boolean equals(Point pointOther);
+
+	/**
+	 * Computes the distance between this Point and a provided Point.
+	 * @param pointOther The Point to compare to.
+	 * @return The distance between the Points.
+	 */
+	public abstract double distanceTo(Point pointOther);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (Dec 17, 2017 8:43:24 PM)</div></body></html>

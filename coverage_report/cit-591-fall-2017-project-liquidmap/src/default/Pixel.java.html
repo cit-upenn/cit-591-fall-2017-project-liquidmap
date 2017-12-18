@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Pixel.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (Dec 17, 2017 8:43:24 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Pixel.java</span></div><h1>Pixel.java</h1><pre class="source lang-java linenums">/**
+ * This class will represent the pixels in the image file read in by
+ * ImageReader.
+ *
+ * A Pixel object will have an (x,y) value corresponding to its 'coordinates' in
+ * the image, where the top left of the image corresponds to an (x,y) of (0,0).
+ *
+ * It will also have a red value corresponding to the image's color at that
+ * location in the red channel. Can vary from 0 - 255.
+ *
+ * Using red was chosen arbitrarily. All maps uploaded to this project will be
+ * in greyscale, so we are merely using the red channel to track the
+ * white-to-black gradient.
+ *
+ * @author sgb
+ *
+ */
+public class Pixel implements Comparable&lt;Pixel&gt; {
+
+	private int redValue;
+	private double colorWeight;
+	private int pixelX;
+	private int pixelY;
+	/**
+	 * Constructor creates a representation of a pixel based on its location
+	 * (X,Y), its red-channel value (0-255) using RGB color codes, and its 
+	 * weight based on that value.
+	 * 
+	 * @param pixelX 
+	 * @param pixelY
+	 * @param redValue
+	 * @param colorWeight
+	 */
+<span class="fc" id="L34">	public Pixel(int pixelX, int pixelY, int redValue, double colorWeight) {</span>
+<span class="fc" id="L35">		this.pixelX = pixelX;</span>
+<span class="fc" id="L36">		this.pixelY = pixelY;</span>
+<span class="fc" id="L37">		this.redValue = redValue;</span>
+<span class="fc" id="L38">		this.colorWeight = colorWeight;</span>
+<span class="fc" id="L39">	}</span>
+	/**
+	 * Second constructor - just takes X and Y, and sets redValue and Weight to 1.
+	 * @param pixelX 
+	 * @param pixelY
+	 */
+	public Pixel(int pixelX, int pixelY) {
+<span class="fc" id="L46">		this(pixelX, pixelY, 0, 1);</span>
+<span class="fc" id="L47">	}</span>
+	
+	/**
+	 * @param redValue the redValue to set
+	 */
+	public void setColorWeight(double colorWeight) {
+<span class="nc" id="L53">		this.colorWeight = colorWeight;</span>
+<span class="nc" id="L54">	}</span>
+
+	/**
+	 * @return the rgbValue
+	 */
+	public int getRedValue() {
+<span class="fc" id="L60">		return redValue;</span>
+	}
+
+	/**
+	 * @return the colorWeight
+	 */
+	public double getColorWeight() {
+<span class="fc" id="L67">		return colorWeight;</span>
+	}
+
+	/**
+	 * @return the pixelX
+	 */
+	public int getPixelX() {
+<span class="fc" id="L74">		return pixelX;</span>
+	}
+
+	/**
+	 * @return the pixelY
+	 */
+	public int getPixelY() {
+<span class="fc" id="L81">		return pixelY;</span>
+	}
+	/**
+	 * Overriding the compareTo method of the interface Comparable:
+	 * 
+	 * This method will compare Pixels based on their redValue.
+	 */
+	@Override
+	public int compareTo(Pixel o) {
+<span class="fc" id="L90">		int own = redValue;</span>
+<span class="fc" id="L91">		int other = o.redValue;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		if (own &lt; other) {</span>
+<span class="fc" id="L93">			return -1;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">		} else if (own == other) {</span>
+<span class="fc" id="L95">			return 0;</span>
+		} else {
+<span class="fc" id="L97">			return 1;</span>
+		}
+	}
+	/**
+	 * This method overrides Object's toString() method
+	 * in order to display Pixels more pleasantly.
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L106">		String str = &quot;(X: &quot; + this.pixelX + &quot;  Y: &quot; + this.pixelY + &quot;  v: &quot;</span>
+<span class="fc" id="L107">				+ this.redValue + &quot;)&quot;;</span>
+<span class="fc" id="L108">		return str;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (Dec 17, 2017 8:43:24 PM)</div></body></html>

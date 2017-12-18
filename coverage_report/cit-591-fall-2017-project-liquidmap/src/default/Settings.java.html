@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Settings.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (Dec 17, 2017 8:43:24 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Settings.java</span></div><h1>Settings.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+
+/**
+ * Stores the input and output settings for the LiquidMaps program.
+ * The variables within inner classes are data structures to be filled by the GSON library using SettingsFileReader.
+ * @author brian
+ */
+public class Settings {
+<span class="fc" id="L9">	public final String cityMapFile = null;</span>
+<span class="fc" id="L10">	public final ArrayList&lt;RasterDataDesc&gt; rasterDataDescs = new ArrayList&lt;RasterDataDesc&gt;();</span>
+<span class="fc" id="L11">	public final ArrayList&lt;VectorDataDesc&gt; vectorDataDescs = new ArrayList&lt;VectorDataDesc&gt;();</span>
+<span class="fc" id="L12">	public final RoutingVars routingVars = new RoutingVars();</span>
+<span class="fc" id="L13">	public final OutputVars outputVars = new OutputVars();</span>
+
+<span class="fc" id="L15">	Settings() {</span>
+<span class="fc" id="L16">	}</span>
+
+	/**
+	 * Inner class that stores raster data settings.
+	 * @author brian
+	 */
+	public class RasterDataDesc {
+<span class="nc" id="L23">		public final String name = null;</span>
+<span class="nc" id="L24">		public final String mapFileName = null;</span>
+<span class="nc" id="L25">		public final PointWorld point1 = null;</span>
+<span class="nc" id="L26">		public final Pixel pixel1 = null;</span>
+<span class="nc" id="L27">		public final PointWorld point2 = null;</span>
+<span class="nc" id="L28">		public final Pixel pixel2 = null;</span>
+
+<span class="nc" id="L30">		public RasterDataDesc() {</span>
+<span class="nc" id="L31">		};</span>
+
+		@Override
+		public String toString() {
+<span class="fc" id="L35">			String str = name + &quot;  &quot; + mapFileName + &quot;     &quot; + point1 + &quot; = &quot;</span>
+<span class="fc" id="L36">					+ pixel1 + &quot;   &quot; + point2 + &quot; = &quot; + pixel2;</span>
+<span class="fc" id="L37">			return str;</span>
+		}
+	}
+
+	/**
+	 * Inner class that stores vector data settings.
+	 * @author brian
+	 */
+	public class VectorDataDesc {
+<span class="nc" id="L46">		public final String name = null;</span>
+<span class="nc" id="L47">		public final String vecFileName = null;</span>
+
+<span class="nc" id="L49">		public VectorDataDesc() {</span>
+<span class="nc" id="L50">		};</span>
+
+		@Override
+		public String toString() {
+<span class="fc" id="L54">			String str = name + &quot;  &quot; + vecFileName;</span>
+<span class="fc" id="L55">			return str;</span>
+		}
+
+	}
+
+	/**
+	 * Inner class that stores routing settings.
+	 * @author brian
+	 */
+	public class RoutingVars {
+<span class="fc" id="L65">		public final String routeBeg = null;</span>
+<span class="fc" id="L66">		public final String routeEnd = null;</span>
+<span class="fc" id="L67">		public final Integer routeCount = null;</span>
+<span class="fc" id="L68">		public final Double routeMinTime = null;</span>
+<span class="fc" id="L69">		public final Double routeMaxTime = null;</span>
+<span class="fc" id="L70">		public final Double timeStartVariance = null;</span>
+<span class="fc" id="L71">		public final Double speedVariance = null;</span>
+
+<span class="fc" id="L73">		public RoutingVars() {</span>
+<span class="fc" id="L74">		};</span>
+
+		@Override
+		public String toString() {
+<span class="fc" id="L78">			String str = &quot;Data will consist of &quot; + routeCount + &quot; trips from '&quot;</span>
+<span class="fc" id="L79">					+ routeBeg + &quot;' to '&quot; + routeEnd + &quot;' that take between &quot;</span>
+<span class="fc" id="L80">					+ routeMinTime + &quot; and &quot; + routeMaxTime</span>
+<span class="fc" id="L81">					+ &quot; seconds with start times distrubited over &quot;</span>
+<span class="fc" id="L82">					+ timeStartVariance + &quot; seconds with speeds varying over &quot;</span>
+<span class="fc" id="L83">					+ (speedVariance * 100) + &quot;%&quot;;</span>
+<span class="fc" id="L84">			return str;</span>
+		}
+
+	}
+
+	/**
+	 * Inner class that stores output settings.
+	 * @author brian
+	 */
+<span class="fc" id="L93">	public class OutputVars {</span>
+<span class="fc" id="L94">		public final PointWorld pointUpperLeft = null;</span>
+<span class="fc" id="L95">		public final PointWorld pointLowerRight = null;</span>
+<span class="fc" id="L96">		public final String strFileName = null;</span>
+<span class="fc" id="L97">		public final String strPageTitle = null;</span>
+<span class="fc" id="L98">		public final String strCanvasText = null;</span>
+<span class="fc" id="L99">		public final Integer intCanvasWidth = null;</span>
+<span class="fc" id="L100">		public final String strCanvasColor = null;</span>
+<span class="fc" id="L101">		public final Integer intLineWidth = null;</span>
+<span class="fc" id="L102">		public final Integer intLineLength = null;</span>
+<span class="fc" id="L103">		public final Boolean isKeepLinesVisible = null;</span>
+<span class="fc" id="L104">		public final String strLineColorA = null;</span>
+<span class="fc" id="L105">		public final String strLineColorB = null;</span>
+<span class="fc" id="L106">		public final String strTextColor = null;</span>
+<span class="fc" id="L107">		public final Double dblTimeBetweenSpawns = null;</span>
+
+		@Override
+		public String toString() {
+<span class="fc" id="L111">			String str = &quot;  imageWidth: &quot; + intCanvasWidth + &quot;  pointUpperLeft:  &quot;</span>
+<span class="fc" id="L112">					+ pointUpperLeft + &quot;  pointLowerRight:  &quot; + pointLowerRight;</span>
+<span class="fc" id="L113">			return str;</span>
+		}
+	}
+
+	/**
+	 * Returns a description of the current LiquidMaps settings.
+	 * @return A description of the current LiquidMaps settings.
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L123">		String str = &quot;cityMapFile: &quot; + cityMapFile + &quot;\n&quot;;</span>
+<span class="fc" id="L124">		str += &quot;rasterDataDescs:\n&quot;;</span>
+<span class="fc" id="L125">		str += &quot; [\n&quot;;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (RasterDataDesc desc : rasterDataDescs) {</span>
+<span class="fc" id="L127">			str += &quot;   &quot; + desc.toString() + &quot;\n&quot;;</span>
+		}
+<span class="fc" id="L129">		str += &quot; ]\n&quot;;</span>
+<span class="fc" id="L130">		str += &quot;vectorDataDescs:\n&quot;;</span>
+<span class="fc" id="L131">		str += &quot; [\n&quot;;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (VectorDataDesc desc : vectorDataDescs) {</span>
+<span class="fc" id="L133">			str += &quot;   &quot; + desc.toString() + &quot;\n&quot;;</span>
+		}
+<span class="fc" id="L135">		str += &quot; ]\n&quot;;</span>
+<span class="fc" id="L136">		str += &quot;routingVars:\n&quot; + routingVars + &quot;\n&quot;;</span>
+<span class="fc" id="L137">		str += &quot;outputVars:\n&quot; + outputVars;</span>
+
+<span class="fc" id="L139">		return str;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (Dec 17, 2017 8:43:24 PM)</div></body></html>

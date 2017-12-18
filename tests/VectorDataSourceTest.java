@@ -2,7 +2,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,8 +28,8 @@ public class VectorDataSourceTest {
 	}
 	@Test
 	public void testPointWeight() {
-		assertEquals("The tenth entry should have a weight of 1",
-				1, points.get(9).getWeight(), 0.00001);
+		assertEquals("The tenth entry should have a weight of 0.01",
+				0.01, points.get(9).getWeight(), 0.00001);
 	}
 	@Test
 	public void testGetRandPoint() {
