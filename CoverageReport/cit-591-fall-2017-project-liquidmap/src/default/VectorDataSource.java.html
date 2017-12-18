@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>VectorDataSource.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (1) (Dec 17, 2017 5:22:14 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">VectorDataSource.java</span></div><h1>VectorDataSource.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+import java.util.Random;
+/**
+ * This class will take in a fileName (.csv) 
+ * and allow the user to call getRandPoint(). 
+ * 
+ * VectorDataSource will find and allow access to the Latitude and Longitude 
+ * pairs from the file provided and a probability weight if one is provided. 
+ * 
+ * Assumptions:
+ * 
+ * 1).The provided file only contains Latitudes, Longitudes and Weights.
+ * 2).Latitude comes before Longitude in the provided file.
+ * 3).Latitude and Longitude come before Weight
+ * 4).Latitude, Longitude, and Weight are separated by something
+ * other than a period 
+ * 5).Weights are all decimal values between 0 and 1, inclusive.
+ * 
+ * @author sgb
+ *
+ */
+public class VectorDataSource implements DataSource {
+	private FileReader fileReader;
+	private ArrayList&lt;String&gt; lines;
+	private ArrayList&lt;PointWorld&gt; points;
+
+<span class="fc" id="L27">	public VectorDataSource(String fileName) {</span>
+
+<span class="fc" id="L29">		fileReader = new FileReader(fileName);</span>
+<span class="fc" id="L30">		lines = fileReader.getLines();</span>
+<span class="fc" id="L31">		points = new ArrayList&lt;PointWorld&gt;();</span>
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">		for (String line : lines) {</span>
+<span class="fc" id="L34">			String[] lineArray = line.split(&quot;	&quot;);</span>
+<span class="fc" id="L35">			double lat = Double.parseDouble(lineArray[0]);</span>
+<span class="fc" id="L36">			double lng = Double.parseDouble(lineArray[1]);</span>
+			//constructing a PointWorld with just a lat/lon pair and weights set to 1
+<span class="fc bfc" id="L38" title="All 2 branches covered.">			if (lineArray.length == 2) {</span>
+<span class="fc" id="L39">				PointWorld point = new PointWorld(lat, lng);</span>
+<span class="fc" id="L40">				points.add(point);</span>
+				//if weights are provided, then use em!
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">			} else if (lineArray.length == 3) {</span>
+<span class="fc" id="L43">				double weight = Double.parseDouble(lineArray[2]);</span>
+<span class="fc" id="L44">				PointWorld point = new PointWorld(lat, lng);</span>
+<span class="fc" id="L45">				point.setWeight(weight);</span>
+<span class="fc" id="L46">				points.add(point);</span>
+			}
+		}
+<span class="fc" id="L49">	}</span>
+
+	/**
+	 * @return the lines
+	 */
+	public ArrayList&lt;String&gt; getLines() {
+<span class="nc" id="L55">		return lines;</span>
+	}
+	
+	/**
+	 * @return the points
+	 */
+	public ArrayList&lt;PointWorld&gt; getPoints() {
+<span class="fc" id="L62">		return points;</span>
+	}
+
+	@Override
+	public PointWorld getRandPoint() {
+<span class="fc" id="L67">		ArrayList&lt;PointWorld&gt; points = getPoints();</span>
+		
+<span class="fc" id="L69">		Random rand = new Random();</span>
+<span class="fc" id="L70">		PointWorld chosenPoint = null;</span>
+<span class="fc" id="L71">		int count = 0;</span>
+		
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		while (count &lt; 10000) {</span>
+<span class="fc" id="L74">			int randIndex = rand.nextInt(points.size());</span>
+<span class="fc" id="L75">			double randPointWeight = points.get(randIndex).getWeight();</span>
+			//constraint = a random decimal between 0 and 1
+<span class="fc" id="L77">			double constraint = (double) (rand.nextInt(10000)/10000);</span>
+
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">			if (randPointWeight &gt;= constraint) {</span>
+<span class="fc" id="L80">				chosenPoint = points.get(randIndex);</span>
+<span class="fc" id="L81">				break;</span>
+			}
+<span class="nc" id="L83">			count++;</span>
+		}
+<span class="fc" id="L85">		return chosenPoint;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (1) (Dec 17, 2017 5:22:14 PM)</div></body></html>

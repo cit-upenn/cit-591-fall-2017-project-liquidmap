@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Animator.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (1) (Dec 17, 2017 5:22:14 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Animator.java</span></div><h1>Animator.java</h1><pre class="source lang-java linenums">import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Random;
+
+/**
+ * Converts an ArrayList of Trips into a .html file that animates a line for each Trip.
+ * Stores the animation settings, including canvas size, canvas color, line width, etc.
+ * @author Matt Surka
+ */
+public class Animator {
+	Random random;
+	FileWriter fileWriter;
+	String strFileName;
+	String strPageTitle;
+	String strCanvasText;
+	int intCanvasWidth;
+	String strCanvasColor;
+	int intLineWidth;
+	int intLineLength;
+	boolean isKeepLinesVisible;
+	String strLineColorA;
+	String strLineColorB;
+	String strTextColor;
+	double dblTimeBetweenSpawns;
+	
+	/**
+	 * Constructor. Initializes the Animator with a Random object and a Writer object.
+	 */
+<span class="fc" id="L29">	public Animator () {</span>
+<span class="fc" id="L30">		random = new Random();</span>
+<span class="fc" id="L31">		fileWriter = new FileWriter();</span>
+<span class="fc" id="L32">	}</span>
+	
+	/**
+	 * Converts an ArrayList of Trips into an .html file that animates a line for each Trip.
+	 * @param listTrips The ArrayList of Trips.
+	 * @param strFileName The desired name of the output file, without the &quot;.html&quot; extension.
+	 * @param strPageTitle The title of the output file (i.e., in the page's metadata).
+	 * @param strCanvasText Text that will appear on the canvas.
+	 * @param intCanvasWidth The width of the animation canvas in pixels.
+	 * @param strCanvasColor The color of the animation canvas expressed as a hex triplet: (e.g., &quot;#000000&quot;).
+	 * @param intLineWidth The width of each line in pixels.
+	 * @param intLineLength The length of each line in pixels.
+	 * @param isKeepLinesVisible True if lines should remain on the canvas after they complete their animation.
+	 * @param strLineColorA The first color boundary of the lines expressed as a hex triplet (e.g., &quot;#000000&quot;).
+	 * @param strLineColorA The second color boundary of the lines expressed as a hex triplet (e.g., &quot;#000000&quot;).
+	 * @param strTextColor The color of text on the canvas expressed as a hex triplet (e.g., &quot;#000000&quot;).
+	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
+	 */
+	public void animateTrips (ArrayList&lt;Trip&gt; listTrips, String strFileName, String strPageTitle, String strCanvasText,
+							  int intCanvasWidth, String strCanvasColor, int intLineWidth, int intLineLength,
+							  boolean isKeepLinesVisible, String strLineColorA, String strLineColorB, String strTextColor,
+							  double dblTimeBetweenSpawns) {
+<span class="fc" id="L54">		this.strFileName = strFileName;</span>
+<span class="fc" id="L55">		this.strPageTitle = strPageTitle;</span>
+<span class="fc" id="L56">		this.strCanvasText = strCanvasText;</span>
+<span class="fc" id="L57">		this.intCanvasWidth = intCanvasWidth;</span>
+<span class="fc" id="L58">		this.strCanvasColor = strCanvasColor;</span>
+<span class="fc" id="L59">		this.intLineWidth = intLineWidth;</span>
+<span class="fc" id="L60">		this.intLineLength = intLineLength;</span>
+<span class="fc" id="L61">		this.isKeepLinesVisible = isKeepLinesVisible;</span>
+<span class="fc" id="L62">		this.strLineColorA = strLineColorA;</span>
+<span class="fc" id="L63">		this.strLineColorB = strLineColorB;</span>
+<span class="fc" id="L64">		this.strTextColor = strTextColor;</span>
+<span class="fc" id="L65">		this.dblTimeBetweenSpawns = dblTimeBetweenSpawns;</span>
+		
+<span class="fc bfc" id="L67" title="All 2 branches covered.">		for (int i = 0; i &lt; listTrips.size(); i++) {</span>
+<span class="fc" id="L68">			listTrips.get(i).offsetTime(dblTimeBetweenSpawns * i);</span>
+		}
+		
+<span class="fc" id="L71">		fileWriter.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) </span>
+<span class="fc" id="L72">		+ generateScriptBlock(listTrips), strFileName + &quot;.html&quot;);</span>
+<span class="fc" id="L73">	}</span>
+	
+	/**
+	 * Generates the main block of code for the animation.
+	 * @param listTrips The ArrayList of Trips.
+	 * @return A string containing the main block of code for the animation.
+	 */
+	private String generateMainBlock (ArrayList&lt;Trip&gt; listTrips) {
+<span class="fc" id="L81">		StringBuilder strbOut = new StringBuilder();</span>
+		
+<span class="fc" id="L83">		strbOut.append(	&quot;&lt;!DOCTYPE html&gt;\r\n&quot; + </span>
+						&quot;&lt;html lang=\&quot;en\&quot;&gt;\r\n&quot; + 
+						&quot;\t&lt;head&gt;\r\n&quot; + 
+						&quot;\t\t&lt;meta charset=\&quot;UTF-8\&quot;&gt;\r\n&quot; + 
+<span class="fc" id="L87">						&quot;\t\t&lt;title&gt;&quot; + strPageTitle + &quot;&lt;/title&gt;\r\n&quot; + </span>
+<span class="fc" id="L88">						&quot;\t&lt;/head&gt;\r\n&quot; + </span>
+<span class="fc" id="L89">						&quot;\r\n&quot; + </span>
+<span class="fc" id="L90">						&quot;\t&lt;body&gt;\r\n&quot; + </span>
+<span class="fc" id="L91">						&quot;\t\t&lt;p&gt;\r\n&quot; + </span>
+<span class="fc" id="L92">						&quot;\t\t\t&quot; + strCanvasText + &quot;\r\n&quot; + </span>
+<span class="fc" id="L93">						&quot;\t\t&lt;/p&gt;\r\n&quot; + </span>
+<span class="fc" id="L94">						&quot;\r\n&quot; + </span>
+<span class="fc" id="L95">						&quot;\t\t&lt;svg&gt;\r\n&quot;);</span>
+		
+		// initialize a &lt;path&gt; element for each Trip
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (int i = 0; i &lt; listTrips.size(); i++) {</span>
+<span class="fc" id="L99">			ArrayList&lt;Point&gt; listPoints = listTrips.get(i).getPoints();</span>
+<span class="fc" id="L100">			int intX = Mathf.roundToInt(listPoints.get(0).getLat());</span>
+<span class="fc" id="L101">			int intY = Mathf.roundToInt(listPoints.get(0).getLon());</span>
+			
+<span class="fc" id="L103">			strbOut.append(&quot;\t\t\t&lt;path id=\&quot;path&quot; + i + &quot;\&quot; &quot;);</span>
+			
+<span class="fc bfc" id="L105" title="All 2 branches covered.">			if (!strLineColorA.equals(strLineColorB)) {</span>
+<span class="fc" id="L106">				strbOut.append(&quot;stroke=\&quot;&quot; + generateRandomColor(strLineColorA, strLineColorB) + &quot;\&quot; &quot;);</span>
+			}
+			
+<span class="fc" id="L109">			strbOut.append(&quot;d=\&quot;M&quot; + intX + &quot;,&quot; + intY);</span>
+			
+<span class="fc bfc" id="L111" title="All 2 branches covered.">			for (int j = 1; j &lt; listPoints.size(); j++) {</span>
+<span class="fc" id="L112">				intX = Mathf.roundToInt(listPoints.get(j).getLat());</span>
+<span class="fc" id="L113">				intY = Mathf.roundToInt(listPoints.get(j).getLon());</span>
+<span class="fc" id="L114">				strbOut.append(&quot; L&quot; + intX + &quot;,&quot; + intY);</span>
+			}
+			
+<span class="fc" id="L117">			strbOut.append(&quot;\&quot; /&gt;\r\n&quot;);</span>
+		}
+
+<span class="fc" id="L120">		strbOut.append(	&quot;\t\t&lt;/svg&gt;\r\n&quot; + </span>
+						&quot;\r\n&quot; + 
+						&quot;\t\t&lt;script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'&gt;&lt;/script&gt;\r\n&quot; + 
+						&quot;\t\t&lt;script src='https://cdnjs.cloudflare.com/ajax/libs/segment-js/1.0.8/segment.js'&gt;&lt;/script&gt;\r\n&quot; + 
+						&quot;\t&lt;/body&gt;\r\n&quot; + 
+						&quot;&lt;/html&gt;\r\n\r\n&quot;);
+		
+<span class="fc" id="L127">		return strbOut.toString();</span>
+	}
+	
+	/**
+	 * Generates the CSS (style) block of code for the animation.
+	 * @param listTrips The ArrayList of Trips.
+	 * @return A string containing the CSS (style) block of code for the animation.
+	 */
+	private String generateStyleBlock (ArrayList&lt;Trip&gt; listTrips) {
+<span class="fc" id="L136">		StringBuilder strbOut = new StringBuilder();</span>
+		
+<span class="fc" id="L138">		strbOut.append(	&quot;&lt;style&gt;\r\n&quot; + </span>
+						&quot;\tbody {\r\n&quot; + 
+						&quot;\t\tfont-family: \&quot;Helvetica Neue\&quot;, Helvetica;\r\n&quot; + 
+<span class="fc" id="L141">						&quot;\t\twidth: &quot; + intCanvasWidth + &quot;px;\r\n&quot; + </span>
+<span class="fc" id="L142">						&quot;\t\theight: &quot; + intCanvasWidth + &quot;px;\r\n&quot; + </span>
+<span class="fc" id="L143">						&quot;\t\tfont-weight: 200;\r\n&quot; + </span>
+<span class="fc" id="L144">						&quot;\t\tletter-spacing: 1px;\r\n&quot; + </span>
+<span class="fc" id="L145">						&quot;\t\tmargin: 25px auto 0 auto;\r\n&quot; + </span>
+<span class="fc" id="L146">						&quot;\t\tbackground: &quot; + strCanvasColor + &quot;;\r\n&quot; + </span>
+<span class="fc" id="L147">						&quot;\t}\r\n&quot; + </span>
+<span class="fc" id="L148">						&quot;\r\n&quot; + </span>
+<span class="fc" id="L149">						&quot;\tp {\r\n&quot; + </span>
+<span class="fc" id="L150">						&quot;\t\tcolor: &quot; + strTextColor + &quot;;\r\n&quot; + </span>
+<span class="fc" id="L151">						&quot;\t\tfont-size: 0.85rem;\r\n&quot; + </span>
+<span class="fc" id="L152">						&quot;\t\ttext-align: center;\r\n&quot; + </span>
+<span class="fc" id="L153">						&quot;\t\tmargin: 0 auto;\r\n&quot; + </span>
+<span class="fc" id="L154">						&quot;\t\tmargin-bottom: 17px;\r\n&quot; + </span>
+<span class="fc" id="L155">						&quot;\t}\r\n&quot; + </span>
+<span class="fc" id="L156">						&quot;\r\n&quot; + </span>
+<span class="fc" id="L157">						&quot;\tsvg {\r\n&quot; + </span>
+<span class="fc" id="L158">						&quot;\t\tmargin: 0 auto;\r\n&quot; + </span>
+<span class="fc" id="L159">						&quot;\t\tdisplay: block;\r\n&quot; + </span>
+<span class="fc" id="L160">						&quot;\t\twidth: 100%;\r\n&quot; + </span>
+<span class="fc" id="L161">						&quot;\t\theight: 100%;\r\n&quot; + </span>
+<span class="fc" id="L162">						&quot;\t}\r\n&quot; + </span>
+<span class="fc" id="L163">						&quot;\r\n&quot; + </span>
+<span class="fc" id="L164">						&quot;\tpath {\r\n&quot;);</span>
+		
+<span class="fc bfc" id="L166" title="All 2 branches covered.">		if (strLineColorA.equals(strLineColorB)) {</span>
+<span class="fc" id="L167">			strbOut.append(&quot;\t\tstroke: &quot; + strLineColorA + &quot;;\r\n&quot;);</span>
+		}
+		
+<span class="fc" id="L170">		strbOut.append(	&quot;\t\tstroke-width: &quot; + intLineWidth + &quot;;\r\n&quot; + </span>
+<span class="fc" id="L171">						&quot;\t\tfill-opacity: 0;\r\n&quot; +</span>
+<span class="fc" id="L172">						&quot;\t}\r\n&quot; + </span>
+<span class="fc" id="L173">						&quot;\r\n&quot; +</span>
+<span class="fc" id="L174">						&quot;\t.js-loading *,\r\n&quot; +</span>
+<span class="fc" id="L175">						&quot;\t.js-loading *:before,\r\n&quot; +</span>
+<span class="fc" id="L176">						&quot;\t.js-loading *:after {\r\n&quot; +</span>
+<span class="fc" id="L177">						&quot;\t\tanimation-play-state: paused !important;\r\n&quot; +</span>
+<span class="fc" id="L178">						&quot;\t}\r\n&quot; +</span>
+<span class="fc" id="L179">						&quot;&lt;/style&gt;\r\n\r\n&quot;);</span>
+		
+<span class="fc" id="L181">		return strbOut.toString();</span>
+	}
+
+	/**
+	 * Generates the JS (script) block of code for the animation.
+	 * @param listTrips The ArrayList of Trips.
+	 * @return A string containing the JS (script) block of code for the animation.
+	 */
+	private String generateScriptBlock (ArrayList&lt;Trip&gt; listTrips) {
+<span class="fc" id="L190">		StringBuilder strbOut = new StringBuilder();</span>
+		
+<span class="fc" id="L192">		strbOut.append(	&quot;&lt;script&gt;\r\n&quot; +</span>
+						&quot;\tdocument.body.classList.add('js-loading');\r\n&quot; +
+						&quot;\twindow.addEventListener(\&quot;load\&quot;, showPage);\r\n&quot; +
+						&quot;\r\n&quot; +
+						&quot;\tfunction showPage() {\r\n&quot; +
+						&quot;\t\tdocument.body.classList.remove('js-loading');\r\n&quot; +
+						&quot;\t}\r\n&quot; +
+						&quot;\r\n&quot;);
+		
+		// initialize a Segment object for each &lt;path&gt; element
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (int i = 0; i &lt; listTrips.size(); i++) {</span>
+<span class="fc" id="L203">			strbOut.append(&quot;\tvar path&quot; + i + &quot; = document.getElementById(\&quot;path&quot; + i + &quot;\&quot;), segment&quot; + i + &quot; = new Segment(path&quot; + i + &quot;);\r\n&quot;);</span>
+		}
+		
+<span class="fc" id="L206">		strbOut.append(&quot;\r\n&quot;);</span>
+		
+		// start each Segment at 0%, meaning that no part of it is drawn
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		for (int i = 0; i &lt; listTrips.size(); i++) {</span>
+<span class="fc" id="L210">			strbOut.append(&quot;\tsegment&quot; + i + &quot;.draw(\&quot;0%\&quot;, \&quot;0%\&quot;, 0);\r\n&quot;);</span>
+		}
+		
+<span class="fc" id="L213">		strbOut.append(&quot;\r\n&quot;);</span>
+		
+		// animate the Segment for each leg of the Trip, using a time delay to move it across one leg at a time
+<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (int i = 0; i &lt; listTrips.size(); i++) {</span>
+<span class="fc" id="L217">			Trip trip = listTrips.get(i);</span>
+<span class="fc" id="L218">			double dblTripDistance = trip.computeTripDistance(0, trip.getPoints().size() - 1);</span>
+				
+<span class="fc bfc" id="L220" title="All 2 branches covered.">			for (int j = 1; j &lt; trip.getPoints().size(); j++) {</span>
+<span class="fc" id="L221">				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);</span>
+<span class="fc" id="L222">				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);</span>
+<span class="fc" id="L223">				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance), 0, Integer.MAX_VALUE);</span>
+<span class="fc" id="L224">				int intLegTime = Mathf.clampInt(Mathf.roundToInt(trip.computeTripTime(j - 1, j)), 1, Integer.MAX_VALUE);</span>
+<span class="fc" id="L225">				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime());</span>
+				
+				// if true, hide lines after they complete their animation
+<span class="fc bfc" id="L228" title="All 2 branches covered.">				if (!isKeepLinesVisible) {</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">					if (j == trip.getPoints().size() - 1) {</span>
+<span class="fc" id="L230">						intPositionFront = 100;</span>
+<span class="fc" id="L231">						intPositionBack = 100;</span>
+					}
+				}
+				
+<span class="fc" id="L235">				strbOut.append(&quot;\tsetTimeout(function(){ segment&quot; + i + &quot;.draw(\&quot;&quot; + intPositionBack + &quot;%\&quot;, \&quot;&quot; + intPositionFront + &quot;%\&quot;, &quot; + intLegTime + &quot;); }, &quot; + intDelayTime + &quot;);\r\n&quot;);</span>
+			}
+			
+<span class="fc" id="L238">			strbOut.append(&quot;\r\n&quot;);</span>
+		}
+		
+<span class="fc" id="L241">		strbOut.append(&quot;&lt;/script&gt;\n\n&quot;);</span>
+		
+<span class="fc" id="L243">		return strbOut.toString();</span>
+	}
+	
+	/**
+	 * Generates a random color between two colors, which act as boundaries.
+	 * Interpolates between each of the RGB values of the color boundaries individually.
+	 * @param strColorA The first color boundary.
+	 * @param strColorB The second color boundary.
+	 * @return A random color with RGB values between those of the color boundaries.
+	 */
+	private String generateRandomColor (String strColorA, String strColorB) {
+<span class="fc" id="L254">		float[] fltComponentsClrA = new float[4];</span>
+<span class="fc" id="L255">		float[] fltComponentsClrB = new float[4];	</span>
+<span class="fc" id="L256">		float[] fltComponentsClrRandom = new float[4];</span>
+		
+<span class="fc" id="L258">		Color.decode(strColorA).getColorComponents(fltComponentsClrA);</span>
+<span class="fc" id="L259">		Color.decode(strColorB).getColorComponents(fltComponentsClrB);</span>
+		
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int i = 0; i &lt; fltComponentsClrRandom.length; i++) {</span>
+<span class="fc" id="L262">			float fltMin = Float.min(fltComponentsClrA[i], fltComponentsClrB[i]);</span>
+<span class="fc" id="L263">			float fltMax = Float.max(fltComponentsClrA[i], fltComponentsClrB[i]);</span>
+<span class="fc" id="L264">			float fltRandom = random.nextFloat() * (fltMax - fltMin) + fltMin;</span>
+<span class="fc" id="L265">			fltComponentsClrRandom[i] = fltRandom;</span>
+		}
+		
+<span class="fc" id="L268">		Color clrRandom = new Color(fltComponentsClrRandom[0], fltComponentsClrRandom[1], fltComponentsClrRandom[2], fltComponentsClrRandom[3]);</span>
+<span class="fc" id="L269">		String strColorRandom = String.format(&quot;#%02X%02X%02X&quot;, clrRandom.getRed(), clrRandom.getGreen(), clrRandom.getBlue());</span>
+<span class="fc" id="L270">		return strColorRandom;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (1) (Dec 17, 2017 5:22:14 PM)</div></body></html>

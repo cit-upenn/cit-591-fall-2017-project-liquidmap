@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SettingsFileReader.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (1) (Dec 17, 2017 5:22:14 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">SettingsFileReader.java</span></div><h1>SettingsFileReader.java</h1><pre class="source lang-java linenums">import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+
+/**
+ * Reads the JSON file (settings.json) and initializes the settings variables.
+ *
+ * @author brian
+ */
+public class SettingsFileReader {
+	private Settings settings;
+
+	/**
+	 * Constructor. Reads the JSON file (settings.json) and initializes the
+	 * settings variables.
+	 */
+<span class="fc" id="L22">	public SettingsFileReader() throws Exception {</span>
+<span class="fc" id="L23">		try (Reader reader = new InputStreamReader(</span>
+<span class="fc" id="L24">				SettingsFileReader.class.getResourceAsStream(&quot;/settings.json&quot;),</span>
+<span class="fc" id="L25">				&quot;UTF-8&quot;)) {</span>
+<span class="fc" id="L26">			Gson gson = new GsonBuilder().create();</span>
+<span class="fc" id="L27">			settings = gson.fromJson(reader, Settings.class);</span>
+<span class="fc" id="L28">			System.out.println(settings);</span>
+
+<span class="pc bpc" id="L30" title="7 of 8 branches missed.">		} catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L31">			throw new Exception(&quot;The Character Encoding of 'settings.json'&quot;</span>
+					+ &quot;is not supported.&quot;);
+<span class="nc" id="L33">		} catch (IOException e) {</span>
+<span class="nc" id="L34">			throw new Exception(</span>
+<span class="nc" id="L35">					&quot;Something has gone terribly wrong while reading &quot;</span>
+							+ &quot;'settings.json'.  Please try again.&quot;);
+<span class="nc" id="L37">		} catch (JsonParseException e) {</span>
+<span class="nc" id="L38">			throw new Exception(</span>
+<span class="nc" id="L39">					&quot;It appears as if 'settings.json' is not properly &quot;</span>
+							+ &quot;formatted.  Please consult the manual for proper &quot;
+							+ &quot;JSON syntax.&quot;);
+		}
+
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Returns a Settings object containing the settings from settings.json.
+	 *
+	 * @return A Settings object containing the settings from settings.json.
+	 */
+	public Settings getSettings() {
+<span class="fc" id="L52">		return settings;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (1) (Dec 17, 2017 5:22:14 PM)</div></body></html>

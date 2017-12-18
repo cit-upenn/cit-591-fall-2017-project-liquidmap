@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FileReader.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (1) (Dec 17, 2017 5:22:14 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">FileReader.java</span></div><h1>FileReader.java</h1><pre class="source lang-java linenums">import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+/**
+ * This class reads in a file and delivers an ArrayList of 
+ * lines for that file to be parsed by another class.
+ * 
+ * @author sgb
+ */
+public class FileReader {
+	private String fileName;
+	private ArrayList&lt;String&gt; lines;
+	
+<span class="fc" id="L18">	public FileReader(String fileName) {</span>
+<span class="fc" id="L19">		this.fileName = fileName;</span>
+<span class="fc" id="L20">		lines = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L21">		File file = new File(fileName);</span>
+		
+		try {
+<span class="fc" id="L24">			Scanner in = new Scanner(file);</span>
+			//make sure its a .csv
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">			if (goodFileType()) {</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">				while (in.hasNextLine()) {</span>
+<span class="fc" id="L28">					String line = in.nextLine();</span>
+<span class="fc" id="L29">					lines.add(line);</span>
+				}
+
+<span class="fc" id="L32">			} else {</span>
+<span class="nc" id="L33">				System.out.println(&quot;Currently only tab delimited .txt files supported&quot;);</span>
+			}
+
+<span class="fc" id="L36">			in.close();</span>
+			
+<span class="pc" id="L38">		} catch (FileNotFoundException fnfe) {</span>
+<span class="nc" id="L39">			fnfe.printStackTrace();</span>
+		}
+<span class="fc" id="L41">	}</span>
+
+	private boolean goodFileType() {
+<span class="fc" id="L44">		Matcher matcher = Pattern.compile(&quot;(?&gt;.*\\.)(.+)&quot;).matcher(fileName);</span>
+<span class="fc" id="L45">		String fileType = new String();</span>
+		
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">		if (matcher.matches()) {</span>
+<span class="fc" id="L48">			fileType = matcher.group(1);</span>
+		}
+		
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">		if (fileType.equalsIgnoreCase(&quot;txt&quot;)) {</span>
+<span class="fc" id="L52">			return true;</span>
+		} else {
+<span class="nc" id="L54">			return false;</span>
+		}
+	}
+	
+	/**
+	 * Returns an ArrayList of lines pulled from the input file.
+	 * @return An ArrayList of lines pulled from the input file.
+	 */
+	public ArrayList&lt;String&gt; getLines() {
+<span class="fc" id="L63">		return lines;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (1) (Dec 17, 2017 5:22:14 PM)</div></body></html>

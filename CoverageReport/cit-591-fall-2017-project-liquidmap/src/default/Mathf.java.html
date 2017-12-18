@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Mathf.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (1) (Dec 17, 2017 5:22:14 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Mathf.java</span></div><h1>Mathf.java</h1><pre class="source lang-java linenums">/**
+ * Contains static methods for performing basic mathematical operations.
+ * @author Matt Surka
+ */
+<span class="nc" id="L5">public class Mathf {</span>
+	/**
+	 * Takes a ratio (0-1) and converts it to a percentage expressed as an integer (0-100);
+	 * Clamps the percentage between 0 and 100 inclusive.
+	 * @param dblNum The ratio (0-1) to convert.
+	 * @return The ratio expressed as an integer percentage (0-100)
+	 */
+	public static int computePercentage (double dblNum) {
+<span class="fc" id="L13">		dblNum *= 100;</span>
+<span class="fc" id="L14">		int intNum = roundToInt(dblNum);</span>
+<span class="fc" id="L15">		clampInt(intNum, 0, 100);</span>
+		
+<span class="fc" id="L17">		return intNum;</span>
+	}
+	
+	/**
+	 * Rounds a double to the nearest integer.
+	 * @param dblNum The double to convert.
+	 * @return The double rounded to the nearest integer.
+	 */
+	public static int roundToInt (double dblNum) {
+<span class="fc" id="L26">		dblNum = Math.round(dblNum);</span>
+<span class="fc" id="L27">		return (int)dblNum;</span>
+	}
+	
+	/**
+	 * Clamps an integer between two provided values.
+	 * @param intNum The integer to clamp.
+	 * @param intMin The minimum value to clamp to.
+	 * @param intMax The maximum value to clamp to.
+	 * @return The integer clamped between the provided values.
+	 */
+	public static int clampInt (int intNum, int intMin, int intMax) {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if (intNum &lt; intMin) {</span>
+<span class="fc" id="L39">			intNum = intMin;</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">		} else if (intNum &gt; intMax) {</span>
+<span class="nc" id="L41">			intNum = intMax;</span>
+		}
+		
+<span class="fc" id="L44">		return intNum;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (1) (Dec 17, 2017 5:22:14 PM)</div></body></html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PointWorld.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (1) (Dec 17, 2017 5:22:14 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">PointWorld.java</span></div><h1>PointWorld.java</h1><pre class="source lang-java linenums">/**
+ * Represents a position in latitude-longitude-time space.
+ * Latitude and longitude are measured in degrees (e.g., on a globe).
+ * Time is measured in seconds.
+ * @author Brian Edwards, Matt Surka
+ */
+public class PointWorld extends Point {
+	private double weight;
+	
+	/**
+	 * Constructor. Sets the latitude, longitude, and time of the Point.
+	 * @param lat The latitude in degrees.
+	 * @param lon The longitude in degrees.
+	 * @param time The time in seconds.
+	 */
+	public PointWorld(double lat, double lon, double time) {
+<span class="fc" id="L17">		super(lat, lon, time);</span>
+<span class="fc" id="L18">	}</span>
+	
+	/**
+	 * Constructor. Sets the latitude and longitude of the Point.
+	 * Sets the time to zero. Sets weight to 1.
+	 * @param lat The latitude in pixels.
+	 * @param lon The longitude in pixels.
+	 */
+	public PointWorld(double lat, double lon) {
+<span class="fc" id="L27">		super(lat, lon);</span>
+<span class="fc" id="L28">		this.weight = 1.0d;</span>
+<span class="fc" id="L29">	}</span>
+	
+	/**
+	 * Sets the probability weight of the Point.
+	 * @param weight The probability weight between 0 and 1.
+	 */
+	public void setWeight(double weight) {
+<span class="fc" id="L36">		this.weight = weight;</span>
+<span class="fc" id="L37">	}</span>
+	
+	/**
+	 * Gets the probability weight of the Point.
+	 * @return The probability weight between 0 and 1.
+	 */
+	public double getWeight() {
+<span class="fc" id="L44">		return weight;</span>
+	}
+
+	/**
+	 * Overrides toString().
+	 * Returns a description of the Point as a String.
+	 * @return A description of the Point as a String.
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L54">		return String.format(&quot;(lat (deg): %f  lon (deg): %f  time (s): %f)&quot;, getLat(), getLon(), getTime());</span>
+	}
+
+	/**
+	 * Determines if this Point is equal to a provided Point.
+	 * Equality is defined as having all attributes equal or very close.
+	 * Having equality defined on Points makes jUnit testing much easier.
+	 * @param pointOther The Point to compare to.
+	 * @return True if the Points are equal; false otherwise.
+	 */
+	@Override
+	public boolean equals(Point pointOther) {
+<span class="fc" id="L66">		double closeDistance = 3;</span>
+<span class="fc" id="L67">		double closeTime = 1E-3;</span>
+		
+<span class="fc" id="L69">		double dblDistance = this.distanceTo(pointOther);</span>
+<span class="fc" id="L70">		double dblTimeDifference = Math.abs(getTime() - pointOther.getTime());</span>
+		
+<span class="fc bfc" id="L72" title="All 2 branches covered.">		boolean isCloseInSpace = dblDistance &lt; closeDistance;</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		boolean isCloseInTime = dblTimeDifference &lt; closeTime;</span>
+<span class="fc bfc" id="L74" title="All 4 branches covered.">		return isCloseInTime &amp;&amp; isCloseInSpace;</span>
+	}
+
+	/**
+	 * Computes the distance between this Point and a provided Point.
+	 * @param pointOther The Point to compare to.
+	 * @return The distance between the Points in degrees.
+	 */
+	@Override
+	public double distanceTo(Point pointOther) {
+<span class="fc" id="L84">		double dblDistance = 0;</span>
+<span class="fc" id="L85">		double dblDistanceX = 0;</span>
+<span class="fc" id="L86">		double dblDistanceY = 0;</span>
+		
+<span class="fc" id="L88">		double EARTH_RAD = 6371000; // meters</span>
+<span class="fc" id="L89">		double meanLat = (this.getLat() + pointOther.getLat()) / 2;</span>
+<span class="fc" id="L90">		double sf = Math.sin(meanLat * Math.PI / 180.);</span>
+<span class="fc" id="L91">		double mPerDegLat = 2 * Math.PI * EARTH_RAD / 360;</span>
+<span class="fc" id="L92">		double mPerDegLon = mPerDegLat * sf;</span>
+		
+<span class="fc" id="L94">		dblDistanceX = (this.getLat() - pointOther.getLat()) * mPerDegLat;</span>
+<span class="fc" id="L95">		dblDistanceY = (this.getLon() - pointOther.getLon()) * mPerDegLon;		</span>
+<span class="fc" id="L96">		dblDistance = Math.sqrt(Math.pow(dblDistanceX, 2) + Math.pow(dblDistanceY, 2));</span>
+		
+<span class="fc" id="L98">		return dblDistance;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (1) (Dec 17, 2017 5:22:14 PM)</div></body></html>
