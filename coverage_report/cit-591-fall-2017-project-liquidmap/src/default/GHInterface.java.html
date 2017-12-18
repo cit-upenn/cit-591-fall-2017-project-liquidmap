@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GHInterface.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (Dec 17, 2017 8:43:24 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">GHInterface.java</span></div><h1>GHInterface.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GHInterface.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">tests (Dec 17, 2017 9:17:26 PM)</a> &gt; <a href="../../index.html" class="el_group">cit-591-fall-2017-project-liquidmap</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">GHInterface.java</span></div><h1>GHInterface.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
 import java.util.Locale;
 
 import com.graphhopper.GHRequest;
@@ -57,8 +57,8 @@ public class GHInterface {
 <span class="fc" id="L57">				pointWorldEnd.getLon()).setWeighting(&quot;fastest&quot;)</span>
 <span class="fc" id="L58">						.setVehicle(&quot;car&quot;).setLocale(Locale.US);</span>
 <span class="fc" id="L59">		GHResponse rsp = hopper.route(req);</span>
-<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if (rsp.hasErrors()) {</span>
-<span class="nc" id="L61">			return new Trip(); // returns null trip.</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		if (rsp.hasErrors()) {</span>
+<span class="fc" id="L61">			return new Trip(); // returns null trip.</span>
 		}
 <span class="fc" id="L63">		PathWrapper path = rsp.getBest();</span>
 <span class="fc" id="L64">		InstructionList il = path.getInstructions();</span>
@@ -210,4 +210,4 @@ public class GHInterface {
 <span class="fc" id="L210">		return trip;</span>
 	}
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (Dec 17, 2017 8:43:24 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>tests (Dec 17, 2017 9:17:26 PM)</div></body></html>
