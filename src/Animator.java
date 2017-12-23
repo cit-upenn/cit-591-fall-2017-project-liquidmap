@@ -70,8 +70,7 @@ public class Animator {
 			listTrips.get(i).offsetTime(dblTimeBetweenSpawns * i);
 		}
 		
-		fileWriter.writeString(generateMainBlock(listTrips) + generateStyleBlock(listTrips) 
-		+ generateScriptBlock(listTrips), strFileName + ".html");
+		fileWriter.writeString(generateMainBlock(listTrips), strFileName + ".html");
 	}
 	
 	/**
@@ -88,6 +87,8 @@ public class Animator {
 						"\t<head>\r\n" + 
 						"\t\t<meta charset=\"UTF-8\">\r\n" + 
 						"\t\t<title>" + strPageTitle + "</title>\r\n" + 
+						"\r\n" +
+						generateStyleBlock(listTrips) +
 						"\t</head>\r\n" + 
 						"\r\n" + 
 						"\t<body>\r\n" + 
@@ -118,7 +119,7 @@ public class Animator {
 				strbOut.append(" L" + intX + "," + intY);
 			}
 			
-			strbOut.append("\" />\r\n");
+			strbOut.append("\"></path>\r\n");
 		}
 
 		// close the <body> block
@@ -126,6 +127,8 @@ public class Animator {
 						"\r\n" + 
 						"\t\t<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n" + 
 						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/segment-js/1.0.8/segment.js'></script>\r\n" + 
+						"\r\n" +
+						generateScriptBlock(listTrips) +
 						"\t</body>\r\n" + 
 						"</html>\r\n\r\n");
 		
@@ -141,50 +144,50 @@ public class Animator {
 		StringBuilder strbOut = new StringBuilder();
 		
 		// add style info for font, canvas size, text color, text alignment, etc.
-		strbOut.append(	"<style>\r\n" + 
-						"\tbody {\r\n" + 
-						"\t\tfont-family: \"Helvetica Neue\", Helvetica;\r\n" + 
-						"\t\twidth: " + intCanvasWidth + "px;\r\n" + 
-						"\t\theight: " + intCanvasWidth + "px;\r\n" + 
-						"\t\tfont-weight: 200;\r\n" + 
-						"\t\tletter-spacing: 1px;\r\n" + 
-						"\t\tmargin: 25px auto 0 auto;\r\n" + 
-						"\t\tbackground: " + strCanvasColor + ";\r\n" + 
-						"\t}\r\n" + 
+		strbOut.append(	"\t\t<style>\r\n" + 
+						"\t\t\tbody {\r\n" + 
+						"\t\t\t\tfont-family: \"Helvetica Neue\", Helvetica;\r\n" + 
+						"\t\t\t\twidth: " + intCanvasWidth + "px;\r\n" + 
+						"\t\t\t\theight: " + intCanvasWidth + "px;\r\n" + 
+						"\t\t\t\tfont-weight: 200;\r\n" + 
+						"\t\t\t\tletter-spacing: 1px;\r\n" + 
+						"\t\t\t\tmargin: 25px auto 0 auto;\r\n" + 
+						"\t\t\t\tbackground: " + strCanvasColor + ";\r\n" + 
+						"\t\t\t}\r\n" + 
 						"\r\n" + 
-						"\tp {\r\n" + 
-						"\t\tcolor: " + strTextColor + ";\r\n" + 
-						"\t\tfont-size: 0.85rem;\r\n" + 
-						"\t\ttext-align: center;\r\n" + 
-						"\t\tmargin: 0 auto;\r\n" + 
-						"\t\tmargin-bottom: 17px;\r\n" + 
-						"\t}\r\n" + 
+						"\t\t\tp {\r\n" + 
+						"\t\t\t\tcolor: " + strTextColor + ";\r\n" + 
+						"\t\t\t\tfont-size: 0.85rem;\r\n" + 
+						"\t\t\t\ttext-align: center;\r\n" + 
+						"\t\t\t\tmargin: 0 auto;\r\n" + 
+						"\t\t\t\tmargin-bottom: 17px;\r\n" + 
+						"\t\t\t}\r\n" + 
 						"\r\n" + 
-						"\tsvg {\r\n" + 
-						"\t\tmargin: 0 auto;\r\n" + 
-						"\t\tdisplay: block;\r\n" + 
-						"\t\twidth: 100%;\r\n" + 
-						"\t\theight: 100%;\r\n" + 
-						"\t}\r\n" + 
+						"\t\t\tsvg {\r\n" + 
+						"\t\t\t\tmargin: 0 auto;\r\n" + 
+						"\t\t\t\tdisplay: block;\r\n" + 
+						"\t\t\t\twidth: 100%;\r\n" + 
+						"\t\t\t\theight: 100%;\r\n" + 
+						"\t\t\t}\r\n" + 
 						"\r\n" + 
-						"\tpath {\r\n");
+						"\t\t\tpath {\r\n");
 		
 		// if the lines will all be one color, define that color here
 		if (strLineColorA.equals(strLineColorB)) {
-			strbOut.append("\t\tstroke: " + strLineColorA + ";\r\n");
+			strbOut.append("\t\t\t\tstroke: " + strLineColorA + ";\r\n");
 		}
 		
 		// complete the <style> block, adding code to prevent the animation from starting before it is loaded
-		strbOut.append(	"\t\tstroke-width: " + intLineWidth + ";\r\n" + 
-						"\t\tfill-opacity: 0;\r\n" +
-						"\t}\r\n" + 
-						"\r\n" +
-						"\t.js-loading *,\r\n" +
-						"\t.js-loading *:before,\r\n" +
-						"\t.js-loading *:after {\r\n" +
-						"\t\tanimation-play-state: paused !important;\r\n" +
-						"\t}\r\n" +
-						"</style>\r\n\r\n");
+		strbOut.append(	"\t\t\t\tstroke-width: " + intLineWidth + ";\r\n" + 
+						"\t\t\t\tfill-opacity: 0;\r\n" +
+						"\t\t\t}\r\n" + 
+						"\t\t\r\n" +
+						"\t\t\t.js-loading *,\r\n" +
+						"\t\t\t.js-loading *:before,\r\n" +
+						"\t\t\t.js-loading *:after {\r\n" +
+						"\t\t\t\tanimation-play-state: paused !important;\r\n" +
+						"\t\t\t}\r\n" +
+						"\t\t</style>\r\n\r\n");
 		
 		return strbOut.toString();
 	}
@@ -198,56 +201,125 @@ public class Animator {
 		StringBuilder strbOut = new StringBuilder();
 		
 		// start the <script> block with code to check for when the animation has finished loading
-		strbOut.append(	"<script>\r\n" +
-						"\tdocument.body.classList.add('js-loading');\r\n" +
-						"\twindow.addEventListener(\"load\", showPage);\r\n" +
+		strbOut.append(	"\t\t<script>\r\n" +
+						"\t\t\tdocument.body.classList.add('js-loading');\r\n" +
+						"\t\t\twindow.addEventListener(\"load\", showPage);\r\n" +
 						"\r\n" +
-						"\tfunction showPage() {\r\n" +
-						"\t\tdocument.body.classList.remove('js-loading');\r\n" +
-						"\t}\r\n" +
+						"\t\t\tfunction showPage() {\r\n" +
+						"\t\t\t\tdocument.body.classList.remove('js-loading');\r\n" +
+						"\t\t\t}\r\n" +
+						"\r\n");
+		
+		//declare the LegData class
+		strbOut.append(	"\t\t\tvar LegData = class LegData {\r\n" +
+						"\t\t\t\tconstructor(begin, end, duration) {\r\n" +
+						"\t\t\t\t\tthis.begin = begin;\r\n" +
+						"\t\t\t\t\tthis.end = end;\r\n" +
+						"\t\t\t\t\tthis.duration = duration;\r\n" +
+						"\t\t\t\t};\r\n" +
+						"\t\t\t}\r\n" +
 						"\r\n");
 		
 		// initialize a Segment object for each <path> element
 		for (int i = 0; i < listTrips.size(); i++) {
-			strbOut.append("\tvar path" + i + " = document.getElementById(\"path" + i + "\"), segment" + i + " = new Segment(path" + i + ");\r\n");
+			strbOut.append("\t\t\tvar path" + i + " = document.getElementById(\"path" + i + "\"), segment" + i + " = new Segment(path" + i + ");\r\n");
 		}
 		
 		strbOut.append("\r\n");
 		
-		// start each Segment at 0%, meaning that no part of it is drawn
+		// create an array of Segments and populate it
+		strbOut.append("\t\t\tvar arrSegment = new Array();\r\n");
 		for (int i = 0; i < listTrips.size(); i++) {
-			strbOut.append("\tsegment" + i + ".draw(\"0%\", \"0%\", 0);\r\n");
+			strbOut.append("\t\t\tarrSegment.push(segment" + i + ");\r\n");
 		}
 		
 		strbOut.append("\r\n");
 		
-		// animate the Segment for each leg of the Trip, using a time delay to move it across one leg at a time
+		// create a LegData object for each leg of each trip
 		for (int i = 0; i < listTrips.size(); i++) {
 			Trip trip = listTrips.get(i);
 			double dblTripDistance = trip.computeTripDistance(0, trip.getPoints().size() - 1);
 				
-			for (int j = 1; j < trip.getPoints().size(); j++) {
+			for (int j = 0; j < trip.getPoints().size(); j++) {
 				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);
-				int intPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance);
-				int intPositionBack = Mathf.clampInt(Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance), 0, Integer.MAX_VALUE);
-				int intLegTime = Mathf.clampInt(Mathf.roundToInt(trip.computeTripTime(j - 1, j)), 1, Integer.MAX_VALUE);
-				int intDelayTime = Mathf.roundToInt(trip.getPoints().get(j - 1).getTime());
+				double dblPositionFront = Mathf.computePercentage(dblDistanceToPointFromStart / dblTripDistance, 2);
+				double dblPositionBack = Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance, 2);
+				double dblLegTime = 0;
+				
+				//TODO: Remove hard-coded division
+				if (j == 0) {
+					dblLegTime = Mathf.roundToDouble(trip.getPoints().get(j).getTime() / 1000, 2);
+				} else {
+					dblLegTime = Mathf.roundToDouble(trip.computeTripTime(j - 1, j) / 1000, 2);
+				}
+				
+				if (dblLegTime == 0) {
+					dblLegTime += 0.01;
+				}
 				
 				// if true, hide lines after they complete their animation
 				if (!isKeepLinesVisible) {
 					if (j == trip.getPoints().size() - 1) {
-						intPositionFront = 100;
-						intPositionBack = 100;
+						dblPositionFront = 100;
+						dblPositionBack = 100;
 					}
 				}
 				
-				strbOut.append("\tsetTimeout(function(){ segment" + i + ".draw(\"" + intPositionBack + "%\", \"" + intPositionFront + "%\", " + intLegTime + "); }, " + intDelayTime + ");\r\n");
+				strbOut.append("\t\t\tvar legData" + i + "_" + j + " = new LegData (" + dblPositionBack + ", " + dblPositionFront + ", " + dblLegTime + ");\r\n");
 			}
 			
 			strbOut.append("\r\n");
 		}
 		
-		strbOut.append("</script>\n\n");
+		// create an array of LegData for each Segment and populate it
+		for (int i = 0; i < listTrips.size(); i++) {
+			Trip trip = listTrips.get(i);
+			
+			strbOut.append("\t\t\tvar arrLegData" + i + " = new Array();\r\n");
+				
+			for (int j = 0; j < trip.getPoints().size(); j++) {
+				strbOut.append("\t\t\tarrLegData" + i + ".push(legData" + i + "_" + j + ");\r\n");
+			}
+			
+			strbOut.append("\r\n");
+		}
+		
+		// create an array of the LegData arrays and populate it
+		strbOut.append("\t\t\tvar arrArrLegData = new Array();\r\n");
+		for (int i = 0; i < listTrips.size(); i++) {
+			strbOut.append("\t\t\tarrArrLegData.push(arrLegData" + i + ");\r\n");
+		}
+		
+		strbOut.append("\r\n");
+		
+		// create an array of indices to track which leg each trip is on
+		strbOut.append("\t\t\tvar arrIntLeg = new Array();\r\n");
+		for (int i = 0; i < listTrips.size(); i++) {
+			strbOut.append("\t\t\tarrIntLeg.push(0);\r\n");
+		}
+		
+		strbOut.append("\r\n");
+		
+		// declare the nextLeg() function, which will be called for each leg of each trip
+		strbOut.append(	"\t\t\tfunction nextLeg (intSegment) {\r\n" +
+						"\t\t\t\tif (arrIntLeg[intSegment] < arrArrLegData[intSegment].length) {\r\n" +
+						"\t\t\t\t\tarrSegment[intSegment].draw(arrArrLegData[intSegment][arrIntLeg[intSegment]].begin,\r\n" +
+						"\t\t\t\t\t\t\t\t\t\t\t\tarrArrLegData[intSegment][arrIntLeg[intSegment]].end,\r\n" +
+						"\t\t\t\t\t\t\t\t\t\t\t\tarrArrLegData[intSegment][arrIntLeg[intSegment]].duration,\r\n" +
+						"\t\t\t\t\t\t\t\t\t\t\t\t{ callback: function(){ nextLeg(intSegment); } });\r\n" +
+						"\t\t\t\t}\r\n" +
+						"\r\n" +
+						"\t\t\t\tarrIntLeg[intSegment]++;\r\n" +
+						"\t\t\t}\r\n");
+		
+		strbOut.append("\r\n");
+		
+		// call nextLeg() for the first leg of each trip
+		strbOut.append(	"\t\t\tfor (var i = 0; i < arrSegment.length; i++) {\r\n" +
+						"\t\t\t\tnextLeg(i);\r\n" +
+						"\t\t\t}\r\n");
+			
+		strbOut.append("\t\t</script>\r\n");
 		
 		return strbOut.toString();
 	}

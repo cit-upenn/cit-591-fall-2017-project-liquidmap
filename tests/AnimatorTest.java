@@ -18,9 +18,9 @@ public class AnimatorTest {
 		Animator animator = new Animator();
 		ArrayList<Trip> listTrips = new ArrayList<>();
 		
-		int intNumberOfTrips = 100;
-		int intMinPointsPerTrip = 100;
-		int intMaxPointsPerTrip = 600;
+		int intNumberOfTrips = 2;
+		int intMinPointsPerTrip = 2;
+		int intMaxPointsPerTrip = 3;
 		double dblMinDurationOfTripLeg = 1;
 		double dblMaxDurationOfTripLeg = 50;
 		int intCanvasSize = 600;
