@@ -195,7 +195,7 @@ Below is the text of a correctly written settings file (settings.json). This can
 		"strLineColorB": "#FFAA88",
 		"strTextColor": "#FFFFFF",
 		"dblTimeBetweenSpawns": 0,
-		"dblMergeDistance": 20
+		"dblMergeDistance": 2
     }
 }
 ```

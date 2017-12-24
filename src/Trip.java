@@ -118,9 +118,12 @@ public class Trip implements Cloneable {
 	 */
 	public void optimizeTrip (double dblMergeDistance) {
 		int j = 0;
-		while (j + 1 < getPoints().size() && getPoints().get(j).distanceTo(getPoints().get(j + 1)) < dblMergeDistance) {
-			getPoints().remove(j);
-			j++;
+		while (j + 1 < getPoints().size()) {
+			if (getPoints().get(j).distanceTo(getPoints().get(j + 1)) < dblMergeDistance) {
+				getPoints().remove(j);
+			} else {
+				j++;
+			}
 		}
 	}
 

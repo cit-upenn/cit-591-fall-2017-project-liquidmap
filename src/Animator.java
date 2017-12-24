@@ -251,11 +251,10 @@ public class Animator {
 				double dblPositionBack = Mathf.computePercentage((dblDistanceToPointFromStart - intLineLength) / dblTripDistance, 2);
 				double dblLegTime = 0;
 				
-				//TODO: Remove hard-coded division
 				if (j == 0) {
-					dblLegTime = Mathf.roundToDouble(trip.getPoints().get(j).getTime() / 1000, 2);
+					dblLegTime = Mathf.roundToDouble(trip.getPoints().get(j).getTime(), 2);
 				} else {
-					dblLegTime = Mathf.roundToDouble(trip.computeTripTime(j - 1, j) / 1000, 2);
+					dblLegTime = Mathf.roundToDouble(trip.computeTripTime(j - 1, j), 2);
 				}
 				
 				if (dblLegTime == 0) {
