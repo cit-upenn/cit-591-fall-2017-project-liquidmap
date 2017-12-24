@@ -57,6 +57,7 @@
 		"strLineColorA": "#442222",
 		"strLineColorB": "#DC89B2",
 		"strTextColor": "#FFFFFF",
-		"dblTimeBetweenSpawns": 0
+		"dblTimeBetweenSpawns": 0,
+		"dblMergeDistance": 20
     }
 }

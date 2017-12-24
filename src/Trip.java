@@ -111,6 +111,18 @@ public class Trip implements Cloneable {
 		
 		return dblDistance;
 	}
+	
+	/**
+	 * Optimizes the trip by merging points that are close together.
+	 * @param dblMergeDistance The distance that defines whether two points are close enough together to be merged.
+	 */
+	public void optimizeTrip (double dblMergeDistance) {
+		int j = 0;
+		while (j + 1 < getPoints().size() && getPoints().get(j).distanceTo(getPoints().get(j + 1)) < dblMergeDistance) {
+			getPoints().remove(j);
+			j++;
+		}
+	}
 
 	/**
 	 * Overrides toString().

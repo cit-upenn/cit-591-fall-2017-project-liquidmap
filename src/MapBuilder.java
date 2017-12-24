@@ -152,7 +152,8 @@ public class MapBuilder {
 	private void animateTrips() {
 		Animator animator = new Animator();
 
-		animator.animateTrips(convTrips, settings.outputVars.strFileName,
+		animator.animateTrips(convTrips,
+				settings.outputVars.strFileName,
 				settings.outputVars.strPageTitle,
 				settings.outputVars.strCanvasText,
 				settings.outputVars.intCanvasWidth,
@@ -163,7 +164,8 @@ public class MapBuilder {
 				settings.outputVars.strLineColorA,
 				settings.outputVars.strLineColorB,
 				settings.outputVars.strTextColor,
-				settings.outputVars.dblTimeBetweenSpawns);
+				settings.outputVars.dblTimeBetweenSpawns,
+				settings.outputVars.dblMergeDistance);
 	}
 	
 	/**

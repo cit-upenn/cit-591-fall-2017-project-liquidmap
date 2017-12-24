@@ -105,6 +105,7 @@ public class Settings {
 		public final String strLineColorB = null;
 		public final String strTextColor = null;
 		public final Double dblTimeBetweenSpawns = null;
+		public final Double dblMergeDistance = null;
 
 		@Override
 		public String toString() {

@@ -24,6 +24,7 @@ public class Animator {
 	String strLineColorB;
 	String strTextColor;
 	double dblTimeBetweenSpawns;
+	double dblMergeDistance;
 	
 	/**
 	 * Constructor. Initializes the Animator with a Random object and a Writer object.
@@ -48,11 +49,12 @@ public class Animator {
 	 * @param strLineColorA The second color boundary of the lines expressed as a hex triplet (e.g., "#000000").
 	 * @param strTextColor The color of text on the canvas expressed as a hex triplet (e.g., "#000000").
 	 * @param dblTimeBetweenSpawns The amount of time (in seconds) to wait before spawning a new line.
+	 * @param dblMergeDistance The distance (in pixels) that defines whether two points are close enough together to be merged.
 	 */
 	public void animateTrips (ArrayList<Trip> listTrips, String strFileName, String strPageTitle, String strCanvasText,
 							  int intCanvasWidth, String strCanvasColor, int intLineWidth, int intLineLength,
 							  boolean isKeepLinesVisible, String strLineColorA, String strLineColorB, String strTextColor,
-							  double dblTimeBetweenSpawns) {
+							  double dblTimeBetweenSpawns, double dblMergeDistance) {
 		this.strFileName = strFileName;
 		this.strPageTitle = strPageTitle;
 		this.strCanvasText = strCanvasText;
@@ -65,9 +67,12 @@ public class Animator {
 		this.strLineColorB = verifyColor(strLineColorB, "#FFFFFF");
 		this.strTextColor = verifyColor(strTextColor, "#FFFFFF");
 		this.dblTimeBetweenSpawns = dblTimeBetweenSpawns;
+		this.dblMergeDistance = dblMergeDistance;
 		
 		for (int i = 0; i < listTrips.size(); i++) {
-			listTrips.get(i).offsetTime(dblTimeBetweenSpawns * i);
+			Trip trip = listTrips.get(i);
+			trip.optimizeTrip(dblMergeDistance);
+			trip.offsetTime(dblTimeBetweenSpawns * i);
 		}
 		
 		fileWriter.writeString(generateMainBlock(listTrips), strFileName + ".html");

@@ -47,9 +47,9 @@ public class AnimatorTest {
 			listTrips.add(trip);
 		}
 		
-		animator.animateTrips(listTrips, "animation_test_1", "LiquidMaps: Test 1", "", intCanvasSize, "#000000", 2, 300, false, "#224488", "#88FF00", "#FFFFFF", 0);
-		animator.animateTrips(listTrips, "animation_test_2", "LiquidMaps: Test 2", "Refresh page to replay.", intCanvasSize, "#000000", 4, 500, true, "#FFFFFF", "#FFFFFF", "#FFFFFF", 0.05);
-		animator.animateTrips(listTrips, "animation_test_3", "LiquidMaps: Test 3", "Color verification failed. Reverted to default colors.", intCanvasSize, "#00000", 4, 500, true, "#FFGSFF", "FFFFFF", "red", 0);
+		animator.animateTrips(listTrips, "animation_test_1", "LiquidMaps: Test 1", "", intCanvasSize, "#000000", 2, 300, false, "#224488", "#88FF00", "#FFFFFF", 0, 20);
+		animator.animateTrips(listTrips, "animation_test_2", "LiquidMaps: Test 2", "Refresh page to replay.", intCanvasSize, "#000000", 4, 500, true, "#FFFFFF", "#FFFFFF", "#FFFFFF", 0.05, 50);
+		animator.animateTrips(listTrips, "animation_test_3", "LiquidMaps: Test 3", "Color verification failed. Reverted to default colors.", intCanvasSize, "#00000", 4, 500, true, "#FFGSFF", "FFFFFF", "red", 0, 10);
 		
 		File file1 = new File("animation_test_1.html");
 		File file2 = new File("animation_test_2.html");
