@@ -72,6 +72,7 @@ public class Animator {
 		for (int i = 0; i < listTrips.size(); i++) {
 			Trip trip = listTrips.get(i);
 			trip.optimizeTrip(dblMergeDistance);
+			trip.scaleTime(0.01);
 			trip.offsetTime(dblTimeBetweenSpawns * i);
 		}
 		
@@ -318,8 +319,9 @@ public class Animator {
 		
 		strbOut.append("\r\n");
 		
-		// call nextLeg() for the first leg of each trip
+		// hide each line and then call nextLeg() for the first leg of each trip
 		strbOut.append(	"\t\t\tfor (var i = 0; i < arrSegment.length; i++) {\r\n" +
+						"\t\t\t\tarrSegment[i].draw(0.0, 0.0);\r\n" +
 						"\t\t\t\tnextLeg(i);\r\n" +
 						"\t\t\t}\r\n");
 			

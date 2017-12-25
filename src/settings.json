@@ -52,12 +52,12 @@
         "intCanvasWidth": 800,
 		"strCanvasColor": "#000000",
 		"intLineWidth": 1,
-		"intLineLength": 50,
-		"isKeepLinesVisible": false,
+		"intLineLength": 1000,
+		"isKeepLinesVisible": true,
 		"strLineColorA": "#442222",
 		"strLineColorB": "#DC89B2",
 		"strTextColor": "#FFFFFF",
-		"dblTimeBetweenSpawns": 0,
+		"dblTimeBetweenSpawns": 0.02,
 		"dblMergeDistance": 2
     }
 }

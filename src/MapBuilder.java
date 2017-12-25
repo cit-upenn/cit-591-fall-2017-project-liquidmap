@@ -151,7 +151,7 @@ public class MapBuilder {
 	 */
 	private void animateTrips() {
 		Animator animator = new Animator();
-
+		
 		animator.animateTrips(convTrips,
 				settings.outputVars.strFileName,
 				settings.outputVars.strPageTitle,

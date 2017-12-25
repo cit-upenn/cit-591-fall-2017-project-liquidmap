@@ -21,8 +21,8 @@ public class AnimatorTest {
 		int intNumberOfTrips = 2;
 		int intMinPointsPerTrip = 2;
 		int intMaxPointsPerTrip = 3;
-		double dblMinDurationOfTripLeg = 1;
-		double dblMaxDurationOfTripLeg = 50;
+		double dblMinDurationOfTripLeg = 100;
+		double dblMaxDurationOfTripLeg = 1000;
 		int intCanvasSize = 600;
 		int intSpawnPadding = 10;
 		double dblMinLat = intSpawnPadding;
