@@ -128,6 +128,7 @@ To convert trips from world space to screen space, a bounding box is drawn using
 `strLineColorB`: The second color boundary of the lines expressed as a hex triplet (e.g., "#FF88AA").<br />
 `strTextColor`: The color of text on the canvas expressed as a hex triplet (e.g., "#FFFFFF").<br />
 `dblTimeBetweenSpawns`: The amount of time (in seconds) to wait before spawning a new line.<br />
+`dblMergeDistance`: The distance (in pixels) that defines whether two points are close enough together to be merged.
 
 ### Example Settings File
 
@@ -193,7 +194,8 @@ Below is the text of a correctly written settings file (settings.json). This can
 		"strLineColorA": "#AAFF88",
 		"strLineColorB": "#FFAA88",
 		"strTextColor": "#FFFFFF",
-		"dblTimeBetweenSpawns": 0
+		"dblTimeBetweenSpawns": 0,
+		"dblMergeDistance": 2
     }
 }
 ```

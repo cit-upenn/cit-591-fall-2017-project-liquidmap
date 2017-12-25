@@ -18,11 +18,11 @@ public class AnimatorTest {
 		Animator animator = new Animator();
 		ArrayList<Trip> listTrips = new ArrayList<>();
 		
-		int intNumberOfTrips = 100;
-		int intMinPointsPerTrip = 100;
-		int intMaxPointsPerTrip = 600;
-		double dblMinDurationOfTripLeg = 1;
-		double dblMaxDurationOfTripLeg = 50;
+		int intNumberOfTrips = 2;
+		int intMinPointsPerTrip = 2;
+		int intMaxPointsPerTrip = 3;
+		double dblMinDurationOfTripLeg = 100;
+		double dblMaxDurationOfTripLeg = 1000;
 		int intCanvasSize = 600;
 		int intSpawnPadding = 10;
 		double dblMinLat = intSpawnPadding;
@@ -47,9 +47,9 @@ public class AnimatorTest {
 			listTrips.add(trip);
 		}
 		
-		animator.animateTrips(listTrips, "animation_test_1", "LiquidMaps: Test 1", "", intCanvasSize, "#000000", 2, 300, false, "#224488", "#88FF00", "#FFFFFF", 0);
-		animator.animateTrips(listTrips, "animation_test_2", "LiquidMaps: Test 2", "Refresh page to replay.", intCanvasSize, "#000000", 4, 500, true, "#FFFFFF", "#FFFFFF", "#FFFFFF", 0.05);
-		animator.animateTrips(listTrips, "animation_test_3", "LiquidMaps: Test 3", "Color verification failed. Reverted to default colors.", intCanvasSize, "#00000", 4, 500, true, "#FFGSFF", "FFFFFF", "red", 0);
+		animator.animateTrips(listTrips, "animation_test_1", "LiquidMaps: Test 1", "", intCanvasSize, "#000000", 2, 300, false, "#224488", "#88FF00", "#FFFFFF", 0, 2);
+		animator.animateTrips(listTrips, "animation_test_2", "LiquidMaps: Test 2", "Refresh page to replay.", intCanvasSize, "#000000", 4, 500, true, "#FFFFFF", "#FFFFFF", "#FFFFFF", 0.05, 2);
+		animator.animateTrips(listTrips, "animation_test_3", "LiquidMaps: Test 3", "Color verification failed. Reverted to default colors.", intCanvasSize, "#00000", 4, 500, true, "#FFGSFF", "FFFFFF", "red", 0, 2);
 		
 		File file1 = new File("animation_test_1.html");
 		File file2 = new File("animation_test_2.html");
