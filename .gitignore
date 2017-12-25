@@ -5,7 +5,7 @@
 *.html
 *.htm
 
-!coverage_report/*
+coverage_report/*
 
 
 # Created by https://www.gitignore.io/api/java,eclipse
