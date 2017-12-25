@@ -74,6 +74,12 @@ public class Animator {
 			trip.optimizeTrip(dblMergeDistance);
 			trip.scaleTime(0.01);
 			trip.offsetTime(dblTimeBetweenSpawns * i);
+			
+			// add a dummy point to facilitate line-hiding
+			if (!isKeepLinesVisible) {
+				Point point = trip.getPoints().get(trip.getPoints().size() - 1);
+				trip.addPoint(new PointScreen(point.getLat(), point.getLon()));
+			}
 		}
 		
 		fileWriter.writeString(generateMainBlock(listTrips), strFileName + ".html");
@@ -129,7 +135,8 @@ public class Animator {
 		}
 
 		// close the <body> block
-		strbOut.append(	"\t\t</svg>\r\n" + 
+		strbOut.append(	"\t\t\t<rect id=\"curtain\" fill=\"" + strCanvasColor + "\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\"></rect>\r\n" +
+						"\t\t</svg>\r\n" + 
 						"\r\n" + 
 						"\t\t<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n" + 
 						"\t\t<script src='https://cdnjs.cloudflare.com/ajax/libs/segment-js/1.0.8/segment.js'></script>\r\n" + 
@@ -228,7 +235,7 @@ public class Animator {
 		
 		// initialize a Segment object for each <path> element
 		for (int i = 0; i < listTrips.size(); i++) {
-			strbOut.append("\t\t\tvar path" + i + " = document.getElementById(\"path" + i + "\"), segment" + i + " = new Segment(path" + i + ");\r\n");
+			strbOut.append("\t\t\tvar path" + i + " = document.getElementById(\"path" + i + "\");\r\n");
 		}
 		
 		strbOut.append("\r\n");
@@ -236,15 +243,17 @@ public class Animator {
 		// create an array of Segments and populate it
 		strbOut.append("\t\t\tvar arrSegment = new Array();\r\n");
 		for (int i = 0; i < listTrips.size(); i++) {
-			strbOut.append("\t\t\tarrSegment.push(segment" + i + ");\r\n");
+			strbOut.append("\t\t\tarrSegment.push(new Segment(path" + i + "));\r\n");
 		}
 		
 		strbOut.append("\r\n");
 		
-		// create a LegData object for each leg of each trip
+
+		// create an array of LegData for each Segment and populate it
 		for (int i = 0; i < listTrips.size(); i++) {
 			Trip trip = listTrips.get(i);
 			double dblTripDistance = trip.computeTripDistance(0, trip.getPoints().size() - 1);
+			strbOut.append("\t\t\tvar arrLegData" + i + " = new Array();\r\n");
 				
 			for (int j = 0; j < trip.getPoints().size(); j++) {
 				double dblDistanceToPointFromStart = trip.computeTripDistance(0, j);
@@ -258,32 +267,21 @@ public class Animator {
 					dblLegTime = Mathf.roundToDouble(trip.computeTripTime(j - 1, j), 2);
 				}
 				
-				if (dblLegTime == 0) {
-					dblLegTime += 0.01;
-				}
-				
 				// if true, hide lines after they complete their animation
 				if (!isKeepLinesVisible) {
 					if (j == trip.getPoints().size() - 1) {
 						dblPositionFront = 100;
 						dblPositionBack = 100;
+						dblLegTime = Mathf.roundToDouble(trip.computeTripTime(0, j - 1), 2);
 					}
 				}
 				
-				strbOut.append("\t\t\tvar legData" + i + "_" + j + " = new LegData (" + dblPositionBack + ", " + dblPositionFront + ", " + dblLegTime + ");\r\n");
-			}
-			
-			strbOut.append("\r\n");
-		}
-		
-		// create an array of LegData for each Segment and populate it
-		for (int i = 0; i < listTrips.size(); i++) {
-			Trip trip = listTrips.get(i);
-			
-			strbOut.append("\t\t\tvar arrLegData" + i + " = new Array();\r\n");
+				if (dblLegTime == 0) {
+					dblLegTime += 0.01;
+				}
 				
-			for (int j = 0; j < trip.getPoints().size(); j++) {
-				strbOut.append("\t\t\tarrLegData" + i + ".push(legData" + i + "_" + j + ");\r\n");
+				strbOut.append("\t\t\tarrLegData" + i + ".push(new LegData (" + dblPositionBack + ", " + dblPositionFront + ", " + dblLegTime + "));\r\n");
+				//strbOut.append("\t\t\tvar legData" + i + "_" + j + " = new LegData (" + dblPositionBack + ", " + dblPositionFront + ", " + dblLegTime + ");\r\n");
 			}
 			
 			strbOut.append("\r\n");
@@ -299,9 +297,6 @@ public class Animator {
 		
 		// create an array of indices to track which leg each trip is on
 		strbOut.append("\t\t\tvar arrIntLeg = new Array();\r\n");
-		for (int i = 0; i < listTrips.size(); i++) {
-			strbOut.append("\t\t\tarrIntLeg.push(0);\r\n");
-		}
 		
 		strbOut.append("\r\n");
 		
@@ -322,10 +317,14 @@ public class Animator {
 		// hide each line and then call nextLeg() for the first leg of each trip
 		strbOut.append(	"\t\t\tfor (var i = 0; i < arrSegment.length; i++) {\r\n" +
 						"\t\t\t\tarrSegment[i].draw(0.0, 0.0);\r\n" +
+						"\t\t\t\tarrIntLeg.push(0);\r\n" +
 						"\t\t\t\tnextLeg(i);\r\n" +
 						"\t\t\t}\r\n");
+		
+		strbOut.append("\r\n");
 			
-		strbOut.append("\t\t</script>\r\n");
+		strbOut.append(	"\t\t\t$(\"#curtain\").fadeOut(\"slow\");\r\n" +
+						"\t\t</script>\r\n");
 		
 		return strbOut.toString();
 	}

@@ -49,7 +49,7 @@
         "strFileName": "animation",
         "strPageTitle": "LiquidMaps: Philadelphia",
         "strCanvasText": "",
-        "intCanvasWidth": 800,
+        "intCanvasWidth": 600,
 		"strCanvasColor": "#000000",
 		"intLineWidth": 1,
 		"intLineLength": 1000,
@@ -58,6 +58,6 @@
 		"strLineColorB": "#DC89B2",
 		"strTextColor": "#FFFFFF",
 		"dblTimeBetweenSpawns": 0.02,
-		"dblMergeDistance": 2
+		"dblMergeDistance": 1.5
     }
 }
